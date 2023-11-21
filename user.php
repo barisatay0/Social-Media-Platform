@@ -1,13 +1,32 @@
 <?php
 session_start();
+include 'connect.php';
 
 if(isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
+
+    try {
+        $query = "SELECT * FROM user WHERE username = :username";
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(':username', $username);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($row) {
+            $profilePhoto = $row['profilephoto'];     
+        } else {
+            echo "Data not found or connection error";
+        }
+    } catch(PDOException $e) {
+        echo "Bağlantı Hatası: " . $e->getMessage();
+    }
 } else {
-    header("Location:login");
+    header("Location: login");
     exit();
 }
 ?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -88,7 +107,7 @@ if(isset($_SESSION['username'])) {
     </div>
     <div class="position-absolute mt-4 w-25 text-center dropdown end-0" style="top:0;right:0;">
     <a href="profile.php" style="text-decoration:none;font-family:'Courier New', Courier, monospace;">
-    <img src="Hideo.jpg" class="w-25 rounded-circle border border-light border-opacity-25 border-2" alt="123" />
+    <img <?php echo'src="' . $profilePhoto . '"' ?> class="w-25 rounded-circle border border-light border-opacity-25 border-2" alt="123" />
     <p class="text-light text-center"><?php echo $username; ?></p>
     </a>
 <a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content"
@@ -146,10 +165,10 @@ if(isset($_SESSION['username'])) {
     <div class="scrollable-container w-100 mt-1" style="overflow-y:auto;height:40rem;">
         <div class="w-25 post" style="margin-left:38%;">
             <div class="card post text-white">
-                <img src="" class="card-img-top" alt="...">
+                <img src="3441825.jpg" class="card-img-top" alt="...">
                 <div class="card-body" style="background-color:black;">
-                    <a href=""><img src="" class="rounded-5 mx-4" style="width:15%;"></a>
-                    <h5 class="card-title fs-4"></h5>
+                    <a href=""><img src="3979606.jpg" class="rounded-5 mx-4" style="width:15%;"></a>
+                    <h5 class="card-title fs-4">Juice Wrld</h5>
                     <p class="card-text">This card has supporting text below as a natural lead-in to additional content.
                     </p>
                     <br>
@@ -164,10 +183,10 @@ if(isset($_SESSION['username'])) {
         <br>
         <div class="w-25 post" style="margin-left:38%;">
             <div class="card post text-white">
-                <img src="" class="card-img-top" alt="...">
+                <img src="3950406.jpg" class="card-img-top" alt="...">
                 <div class="card-body" style="background-color:black;">
-                    <a href=""><img src="" class="rounded-5 mx-4" style="width:15%;"></a>
-                    <h5 class="card-title fs-4"></h5>
+                    <a href=""><img src="3979606.jpg" class="rounded-5 mx-4" style="width:15%;"></a>
+                    <h5 class="card-title fs-4">Juice Wrld</h5>
                     <p class="card-text">This card has supporting text below as a natural lead-in to additional content.
                     </p>
                     <br>
@@ -182,10 +201,10 @@ if(isset($_SESSION['username'])) {
         <br>
         <div class="w-25 post" style="margin-left:38%;">
             <div class="card post text-white">
-                <img src="" class="card-img-top" alt="...">
+                <img src="3441825.jpg" class="card-img-top" alt="...">
                 <div class="card-body" style="background-color:black;">
-                    <a href=""><img src="" class="rounded-5 mx-4" style="width:15%;"></a>
-                    <h5 class="card-title fs-4"></h5>
+                    <a href=""><img src="3979606.jpg" class="rounded-5 mx-4" style="width:15%;"></a>
+                    <h5 class="card-title fs-4">Juice Wrld</h5>
                     <p class="card-text">This card has supporting text below as a natural lead-in to additional content.
                     </p>
                     <br>
@@ -200,10 +219,10 @@ if(isset($_SESSION['username'])) {
         <br>
         <div class="w-25 post" style="margin-left:38%;">
             <div class="card post text-white">
-                <img src="" class="card-img-top" alt="...">
+                <img src="3950406.jpg" class="card-img-top" alt="...">
                 <div class="card-body" style="background-color:black;">
-                    <a href=""><img src="" class="rounded-5 mx-4" style="width:15%;"></a>
-                    <h5 class="card-title fs-4"></h5>
+                    <a href=""><img src="3979606.jpg" class="rounded-5 mx-4" style="width:15%;"></a>
+                    <h5 class="card-title fs-4">Juice Wrld</h5>
                     <p class="card-text">This card has supporting text below as a natural lead-in to additional content.
                     </p>
                     <br>
@@ -218,10 +237,10 @@ if(isset($_SESSION['username'])) {
         <br>
         <div class="w-25 post" style="margin-left:38%;">
             <div class="card post text-white">
-                <img src="" class="card-img-top" alt="...">
+                <img src="3950406.jpg" class="card-img-top" alt="...">
                 <div class="card-body" style="background-color:black;">
-                    <a href=""><img src="" class="rounded-5 mx-4" style="width:15%;"></a>
-                    <h5 class="card-title fs-4"></h5>
+                    <a href=""><img src="3979606.jpg" class="rounded-5 mx-4" style="width:15%;"></a>
+                    <h5 class="card-title fs-4">Juice Wrld</h5>
                     <p class="card-text">This card has supporting text below as a natural lead-in to additional content.
                     </p>
                     <br>
