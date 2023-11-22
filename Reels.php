@@ -1,10 +1,34 @@
 <?php
 session_start();
-if(isset($_SESSION['username'])) {
+include 'connect.php';
+
+if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
-    echo "Welcome, $username!";
+
+    try {
+        $query = "SELECT * FROM user WHERE username = :username";
+        $stmt = $dbh->prepare($query);
+        $stmt->bindParam(':username', $username);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($row) {
+            $profilePhoto = $row['profilephoto'];
+        } else {
+            echo "Data not found or connection error";
+        }
+    } catch (PDOException $e) {
+        echo "Bağlantı Hatası: " . $e->getMessage();
+    }
 } else {
-    header("Location: login.php");
+    header("Location: login");
+    exit();
+}
+session_start();
+
+if (isset($_POST['logout'])) {
+    session_unset();
+    session_destroy();
+    header("Location: index.php");
     exit();
 }
 ?>
