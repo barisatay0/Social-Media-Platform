@@ -94,10 +94,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="grad" style="background-image: url(images/ngtsky.jpg);
+<body class="grad" style="background-image: url(ngtsky.jpg);
 	background-size: cover;">
     <a href="https://egoistsky.free.nf" class="start-50 top-25 mt-4 text-center position-absolute translate-middle"><img
-            src="images/astronomy.png" class="border border-black rounded-circle border-3 mt-5" style="width:16%;"></a>
+            src="astronomy.png" class="border border-black rounded-circle border-3 mt-5" style="width:16%;"></a>
 
     <form class="w-25 text-white position-absolute top-50 start-50 translate-middle" enctype="multipart/form-data" method="post">
         <div class="mb-4">
