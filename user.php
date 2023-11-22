@@ -2,7 +2,7 @@
 session_start();
 include 'connect.php';
 
-if(isset($_SESSION['username'])) {
+if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
 
     try {
@@ -11,19 +11,28 @@ if(isset($_SESSION['username'])) {
         $stmt->bindParam(':username', $username);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if($row) {
-            $profilePhoto = $row['profilephoto'];     
+        if ($row) {
+            $profilePhoto = $row['profilephoto'];
         } else {
             echo "Data not found or connection error";
         }
-    } catch(PDOException $e) {
+    } catch (PDOException $e) {
         echo "Bağlantı Hatası: " . $e->getMessage();
     }
 } else {
     header("Location: login");
     exit();
 }
+session_start();
+
+if (isset($_POST['logout'])) {
+    session_unset();
+    session_destroy();
+    header("Location: index.php");
+    exit();
+}
 ?>
+
 
 
 
@@ -82,7 +91,8 @@ if(isset($_SESSION['username'])) {
 
 <body class="grad bgimage">
     <a href="" class="mx-3 mt-2"></a>
-    <div><a href="https://egoistsky.free.nf" class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
+    <div><a href="https://egoistsky.free.nf"
+            class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
             style="margin-left:12%;"><img class="border border-black border-3 rounded-circle" style="width: 6%;"
                 src="astronomy.png" alt="logo"></a></div>
     <div class="position-absolute top-0 start-50 translate-middle mt-4" style="width:33%;">
@@ -90,34 +100,38 @@ if(isset($_SESSION['username'])) {
     </div>
     <div class="top-50 start-0 translate-middle-y mx-1" style="width:24%;margin-top:1%;position: fixed;">
         <a href="Reels"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover "
-                style="margin-left: 50%;" src="telescope.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="Reels"></a>
+                style="margin-left: 50%;" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Reels"></a>
         <a href="trends"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="comet.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="Trends"></a>
+                style="margin-left: 50%;" src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Trends"></a>
         <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="bootes.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="Groups"></a>
+                style="margin-left: 50%;" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Groups"></a>
         <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="earth.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="Languages"></a>
+                style="margin-left: 50%;" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Languages"></a>
         <a href="information"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="saturn.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="İnformation"></a>
+                style="margin-left: 50%;" src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="İnformation"></a>
     </div>
     <div class="position-absolute mt-4 w-25 text-center dropdown end-0" style="top:0;right:0;">
-    <a href="profile.php" style="text-decoration:none;font-family:'Courier New', Courier, monospace;">
-    <img <?php echo'src="' . $profilePhoto . '"' ?> class="w-25 rounded-circle border border-light border-opacity-25 border-2" alt="123" />
-    <p class="text-light text-center"><?php echo $username; ?></p>
-    </a>
-<a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content"
+        <a href="profile.php" style="text-decoration:none;font-family:'Courier New', Courier, monospace;">
+            <img <?php echo 'src="' . $profilePhoto . '"' ?>
+                class="w-25 rounded-circle border border-light border-opacity-25 border-2" alt="123" />
+            <p class="text-light text-center">
+                <?php echo $username; ?>
+            </p>
+        </a>
+        <a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content"
                 style="font-size:12.5px;width:32%;">Profile</button></a>
         <br>
         <button class="btn btn-outline-light mt-2 dropdown-content"
             style="font-size:12.5px;width:32%;">Settings</button>
         <br>
-        <button class="btn btn-outline-light mt-2 dropdown-content" style="font-size:12.5px;width:32%;">Logout</button>
-
+        <form method="post" action=""><button type="submit" name="logout"
+                class="btn btn-outline-light mt-2 dropdown-content" style="font-size:12.5px;width:32%;">Logout</button>
+        </form>
     </div>
     <div class="position-absolute text-center dropdown end-0 scrollable-container"
         style="width:20%;right:0;height:97%;margin-right:16%;margin-top:-6%;overflow-y: auto;">
@@ -173,8 +187,8 @@ if(isset($_SESSION['username'])) {
                     </p>
                     <br>
                     <p class="card-text"><small class="text-white-50">Last updated 3 mins ago</small></p>
-                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
+                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png" data-bs-toggle="tooltip"
+                        data-bs-placement="top" data-bs-title="Like">
                     <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png"
                         data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
                 </div>
@@ -191,8 +205,8 @@ if(isset($_SESSION['username'])) {
                     </p>
                     <br>
                     <p class="card-text"><small class="text-white-50">Last updated 3 mins ago</small></p>
-                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
+                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png" data-bs-toggle="tooltip"
+                        data-bs-placement="top" data-bs-title="Like">
                     <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png"
                         data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
                 </div>
@@ -209,8 +223,8 @@ if(isset($_SESSION['username'])) {
                     </p>
                     <br>
                     <p class="card-text"><small class="text-white-50">Last updated 3 mins ago</small></p>
-                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
+                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png" data-bs-toggle="tooltip"
+                        data-bs-placement="top" data-bs-title="Like">
                     <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png"
                         data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
                 </div>
@@ -227,8 +241,8 @@ if(isset($_SESSION['username'])) {
                     </p>
                     <br>
                     <p class="card-text"><small class="text-white-50">Last updated 3 mins ago</small></p>
-                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
+                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png" data-bs-toggle="tooltip"
+                        data-bs-placement="top" data-bs-title="Like">
                     <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png"
                         data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
                 </div>
@@ -245,8 +259,8 @@ if(isset($_SESSION['username'])) {
                     </p>
                     <br>
                     <p class="card-text"><small class="text-white-50">Last updated 3 mins ago</small></p>
-                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
+                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png" data-bs-toggle="tooltip"
+                        data-bs-placement="top" data-bs-title="Like">
                     <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png"
                         data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
                 </div>
