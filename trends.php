@@ -124,7 +124,9 @@ if (isset($_POST['logout'])) {
         <button class="btn btn-outline-light mt-2 dropdown-content"
             style="font-size:12.5px;width:32%;">Settings</button>
         <br>
-        <button class="btn btn-outline-light mt-2 dropdown-content" style="font-size:12.5px;width:32%;">Logout</button>
+        <form method="post" action=""><button type="submit" name="logout"
+                class="btn btn-outline-light mt-2 dropdown-content" style="font-size:12.5px;width:32%;">Logout</button>
+        </form>
 
     </div>
     <div id="carouselExampleDark"
