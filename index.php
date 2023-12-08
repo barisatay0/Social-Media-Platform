@@ -19,23 +19,28 @@
             margin-right: 16%;
             margin-top: -6%;
             scrollbar-width: thin;
+            /* For Firefox */
             scrollbar-color: transparent transparent;
+            /* For Firefox */
         }
 
         .scrollable-container::-webkit-scrollbar {
             width: 6px;
+            /* For Chrome, Safari, and Opera */
         }
 
         .scrollable-container::-webkit-scrollbar-thumb {
             background-color: transparent;
+            /* For Chrome, Safari, and Opera */
         }
     </style>
 </head>
 
 <body class="grad" style="background-image: url(ngtsky.jpg);
-	background-size: cover;">
+    background-size: cover;">
     <a href="" class="mx-3 mt-2"></a>
-    <div><a href="https://egoistsky.free.nf/" class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
+    <div><a href="https://egoistsky.free.nf/"
+            class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
             style="margin-left:12%;"><img class="border border-black border-3 rounded-circle" style="width: 6%;"
                 src="astronomy.png" alt="logo"></a></div>
     <div class="position-absolute top-0 start-50 translate-middle mt-4" style="width:33%;">
@@ -47,112 +52,69 @@
             style="margin-right:5rem;position: fixed;">Sign Up</button></a>
     <div class="top-50 start-0 translate-middle-y mx-1" style="width:24%;margin-top:1%;position: fixed;">
         <a href="Reels"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover "
-                style="margin-left: 50%;" src="telescope.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="Reels"></a>
+                style="margin-left: 50%;" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Reels"></a>
         <a href="trends"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="comet.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="Trends"></a>
+                style="margin-left: 50%;" src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Trends"></a>
         <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="bootes.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="Groups"></a>
+                style="margin-left: 50%;" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Groups"></a>
         <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="earth.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="Languages"></a>
+                style="margin-left: 50%;" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Languages"></a>
         <a href="information"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="saturn.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="İnformation"></a>
+                style="margin-left: 50%;" src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="İnformation"></a>
     </div>
     <div class="scrollable-container w-100 mt-1" style="overflow-y:auto;height:40rem;">
-        <div class="w-25 post" style="margin-left:38%;">
-            <div class="card post text-white">
-                <img src="" class="card-img-top" alt="...">
-                <div class="card-body" style="background-color:black;">
-                    <a href=""><img src="" class="rounded-5 mx-4" style="width:15%;"></a>
-                    <h5 class="card-title fs-4">???</h5>
-                    <p class="card-text">This card has supporting text below as a natural lead-in to additional content.
-                    </p>
-                    <br>
-                    <p class="card-text"><small class="text-white-50">Last updated 3 mins ago</small></p>
-                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
-                    <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
-                </div>
-            </div>
-        </div>
-        <br>
-        <div class="w-25 post" style="margin-left:38%;">
-            <div class="card post text-white">
-                <img src="3950406.jpg" class="card-img-top" alt="...">
-                <div class="card-body" style="background-color:black;">
-                    <a href=""><img src="" class="rounded-5 mx-4" style="width:15%;"></a>
-                    <h5 class="card-title fs-4">???</h5>
-                    <p class="card-text">This card has supporting text below as a natural lead-in to additional content.
-                    </p>
-                    <br>
-                    <p class="card-text"><small class="text-white-50">Last updated 3 mins ago</small></p>
-                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
-                    <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
-                </div>
-            </div>
-        </div>
-        <br>
-        <div class="w-25 post" style="margin-left:38%;">
-            <div class="card post text-white">
-                <img src="3441825.jpg" class="card-img-top" alt="...">
-                <div class="card-body" style="background-color:black;">
-                    <a href=""><img src="" class="rounded-5 mx-4" style="width:15%;"></a>
-                    <h5 class="card-title fs-4">???</h5>
-                    <p class="card-text">This card has supporting text below as a natural lead-in to additional content.
-                    </p>
-                    <br>
-                    <p class="card-text"><small class="text-white-50">Last updated 3 mins ago</small></p>
-                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
-                    <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
-                </div>
-            </div>
-        </div>
-        <br>
-        <div class="w-25 post" style="margin-left:38%;">
-            <div class="card post text-white">
-                <img src="3950406.jpg" class="card-img-top" alt="...">
-                <div class="card-body" style="background-color:black;">
-                    <a href=""><img src="" class="rounded-5 mx-4" style="width:15%;"></a>
-                    <h5 class="card-title fs-4">???</h5>
-                    <p class="card-text">This card has supporting text below as a natural lead-in to additional content.
-                    </p>
-                    <br>
-                    <p class="card-text"><small class="text-white-50">Last updated 3 mins ago</small></p>
-                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
-                    <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
-                </div>
-            </div>
-        </div>
-        <br>
-        <div class="w-25 post" style="margin-left:38%;">
-            <div class="card post text-white">
-                <img src="3950406.jpg" class="card-img-top" alt="...">
-                <div class="card-body" style="background-color:black;">
-                    <a href=""><img src="" class="rounded-5 mx-4" style="width:15%;"></a>
-                    <h5 class="card-title fs-4">???</h5>
-                    <p class="card-text">This card has supporting text below as a natural lead-in to additional content.
-                    </p>
-                    <br>
-                    <p class="card-text"><small class="text-white-50">Last updated 3 mins ago</small></p>
-                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
-                    <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
-                </div>
-            </div>
-        </div>
+        <?php
+        $servername = "sql203.infinityfree.com";
+        $username = "if0_35435711";
+        $password = "hrtPcoQHzpRSu";
+        $dbname = "if0_35435711_users";
 
+        try {
+            $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // Post tablosundan veri çekme
+            $postQuery = "SELECT username, photo, description, time FROM post  ORDER BY time DESC";
+            $postStmt = $dbh->query($postQuery);
+
+            if ($postStmt) {
+                while ($row = $postStmt->fetch(PDO::FETCH_ASSOC)) {
+                    // User tablosundan profilephoto sütununu çekme
+                    $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
+                    $userStmt = $dbh->query($userQuery);
+                    $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
+
+                    // HTML içeriğini oluştur
+                    echo '
+            <div class="w-25 post" style="margin-left:38%;">
+                <div class="card post text-white">
+                    <img src="data/posts/' . $row["photo"] . '" class="card-img-top" alt="...">
+                    <div class="card-body" style="background-color:black;">
+                        <a href=""><img src="' . $userRow["profilephoto"] . '" class="rounded-5 mx-1" style="width:15%;"></a>
+                        <h5 class="card-title fs-4">' . $row["username"] . '</h5>
+                        <p class="card-text">' . $row["description"] . '</p>
+                        <br>
+                        <p class="card-text"><small class="text-white-50">' . $row["time"] . '</small></p>
+                        <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
+                        <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
+                    </div>
+                </div>
+            </div>
+            <br>';
+                }
+            } else {
+                echo "Veri bulunamadı";
+            }
+        } catch (PDOException $e) {
+            echo "Bağlantı hatası: " . $e->getMessage();
+        }
+        ?>
+        <br>
     </div>
     </div>
 </body>

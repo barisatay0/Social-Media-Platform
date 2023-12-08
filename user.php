@@ -77,6 +77,7 @@ if (isset($_POST['logout'])) {
 
         .scrollable-container::-webkit-scrollbar {
             width: 6px;
+
         }
 
         .scrollable-container::-webkit-scrollbar-thumb {
@@ -89,7 +90,7 @@ if (isset($_POST['logout'])) {
 
 <body class="grad bgimage">
     <a href="" class="mx-3 mt-2"></a>
-    <div><a href="https://egoistsky.free.nf"
+    <div><a href="https://egoistsky.free.nf/user"
             class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
             style="margin-left:12%;"><img class="border border-black border-3 rounded-circle" style="width: 6%;"
                 src="astronomy.png" alt="logo"></a></div>
@@ -115,8 +116,8 @@ if (isset($_POST['logout'])) {
     </div>
     <div class="position-absolute mt-4 w-25 text-center dropdown end-0" style="top:0;right:0;">
         <a href="profile.php" style="text-decoration:none;font-family:'Courier New', Courier, monospace;">
-            <img <?php echo 'src="' . $profilePhoto . '"' ?> class=" border border-light border-opacity-25 border-2"
-                alt="123" style="border-radius:5%;width:40%;" />
+            <img <?php echo 'src="' . $profilePhoto . '"' ?> class=" border border-dark border-opacity-25 border-4"
+                alt="123" style="border-radius:9%;width:30%;" />
             <p class="text-light text-center">
                 <?php echo $username; ?>
             </p>
@@ -132,67 +133,53 @@ if (isset($_POST['logout'])) {
         </form>
 
     </div>
-    <div class="position-absolute text-center dropdown end-0 scrollable-container"
-        style="width:20%;right:0;height:97%;margin-right:16%;margin-top:-6%;overflow-y: auto;">
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%" src="user (1).png" data-bs-toggle="tooltip"
-            data-bs-placement="left" data-bs-title="More">
-    </div>
     <div class="scrollable-container w-100 mt-1" style="overflow-y:auto;height:40rem;">
-        <div class="w-25 post" style="margin-left:38%;">
-            <div class="card post text-white">
-                <img src="3441825.jpg" class="card-img-top" alt="...">
-                <div class="card-body" style="background-color:black;">
-                    <a href=""><img src="3979606.jpg" class="rounded-5 mx-4" style="width:15%;"></a>
-                    <h5 class="card-title fs-4">Juice Wrld</h5>
-                    <p class="card-text">This card has supporting text below as a natural lead-in to additional content.
-                    </p>
-                    <br>
-                    <p class="card-text"><small class="text-white-50">Last updated 3 mins ago</small></p>
-                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png" data-bs-toggle="tooltip"
-                        data-bs-placement="top" data-bs-title="Like">
-                    <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
+        <?php
+        $servername = "";
+        $username = "";
+        $password = "";
+        $dbname = "";
+
+        try {
+            $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // Post tablosundan veri çekme
+            $postQuery = "SELECT username, photo, description, time FROM post  ORDER BY time DESC";
+            $postStmt = $dbh->query($postQuery);
+
+            if ($postStmt) {
+                while ($row = $postStmt->fetch(PDO::FETCH_ASSOC)) {
+                    // User tablosundan profilephoto sütununu çekme
+                    $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
+                    $userStmt = $dbh->query($userQuery);
+                    $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
+
+                    // HTML içeriğini oluştur
+                    echo '
+            <div class="w-25 post" style="margin-left:38%;">
+                <div class="card post text-white">
+                    <img src="data/posts/' . $row["photo"] . '" class="card-img-top" alt="...">
+                    <div class="card-body" style="background-color:black;">
+                        <a href=""><img src="' . $userRow["profilephoto"] . '" class="rounded-5 mx-1" style="width:15%;"></a>
+                        <h5 class="card-title fs-4">' . $row["username"] . '</h5>
+                        <p class="card-text">' . $row["description"] . '</p>
+                        <br>
+                        <p class="card-text"><small class="text-white-50">' . $row["time"] . '</small></p>
+                        <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
+                        <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
+                    </div>
                 </div>
             </div>
-        </div>
+            <br>';
+                }
+            } else {
+                echo "Veri bulunamadı";
+            }
+        } catch (PDOException $e) {
+            echo "Bağlantı hatası: " . $e->getMessage();
+        }
+        ?>
         <br>
     </div>
     <div>
@@ -205,58 +192,17 @@ if (isset($_POST['logout'])) {
     <div class="w-50 border bg-dark rounded-5 light border-dark position-absolute top-50 start-50 translate-middle text-center"
         id="hiddenForm" style="display: none;--bs-bg-opacity: .9;height:74%;">
         <p class="h1 text-light mt-5">Post</p>
-        <form method="POST" action="" id="myForm" class="mt-3" enctype="multipart/form-data">
+        <form method="POST" action="https://egoistsky.free.nf/user-" id="myForm" class="mt-3"
+            enctype="multipart/form-data">
             <input class="btn btn-outline-light w-75 mt-3" type="file" name="fileToUpload" required>
             <br>
             <textarea class="mt-4 w-75" name="description" placeholder="Description" id="description"
                 style="border-radius: 3%; height: 5rem;"></textarea>
             <br>
-            <input id="formCloser" class="btn btn-success w-75 mt-4" name="share" type="submit" value="Share">
+            <input class="btn btn-success w-75 mt-4" name="share" type="submit" value="Share">
         </form>
-
         <button id="formCloser" class="w-25 mt-4 btn btn-danger">close</button>
     </div>
-    <?php
-    session_start();
-    include 'connect.php';
-
-    try {
-        $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
-        echo "Bağlantı hatası: " . $e->getMessage();
-    }
-
-    if (isset($_POST['share'])) {
-        $username = $_SESSION['username'];
-        $description = $_POST['description'];
-        $targetDirectory = "data/posts/";
-        $fileName = uniqid() . "_" . basename($_FILES["fileToUpload"]["name"]);
-        $targetPath = $targetDirectory . $fileName;
-
-        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $targetPath)) {
-            try {
-                $query = "INSERT INTO posts (username,photo,description) VALUES (:username,:photo,:description)";
-                $statement = $dbh->prepare($query);
-                $statement->bindParam(':username', $username);
-                $statement->bindParam(':photo', $fileName);
-                $statement->bindParam(':description', $description);
-
-                if ($statement->execute()) {
-                    echo "Fotoğraf başarıyla yüklendi ve veritabanına kaydedildi.";
-                } else {
-                    echo "Veritabanına kaydedilirken bir hata oluştu.";
-                }
-            } catch (PDOException $e) {
-                echo "Veritabanı hatası: " . $e->getMessage();
-            }
-        } else {
-            echo "Dosya yüklenirken bir hata oluştu.";
-        }
-    } else {
-        echo "Form gönderilmedi.";
-    }
-    ?>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
     integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
