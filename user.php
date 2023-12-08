@@ -72,19 +72,15 @@ if (isset($_POST['logout'])) {
             margin-right: 16%;
             margin-top: -6%;
             scrollbar-width: thin;
-            /* For Firefox */
             scrollbar-color: transparent transparent;
-            /* For Firefox */
         }
 
         .scrollable-container::-webkit-scrollbar {
             width: 6px;
-            /* For Chrome, Safari, and Opera */
         }
 
         .scrollable-container::-webkit-scrollbar-thumb {
             background-color: transparent;
-            /* For Chrome, Safari, and Opera */
         }
     </style>
 </head>
@@ -236,12 +232,11 @@ if (isset($_POST['logout'])) {
 
     if (isset($_POST['share'])) {
         $username = $_SESSION['username'];
-        $description = $_POST['description']; // Formdan açıklama bilgisini al
-        $targetDirectory = "data/posts/"; // Dosyanın yükleneceği klasör
+        $description = $_POST['description'];
+        $targetDirectory = "data/posts/";
         $fileName = uniqid() . "_" . basename($_FILES["fileToUpload"]["name"]);
         $targetPath = $targetDirectory . $fileName;
 
-        // Dosya yükleme işlemi
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $targetPath)) {
             try {
                 $query = "INSERT INTO posts (username,photo,description) VALUES (:username,:photo,:description)";
