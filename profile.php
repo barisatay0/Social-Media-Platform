@@ -10,6 +10,7 @@ if (isset($_SESSION['username'])) {
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(':username', $username);
         $stmt->execute();
+
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             $profilePhoto = $row['profilephoto'];
@@ -23,13 +24,17 @@ if (isset($_SESSION['username'])) {
     header("Location: login");
     exit();
 }
-session_start();
 
-if (isset($_POST['logout'])) {
-    session_unset();
-    session_destroy();
-    header("Location: index.php");
-    exit();
+// Veritabanından kullanıcının postlarını al
+try {
+    $query_posts = "SELECT photo FROM post WHERE username = :username";
+    $stmt_posts = $dbh->prepare($query_posts);
+    $stmt_posts->bindParam(':username', $username);
+    $stmt_posts->execute();
+
+    $posts = $stmt_posts->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Bağlantı Hatası: " . $e->getMessage();
 }
 ?>
 <!DOCTYPE html>
@@ -53,33 +58,40 @@ if (isset($_POST['logout'])) {
             margin-right: 16%;
             margin-top: -6%;
             scrollbar-width: thin;
+            /* For Firefox */
             scrollbar-color: transparent transparent;
+            /* For Firefox */
         }
 
         .scrollable-container::-webkit-scrollbar {
             width: 6px;
+            /* For Chrome, Safari, and Opera */
         }
 
         .scrollable-container::-webkit-scrollbar-thumb {
             background-color: transparent;
+            /* For Chrome, Safari, and Opera */
         }
     </style>
 </head>
 
-<body class="grad" style="background-image: url(images/ngtsky.jpg);
-	background-size: cover;">
+<body class="grad" style="background-image: url(ngtsky.jpg);
+    background-size: cover;">
     <a href="" class="mx-3 mt-2"></a>
 
-    <div><a href="https://egoistsky.free.nf" class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
+    <div><a href="https://egoistsky.free.nf/user"
+            class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
             style="margin-left:12%;"><img class="border border-black border-3 rounded-circle" style="width: 6%;"
-                src="images/astronomy.png" alt="logo"></a></div>
+                src="astronomy.png" alt="logo"></a></div>
     <div>
         <div class="top-0 start-50 position-absolute translate-middle-x mt-2 text-center">
-            <input type="image" class="rounded-circle mx-2" style="width:10%;" src="" alt="???">
+            <input type="image" class="rounded-circle mx-2" style="width:20%;" <?php echo 'src="' . $profilePhoto . '"' ?>>
 
             <br>
-            <p class="h3 text-light" style="font-family: system-ui;">???</p>
-            <button class="btn btn-outline-light" style="width:15%;">Edit Profile</button>
+            <p class="h3 text-light" style="font-family: system-ui;">
+                <?php echo '' . $username . '' ?>
+            </p>
+            <a href="edit.php"><button class="btn btn-outline-light" style="width:15%;">Edit Profile</button></a>
             <button class="btn btn-outline-light" style="width:15%;">Settings</button>
             <a href="" style="text-decoration: none;">
                 <p class="h5 text-white-50 mt-1">Followers : 60M</p>
@@ -92,64 +104,33 @@ if (isset($_POST['logout'])) {
 
             <br>
             <div class="scrollable-container w-100 mt-1">
-                <input type="image" class="w-25  rounded-1 border-black imghoverprofile" src="" alt="???">
-                               <input type="image" class="w-25  rounded-1 border-black imghoverprofile" src="" alt="???">
-                               <input type="image" class="w-25  rounded-1 border-black imghoverprofile" src="" alt="???">
-                               <input type="image" class="w-25  rounded-1 border-black imghoverprofile" src="" alt="???">
-                               <input type="image" class="w-25  rounded-1 border-black imghoverprofile" src="" alt="???">
-                               <input type="image" class="w-25  rounded-1 border-black imghoverprofile" src="" alt="???">
-                               <input type="image" class="w-25  rounded-1 border-black imghoverprofile" src="" alt="???">
-                               <input type="image" class="w-25  rounded-1 border-black imghoverprofile" src="" alt="???">
-                               <input type="image" class="w-25  rounded-1 border-black imghoverprofile" src="" alt="???">
-                               <input type="image" class="w-25  rounded-1 border-black imghoverprofile" src="" alt="???">
-                               <input type="image" class="w-25  rounded-1 border-black imghoverprofile" src="" alt="???">
-                               <input type="image" class="w-25  rounded-1 border-black imghoverprofile" src="" alt="???">
-                               <input type="image" class="w-25  rounded-1 border-black imghoverprofile" src="" alt="???">
-                               <input type="image" class="w-25  rounded-1 border-black imghoverprofile" src="" alt="???">
-                               <input type="image" class="w-25  rounded-1 border-black imghoverprofile" src="" alt="???">
-                               <input type="image" class="w-25  rounded-1 border-black imghoverprofile" src="" alt="???">
-                               <input type="image" class="w-25  rounded-1 border-black imghoverprofile" src="" alt="???">
-                               <input type="image" class="w-25  rounded-1 border-black imghoverprofile" src="" alt="???">
+                <?php foreach ($posts as $post): ?>
+                    <input type="image" class="w-25 rounded-1 border-black imghoverprofile"
+                        src="data/posts/<?php echo $post['photo']; ?>">
+                <?php endforeach; ?>
             </div>
         </div>
 
     </div>
     <div class="top-50 start-0 translate-middle-y mx-1" style="width:24%;margin-top:1%;position: fixed;">
         <a href="Reels.php"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover "
-                style="margin-left: 50%;" src="images/telescope.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="Reels"></a>
+                style="margin-left: 50%;" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Reels"></a>
         <a href="trends.php"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="images/comet.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="Trends"></a>
+                style="margin-left: 50%;" src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Trends"></a>
         <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="images/bootes.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="Groups"></a>
+                style="margin-left: 50%;" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Groups"></a>
         <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="images/earth.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="Languages"></a>
+                style="margin-left: 50%;" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Languages"></a>
         <a href="information.php"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="images/saturn.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="İnformation"></a>
+                style="margin-left: 50%;" src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="İnformation"></a>
     </div>
 
 
-    </div>
-    <div class="w-25 text-center dropdown end-0" style="top:15%;right:0;height:auto;position:fixed;">
-        <p class="h4 text-white">Random Match</p>
-        <input type="image" class="imghover" style="width:20%;" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%" src="user (1).png">
-        <br>
-        <input type="image" class="imghover" style="width:20%" src="user (1).png" data-bs-toggle="tooltip"
-            data-bs-placement="left" data-bs-title="More">
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
