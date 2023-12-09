@@ -77,9 +77,8 @@ if (isset($_POST['logout'])) {
 
         .scrollable-container::-webkit-scrollbar {
             width: 6px;
-
+  
         }
-
         .scrollable-container::-webkit-scrollbar-thumb {
             background-color: transparent;
         }
@@ -95,8 +94,12 @@ if (isset($_POST['logout'])) {
             style="margin-left:12%;"><img class="border border-black border-3 rounded-circle" style="width: 6%;"
                 src="astronomy.png" alt="logo"></a></div>
     <div class="position-absolute top-0 start-50 translate-middle mt-4" style="width:33%;">
-        <form><input type="search" placeholder="Search..." class=" form-control"></form>
+        <form name="searcher" method="post" action="">
+    <input type="search" id="searchInput" name="search" placeholder="Search..." class="form-control">
+</form>
+        <div id="searchResults"></div>
     </div>
+    
     <div class="top-50 start-0 translate-middle-y mx-1" style="width:24%;margin-top:1%;position: fixed;">
         <a href="Reels"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover "
                 style="margin-left: 50%;" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
@@ -116,8 +119,8 @@ if (isset($_POST['logout'])) {
     </div>
     <div class="position-absolute mt-4 w-25 text-center dropdown end-0" style="top:0;right:0;">
         <a href="profile.php" style="text-decoration:none;font-family:'Courier New', Courier, monospace;">
-            <img <?php echo 'src="' . $profilePhoto . '"' ?> class=" border border-dark border-opacity-25 border-4"
-                alt="123" style="border-radius:9%;width:30%;" />
+            <img <?php echo 'src="' . $profilePhoto . '"' ?> class=" border border-dark border-opacity-25 border-5"
+                alt="123" style="border-radius:68%;width:34%;" />
             <p class="text-light text-center">
                 <?php echo $username; ?>
             </p>
@@ -134,29 +137,26 @@ if (isset($_POST['logout'])) {
 
     </div>
     <div class="scrollable-container w-100 mt-1" style="overflow-y:auto;height:40rem;">
-        <?php
-        $servername = "";
-        $username = "";
-        $password = "";
-        $dbname = "";
+          <?php
+$servername = "";
+$username = "";
+$password = "";
+$dbname = "";
 
-        try {
-            $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+try {
+    $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            // Post tablosundan veri çekme
-            $postQuery = "SELECT username, photo, description, time FROM post  ORDER BY time DESC";
-            $postStmt = $dbh->query($postQuery);
+    $postQuery = "SELECT username, photo, description, time FROM post  ORDER BY time DESC";
+    $postStmt = $dbh->query($postQuery);
 
-            if ($postStmt) {
-                while ($row = $postStmt->fetch(PDO::FETCH_ASSOC)) {
-                    // User tablosundan profilephoto sütununu çekme
-                    $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
-                    $userStmt = $dbh->query($userQuery);
-                    $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
+    if ($postStmt) {
+        while ($row = $postStmt->fetch(PDO::FETCH_ASSOC)) {
+            $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
+            $userStmt = $dbh->query($userQuery);
+            $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
 
-                    // HTML içeriğini oluştur
-                    echo '
+            echo '
             <div class="w-25 post" style="margin-left:38%;">
                 <div class="card post text-white">
                     <img src="data/posts/' . $row["photo"] . '" class="card-img-top" alt="...">
@@ -172,37 +172,73 @@ if (isset($_POST['logout'])) {
                 </div>
             </div>
             <br>';
-                }
-            } else {
-                echo "Veri bulunamadı";
-            }
-        } catch (PDOException $e) {
-            echo "Bağlantı hatası: " . $e->getMessage();
         }
-        ?>
+    } else {
+        echo "Veri bulunamadı";
+    }
+} catch(PDOException $e) {
+    echo "Bağlantı hatası: " . $e->getMessage();
+}
+?>
+<?php
+$servername = "";
+$username = "";
+$password = "";
+$dbname = "";
+
+try {
+    $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    if (isset($_GET['search_query'])) {
+        $searchQuery = '%' . $_GET['search_query'] . '%';
+        $stmt = $dbh->prepare("SELECT * FROM user WHERE username LIKE :searchQuery");
+        $stmt->bindParam(':searchQuery', $searchQuery);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        if (count($result) > 0) {
+            echo '<div class="w-100 container-fluid" style="margin-top:2%;font-size:2rem;">';
+            foreach ($result as $row) {
+                echo '<p class="w-100"><a href="'.$row['username'].'"><button class="w-100 btn btn-outline-light">' . $row['username'] . '</button></a></p>';
+            }
+            echo '</div>';
+        } else {
+            echo "";
+        }
+    } else {
+    }
+} catch(PDOException $e) {
+    echo "Bağlantı hatası: " . $e->getMessage();
+}
+?>
+
+
         <br>
     </div>
     <div>
         <input type="image" class="top-100 end-0 translate-middle-y mx-3 imghover"
-            style="width:5.5%;position:fixed;margin-top:-5%;" src="weaher.png">
+            style="width:5.5%;position:fixed;margin-top:-5%;opacity:75%;" src="bubble.png">
 
-        <input id="formOpener" type="image" class="top-100 end-0 translate-middle-y mx-3 imghover"
-            style="width:5%;position:fixed;margin-top:-10.5%;" src="image (2).png">
+        <input id="formOpener" type="image" class="top-100 end-0 translate-middle-y mx-4 imghover"
+            style="width:5%;position:fixed;margin-top:-10.5%;opacity:85%;" src="picture.png">
     </div>
     <div class="w-50 border bg-dark rounded-5 light border-dark position-absolute top-50 start-50 translate-middle text-center"
         id="hiddenForm" style="display: none;--bs-bg-opacity: .9;height:74%;">
         <p class="h1 text-light mt-5">Post</p>
-        <form method="POST" action="https://egoistsky.free.nf/user-" id="myForm" class="mt-3"
-            enctype="multipart/form-data">
-            <input class="btn btn-outline-light w-75 mt-3" type="file" name="fileToUpload" required>
-            <br>
-            <textarea class="mt-4 w-75" name="description" placeholder="Description" id="description"
-                style="border-radius: 3%; height: 5rem;"></textarea>
-            <br>
-            <input class="btn btn-success w-75 mt-4" name="share" type="submit" value="Share">
-        </form>
-        <button id="formCloser" class="w-25 mt-4 btn btn-danger">close</button>
+       <form method="POST" action="https://egoistsky.free.nf/upload" id="myForm" class="mt-3" enctype="multipart/form-data">
+    <input class="btn btn-outline-light w-75 mt-3" type="file" name="fileToUpload" required>
+    <br>
+    <textarea class="mt-4 w-75" name="description" placeholder="Description" id="description" style="border-radius: 3%; height: 5rem;"></textarea>
+    <br>
+    <input class="btn btn-success w-75 mt-4" name="share" type="submit" value="Share">
+</form>
+    <button id="formCloser" class="w-25 mt-4 btn btn-danger">close</button>
     </div>
+
+
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
     integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -214,6 +250,26 @@ if (isset($_POST['logout'])) {
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
+  <script>
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        searchInput.addEventListener('input', function() {
+            const searchValue = this.value;
+            if (searchValue === '') {
+                searchResults.innerHTML = '';
+                return;
+            }
+            fetch(`search.php?search_query=${searchValue}`)
+                .then(response => response.text())
+                .then(data => {
+                    searchResults.innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Arama hatası:', error);
+                });
+        });
+    </script>
 <script>
     document.getElementById('formOpener').onclick = function () {
         document.getElementById('hiddenForm').style.display = 'block';
@@ -222,5 +278,26 @@ if (isset($_POST['logout'])) {
         document.getElementById('hiddenForm').style.display = 'none';
     };
 </script>
-
 </html>
+<?php
+include 'connect.php';
+
+// Arama sorgusu
+if(isset($_POST['search'])) {
+    $search = $_POST['search'];
+        $query = "SELECT * FROM user WHERE username LIKE '%$search%'";
+    $result = mysqli_query($connection, $query);
+    
+    // Sorgu başarılı mı kontrol edin
+    if(!$result) {
+        die("Sorgu hatası: " . mysqli_error($connection));
+    }
+        if(mysqli_num_rows($result) > 0) {
+        while($row = mysqli_fetch_assoc($result)) {
+            echo $row['username'] . "<br>";
+        }
+    } else {
+        echo "Kullanıcı bulunamadı.";
+    }
+}
+?>

@@ -28,7 +28,7 @@ if (isset($_POST['share'])) {
 
             if ($statement->execute()) {
                 header("Location:https://egoistsky.free.nf/user");
-                exit(); // Kodun devam etmemesi için çıkış yap
+                exit();
             } else {
                 echo "Veritabanına kaydedilirken bir hata oluştu.";
             }
