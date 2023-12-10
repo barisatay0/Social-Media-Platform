@@ -4,33 +4,73 @@ include 'connect.php';
 
 if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
+    $query = "SELECT * FROM user WHERE username = :username";
+    $stmt = $dbh->prepare($query);
+    $stmt->bindParam(':username', $username);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    try {
-        $query = "SELECT * FROM user WHERE username = :username";
-        $stmt = $dbh->prepare($query);
-        $stmt->bindParam(':username', $username);
-        $stmt->execute();
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $newUsername = $_POST['username'];
+        $biography = $_POST['biography'];
+        $email = $_POST['email'];
+        $firstname = $_POST['firstname'];
+        $lastname = $_POST['lastname'];
+        if (!empty($_FILES['profilephoto']['name'])) {
+            $targetDirectory = "data/photos/";
+            $targetFile = $targetDirectory . basename($_FILES["profilephoto"]["name"]);
 
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($row) {
-            $profilePhoto = $row['profilephoto'];
+            if (move_uploaded_file($_FILES["profilephoto"]["tmp_name"], $targetFile)) {
+                try {
+                    $query = "UPDATE user SET username = :newUsername, biography = :biography, email = :email, firstname = :firstname, lastname = :lastname, profilephoto = :profilephoto WHERE username = :username";
+                    $stmt = $dbh->prepare($query);
+                    $stmt->bindParam(':newUsername', $newUsername);
+                    $stmt->bindParam(':biography', $biography);
+                    $stmt->bindParam(':email', $email);
+                    $stmt->bindParam(':firstname', $firstname);
+                    $stmt->bindParam(':lastname', $lastname);
+                    $stmt->bindParam(':profilephoto', $targetFile);
+                    $stmt->bindParam(':username', $username);
+                    $stmt->execute();
+
+                    $_SESSION['username'] = $newUsername;
+                    header("Location: profile.php");
+                    exit();
+                } catch (PDOException $e) {
+                    echo "Bağlantı Hatası: " . $e->getMessage();
+                }
+            } else {
+                echo "Dosya yüklenirken bir hata oluştu.";
+            }
         } else {
-            echo "Data not found or connection error";
+            try {
+                $query = "UPDATE user SET username = :newUsername, biography = :biography, email = :email, firstname = :firstname, lastname = :lastname WHERE username = :username";
+                $stmt = $dbh->prepare($query);
+                $stmt->bindParam(':newUsername', $newUsername);
+                $stmt->bindParam(':biography', $biography);
+                $stmt->bindParam(':email', $email);
+                $stmt->bindParam(':firstname', $firstname);
+                $stmt->bindParam(':lastname', $lastname);
+                $stmt->bindParam(':username', $username);
+                $stmt->execute();
+
+                $_SESSION['username'] = $newUsername;
+                header("Location: profile.php");
+                exit();
+            } catch (PDOException $e) {
+                echo "Bağlantı Hatası: " . $e->getMessage();
+            }
         }
-    } catch (PDOException $e) {
-        echo "Bağlantı Hatası: " . $e->getMessage();
     }
 } else {
     header("Location: login");
     exit();
 }
-if (isset($_POST['logout'])) {
-    session_unset();
-    session_destroy();
-    header("Location: index.php");
-    exit();
-}
 ?>
+
+
+<!-- Geri kalan HTML kodları -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -59,34 +99,45 @@ if (isset($_POST['logout'])) {
         <div class="mb-4">
             <label for="exampleInputEmail1" class="form-label">Username</label>
             <input type="text" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                required>
+                value="<?php echo isset($username) ? $username : ''; ?>">
         </div>
-        <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" name="password" class="form-control" id="exampleInputPassword1" required>
+        <div class="mb-4">
+            <label for="exampleInputEmail1" class="form-label">Biography</label>
+            <input type="text" class="form-control border border-black" id="formFile" aria-describedby="emailHelp"
+                name="biography" value="<?php echo isset($user['biography']) ? $user['biography'] : ''; ?>">
         </div>
         <div class="mb-4">
             <label for="exampleInputEmail1" class="form-label">Email</label>
             <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email"
-                required>
+                value="<?php echo isset($user['email']) ? $user['email'] : ''; ?>">
         </div>
         <div class="mb-4">
             <label for="exampleInputEmail1" class="form-label">First Name</label>
             <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                name="firstname" required>
+                name="firstname" value="<?php echo isset($user['firstname']) ? $user['firstname'] : ''; ?>">
         </div>
         <div class="mb-4">
             <label for="exampleInputEmail1" class="form-label">Last Name</label>
             <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="lastname"
-                required>
+                value="<?php echo isset($user['lastname']) ? $user['lastname'] : ''; ?>">
         </div>
         <div class="mb-4">
             <label for="exampleInputEmail1" class="form-label">Profile Photo</label>
+            <input type="text" name="photofolder"
+                value="<?php echo isset($user['profilephoto']) ? $user['profilephoto'] : ''; ?>"
+                style="visibility: hidden;">
             <input type="file" class="form-control border border-black" id="formFile" aria-describedby="emailHelp"
-                name="profilephoto" required>
+                name="profilephoto">
         </div>
-        <button type="submit" class="btn btn-outline-light w-100">Sign Up</button>
+        <button type="submit" class="btn btn-success w-100">Save</button>
     </form>
+    <div class="mb-4 position-absolute mx-5">
+        <a href="profile.php"><button class="btn btn-outline-light">
+                <<< Return Profile</button></a>
+    </div>
+    <div class="mb-4 position-absolute translate-middle-x end-0">
+        <a href="password.php"><button class="btn btn-outline-light">Change Password >>></button></a>
+    </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
     integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

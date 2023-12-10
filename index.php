@@ -19,19 +19,15 @@
             margin-right: 16%;
             margin-top: -6%;
             scrollbar-width: thin;
-            /* For Firefox */
             scrollbar-color: transparent transparent;
-            /* For Firefox */
         }
 
         .scrollable-container::-webkit-scrollbar {
             width: 6px;
-            /* For Chrome, Safari, and Opera */
         }
 
         .scrollable-container::-webkit-scrollbar-thumb {
             background-color: transparent;
-            /* For Chrome, Safari, and Opera */
         }
     </style>
 </head>
@@ -44,7 +40,10 @@
             style="margin-left:12%;"><img class="border border-black border-3 rounded-circle" style="width: 6%;"
                 src="astronomy.png" alt="logo"></a></div>
     <div class="position-absolute top-0 start-50 translate-middle mt-4" style="width:33%;">
-        <form><input type="search" placeholder="Search..." class=" form-control"></form>
+        <form name="searcher" method="post" action="search.php">
+            <input type="search" id="searchInput" name="search" placeholder="Search..." class="form-control">
+        </form>
+        <div id="searchResults"></div>
     </div>
     <a href="login"><button type="button" class="btn btn-outline-light  top-0 end-0 translate-middle mt-4"
             style="position: fixed;">Log In</button></a>
@@ -69,27 +68,22 @@
     </div>
     <div class="scrollable-container w-100 mt-1" style="overflow-y:auto;height:40rem;">
         <?php
-        $servername = "sql203.infinityfree.com";
-        $username = "if0_35435711";
-        $password = "hrtPcoQHzpRSu";
-        $dbname = "if0_35435711_users";
+        $servername = "";
+        $username = "";
+        $password = "";
+        $dbname = "";
 
         try {
             $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-            // Post tablosundan veri çekme
             $postQuery = "SELECT username, photo, description, time FROM post  ORDER BY time DESC";
             $postStmt = $dbh->query($postQuery);
 
             if ($postStmt) {
                 while ($row = $postStmt->fetch(PDO::FETCH_ASSOC)) {
-                    // User tablosundan profilephoto sütununu çekme
                     $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
                     $userStmt = $dbh->query($userQuery);
                     $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
-
-                    // HTML içeriğini oluştur
                     echo '
             <div class="w-25 post" style="margin-left:38%;">
                 <div class="card post text-white">
@@ -127,6 +121,25 @@
 <script>
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+</script>
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    searchInput.addEventListener('input', function () {
+        const searchValue = this.value;
+        if (searchValue === '') {
+            searchResults.innerHTML = '';
+            return;
+        }
+        fetch(`search.php?search_query=${searchValue}`)
+            .then(response => response.text())
+            .then(data => {
+                searchResults.innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Arama hatası:', error);
+            });
+    });
 </script>
 
 </html>

@@ -77,9 +77,8 @@ if (isset($_POST['logout'])) {
 
         .scrollable-container::-webkit-scrollbar {
             width: 6px;
-
+  
         }
-
         .scrollable-container::-webkit-scrollbar-thumb {
             background-color: transparent;
         }
@@ -96,11 +95,11 @@ if (isset($_POST['logout'])) {
                 src="astronomy.png" alt="logo"></a></div>
     <div class="position-absolute top-0 start-50 translate-middle mt-4" style="width:33%;">
         <form name="searcher" method="post" action="search.php">
-            <input type="search" id="searchInput" name="search" placeholder="Search..." class="form-control">
-        </form>
+    <input type="search" id="searchInput" name="search" placeholder="Search..." class="form-control">
+</form>
         <div id="searchResults"></div>
     </div>
-
+    
     <div class="top-50 start-0 translate-middle-y mx-1" style="width:24%;margin-top:1%;position: fixed;">
         <a href="Reels"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover "
                 style="margin-left: 50%;" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
@@ -138,29 +137,24 @@ if (isset($_POST['logout'])) {
 
     </div>
     <div class="scrollable-container w-100 mt-1" style="overflow-y:auto;height:40rem;">
-        <?php
-        $servername = "sql203.infinityfree.com";
-        $username = "if0_35435711";
-        $password = "hrtPcoQHzpRSu";
-        $dbname = "if0_35435711_users";
+          <?php
+$servername = "";
+$username = "";
+$password = "";
+$dbname = "";
 
-        try {
-            $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+try {
+    $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $postQuery = "SELECT username, photo, description, time FROM post  ORDER BY time DESC";
+    $postStmt = $dbh->query($postQuery);
 
-            // Post tablosundan veri çekme
-            $postQuery = "SELECT username, photo, description, time FROM post  ORDER BY time DESC";
-            $postStmt = $dbh->query($postQuery);
-
-            if ($postStmt) {
-                while ($row = $postStmt->fetch(PDO::FETCH_ASSOC)) {
-                    // User tablosundan profilephoto sütununu çekme
-                    $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
-                    $userStmt = $dbh->query($userQuery);
-                    $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
-
-                    // HTML içeriğini oluştur
-                    echo '
+    if ($postStmt) {
+        while ($row = $postStmt->fetch(PDO::FETCH_ASSOC)) {
+            $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
+            $userStmt = $dbh->query($userQuery);
+            $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
+            echo '
             <div class="w-25 post" style="margin-left:38%;">
                 <div class="card post text-white">
                     <img src="data/posts/' . $row["photo"] . '" class="card-img-top" alt="...">
@@ -176,14 +170,14 @@ if (isset($_POST['logout'])) {
                 </div>
             </div>
             <br>';
-                }
-            } else {
-                echo "Veri bulunamadı";
-            }
-        } catch (PDOException $e) {
-            echo "Bağlantı hatası: " . $e->getMessage();
         }
-        ?>
+    } else {
+        echo "Veri bulunamadı";
+    }
+} catch(PDOException $e) {
+    echo "Bağlantı hatası: " . $e->getMessage();
+}
+?>
         <br>
     </div>
     <div>
@@ -196,16 +190,14 @@ if (isset($_POST['logout'])) {
     <div class="w-50 border bg-dark rounded-5 light border-dark position-absolute top-50 start-50 translate-middle text-center"
         id="hiddenForm" style="display: none;--bs-bg-opacity: .9;height:74%;">
         <p class="h1 text-light mt-5">Post</p>
-        <form method="POST" action="https://egoistsky.free.nf/upload" id="myForm" class="mt-3"
-            enctype="multipart/form-data">
-            <input class="btn btn-outline-light w-75 mt-3" type="file" name="fileToUpload" required>
-            <br>
-            <textarea class="mt-4 w-75" name="description" placeholder="Description" id="description"
-                style="border-radius: 3%; height: 5rem;"></textarea>
-            <br>
-            <input class="btn btn-success w-75 mt-4" name="share" type="submit" value="Share">
-        </form>
-        <button id="formCloser" class="w-25 mt-4 btn btn-danger">close</button>
+       <form method="POST" action="https://egoistsky.free.nf/upload" id="myForm" class="mt-3" enctype="multipart/form-data">
+    <input class="btn btn-outline-light w-75 mt-3" type="file" name="fileToUpload" required>
+    <br>
+    <textarea class="mt-4 w-75" name="description" placeholder="Description" id="description" style="border-radius: 3%; height: 5rem;"></textarea>
+    <br>
+    <input class="btn btn-success w-75 mt-4" name="share" type="submit" value="Share">
+</form>
+    <button id="formCloser" class="w-25 mt-4 btn btn-danger">close</button>
     </div>
 
 
@@ -221,32 +213,25 @@ if (isset($_POST['logout'])) {
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
-<script>
-    // Arama inputu ve sonuçların gösterileceği div
-    const searchInput = document.getElementById('searchInput');
-    const searchResults = document.getElementById('searchResults');
-
-    // Her harf girişinde arama fonksiyonu çalışacak
-    searchInput.addEventListener('input', function () {
-        const searchValue = this.value; // Arama değeri
-
-        // Eğer arama değeri boşsa sonuçları temizle
-        if (searchValue === '') {
-            searchResults.innerHTML = '';
-            return;
-        }
-
-        // Arama değeri ile kullanıcı adlarını ara
-        fetch(`search.php?search_query=${searchValue}`)
-            .then(response => response.text())
-            .then(data => {
-                searchResults.innerHTML = data; // Sonuçları göster
-            })
-            .catch(error => {
-                console.error('Arama hatası:', error);
-            });
-    });
-</script>
+  <script>
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        searchInput.addEventListener('input', function() {
+            const searchValue = this.value;
+            if (searchValue === '') {
+                searchResults.innerHTML = '';
+                return;
+            }
+            fetch(`search.php?search_query=${searchValue}`)
+                .then(response => response.text())
+                .then(data => {
+                    searchResults.innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Arama hatası:', error);
+                });
+        });
+    </script>
 <script>
     document.getElementById('formOpener').onclick = function () {
         document.getElementById('hiddenForm').style.display = 'block';
@@ -255,30 +240,19 @@ if (isset($_POST['logout'])) {
         document.getElementById('hiddenForm').style.display = 'none';
     };
 </script>
-
 </html>
 <?php
-// connect.php dosyasını include edin
 include 'connect.php';
 
-// Arama sorgusu
-if (isset($_POST['search'])) {
+if(isset($_POST['search'])) {
     $search = $_POST['search'];
-
-    // Veritabanında kullanıcıları adlarına göre arayın
     $query = "SELECT * FROM user WHERE username LIKE '%$search%'";
     $result = mysqli_query($connection, $query);
-
-    // Sorgu başarılı mı kontrol edin
-    if (!$result) {
+    if(!$result) {
         die("Sorgu hatası: " . mysqli_error($connection));
     }
-
-    // Sonuçları ekrana yazdırın
-    if (mysqli_num_rows($result) > 0) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo $row['username'] . "<br>";
-            // Diğer kullanıcı bilgilerini de isterseniz burada gösterebilirsiniz
+    if(mysqli_num_rows($result) > 0) {
+        while($row = mysqli_fetch_assoc($result)) {
         }
     } else {
         echo "Kullanıcı bulunamadı.";

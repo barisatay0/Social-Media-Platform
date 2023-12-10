@@ -14,6 +14,7 @@ if (isset($_SESSION['username'])) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             $profilePhoto = $row['profilephoto'];
+            $biography = $row['biography'];
         } else {
             echo "Data not found or connection error";
         }
@@ -25,7 +26,6 @@ if (isset($_SESSION['username'])) {
     exit();
 }
 
-// Veritabanından kullanıcının postlarını al
 try {
     $query_posts = "SELECT photo FROM post WHERE username = :username";
     $stmt_posts = $dbh->prepare($query_posts);
@@ -58,19 +58,15 @@ try {
             margin-right: 16%;
             margin-top: -6%;
             scrollbar-width: thin;
-            /* For Firefox */
             scrollbar-color: transparent transparent;
-            /* For Firefox */
         }
 
         .scrollable-container::-webkit-scrollbar {
             width: 6px;
-            /* For Chrome, Safari, and Opera */
         }
 
         .scrollable-container::-webkit-scrollbar-thumb {
             background-color: transparent;
-            /* For Chrome, Safari, and Opera */
         }
     </style>
 </head>
@@ -100,7 +96,8 @@ try {
                 <p class="h5 text-white-50">Following : 671</p>
             </a>
             <p class="h5 text-light" style="font-family:Gill Sans, sans-serif;">
-                "Create, surprise, provoke – storytelling is an art of perpetual innovation."</p>
+                <?php echo '' . $biography . '' ?>
+            </p>
 
             <br>
             <div class="scrollable-container w-100 mt-1">
