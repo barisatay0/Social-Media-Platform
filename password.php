@@ -4,15 +4,18 @@ include 'connect.php';
 
 if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
+
     if (isset($_POST['submit'])) {
         $currentPassword = $_POST['current_password'];
         $newPassword = $_POST['new_password'];
         $confirmNewPassword = $_POST['confirm_new_password'];
+
         try {
             $query = "SELECT * FROM user WHERE username = :username";
             $stmt = $dbh->prepare($query);
             $stmt->bindParam(':username', $username);
             $stmt->execute();
+
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($row) {
@@ -45,6 +48,8 @@ if (isset($_SESSION['username'])) {
     exit();
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -66,7 +71,10 @@ if (isset($_SESSION['username'])) {
             style="margin-left:12%;"><img class="border border-black border-3 rounded-circle" style="width: 6%;"
                 src="astronomy.png" alt="logo"></a></div>
     <div class="position-absolute top-0 start-50 translate-middle mt-4" style="width:33%;">
-        <form><input type="search" placeholder="Search..." class="mt-2 form-control"></form>
+        <form name="searcher" method="post" action="search.php">
+            <input type="search" id="searchInput" name="search" placeholder="Search..." class="form-control">
+        </form>
+        <div id="searchResults"></div>
     </div>
     <form class="w-25 text-white position-absolute top-50 start-50 translate-middle" action="" method="post">
         <div class="mb-3">
@@ -95,4 +103,24 @@ if (isset($_SESSION['username'])) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
     integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
     crossorigin="anonymous"></script>
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    searchInput.addEventListener('input', function () {
+        const searchValue = this.value;
+        if (searchValue === '') {
+            searchResults.innerHTML = '';
+            return;
+        }
+        fetch(`search.php?search_query=${searchValue}`)
+            .then(response => response.text())
+            .then(data => {
+                searchResults.innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Arama hatası:', error);
+            });
+    });
+</script>
+
 </html>

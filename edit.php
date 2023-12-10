@@ -67,10 +67,6 @@ if (isset($_SESSION['username'])) {
     exit();
 }
 ?>
-
-
-<!-- Geri kalan HTML kodları -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -92,9 +88,12 @@ if (isset($_SESSION['username'])) {
             style="margin-left:12%;"><img class="border border-black border-3 rounded-circle" style="width: 6%;"
                 src="astronomy.png" alt="logo"></a></div>
     <div class="position-absolute top-0 start-50 translate-middle mt-4" style="width:33%;">
-        <form><input type="search" placeholder="Search..." class="mt-2 form-control"></form>
+        <form name="searcher" method="post" action="search.php">
+            <input type="search" id="searchInput" name="search" placeholder="Search..." class="form-control">
+        </form>
+        <div id="searchResults"></div>
     </div>
-    <form class="w-25 text-white position-absolute top-50 start-50 translate-middle" enctype="multipart/form-data"
+    <form class="w-25 text-white position-absolute top-50 start-50 translate-middle mt-4" enctype="multipart/form-data"
         method="post">
         <div class="mb-4">
             <label for="exampleInputEmail1" class="form-label">Username</label>
@@ -145,5 +144,24 @@ if (isset($_SESSION['username'])) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
     integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
     crossorigin="anonymous"></script>
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    searchInput.addEventListener('input', function () {
+        const searchValue = this.value;
+        if (searchValue === '') {
+            searchResults.innerHTML = '';
+            return;
+        }
+        fetch(`search.php?search_query=${searchValue}`)
+            .then(response => response.text())
+            .then(data => {
+                searchResults.innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Arama hatası:', error);
+            });
+    });
+</script>
 
 </html>
