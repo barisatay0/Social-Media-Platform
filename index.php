@@ -19,15 +19,19 @@
             margin-right: 16%;
             margin-top: -6%;
             scrollbar-width: thin;
+            /* For Firefox */
             scrollbar-color: transparent transparent;
+            /* For Firefox */
         }
 
         .scrollable-container::-webkit-scrollbar {
             width: 6px;
+            /* For Chrome, Safari, and Opera */
         }
 
         .scrollable-container::-webkit-scrollbar-thumb {
             background-color: transparent;
+            /* For Chrome, Safari, and Opera */
         }
     </style>
 </head>
@@ -40,7 +44,7 @@
             style="margin-left:12%;"><img class="border border-black border-3 rounded-circle" style="width: 6%;"
                 src="astronomy.png" alt="logo"></a></div>
     <div class="position-absolute top-0 start-50 translate-middle mt-4" style="width:33%;">
-        <form name="searcher" method="post" action="search.php">
+        <form name="searcher" method="post" action="notsignsearch.php">
             <input type="search" id="searchInput" name="search" placeholder="Search..." class="form-control">
         </form>
         <div id="searchResults"></div>
@@ -69,13 +73,14 @@
     <div class="scrollable-container w-100 mt-1" style="overflow-y:auto;height:40rem;">
         <?php
         $servername = "";
-        $username = "";
-        $password = "";
-        $dbname = "";
+        $username = "username";
+        $password = "0";
+        $dbname = "0";
 
         try {
             $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
             $postQuery = "SELECT username, photo, description, time FROM post  ORDER BY time DESC";
             $postStmt = $dbh->query($postQuery);
 
@@ -125,12 +130,15 @@
 <script>
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
+
     searchInput.addEventListener('input', function () {
         const searchValue = this.value;
+
         if (searchValue === '') {
             searchResults.innerHTML = '';
             return;
         }
+
         fetch(`search.php?search_query=${searchValue}`)
             .then(response => response.text())
             .then(data => {

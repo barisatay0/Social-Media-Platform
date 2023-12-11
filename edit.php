@@ -130,12 +130,12 @@ if (isset($_SESSION['username'])) {
         </div>
         <button type="submit" class="btn btn-success w-100">Save</button>
     </form>
-    <div class="mb-4 position-absolute mx-5">
-        <a href="profile.php"><button class="btn btn-outline-light">
-                <<< Return Profile</button></a>
-    </div>
-    <div class="mb-4 position-absolute translate-middle-x end-0">
-        <a href="password.php"><button class="btn btn-outline-light">Change Password >>></button></a>
+    <div class="mb-4 position-absolute translate-middle-y end-0 w-25 text-center" style="">
+        <a href="profile.php"><img class="w-25 rounded-circle border border-black border-2 mt-1"
+                src="<?php echo isset($user['profilephoto']) ? $user['profilephoto'] : ''; ?>"
+                style="margin-left:20px;"></a>
+        <br>
+        <a href="password.php"><button class="btn btn-outline-light mt-4 w-50">Change Password</button></a>
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

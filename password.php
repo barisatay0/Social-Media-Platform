@@ -89,13 +89,9 @@ if (isset($_SESSION['username'])) {
             <label for="exampleInputPassword1" class="form-label">New Password Again</label>
             <input type="password" name="confirm_new_password" class="form-control" id="confirm_new_password" required>
         </div>
-
         <button type="submit" name="submit" class="btn btn-success w-100">Save Password</button>
     </form>
-    <div class="mb-4 mx-5">
-        <a href="edit.php"><button class="btn btn-outline-light">
-                <<< Return Edit Page</button></a>
-    </div>
+    <a href="edit.php"><button class="btn btn-light w-25 position-absolute top-50 start-50 translate-middle" style="margin-top:12%;">Return To Edit Page</button></a>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
     integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

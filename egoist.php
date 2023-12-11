@@ -3,12 +3,12 @@ session_start();
 include 'connect.php';
 
 if (isset($_SESSION['username'])) {
-    $username = $_SESSION['username'];
+    $loggedInUsername = $_SESSION['username'];
 
     try {
         $query = "SELECT * FROM user WHERE username = :username";
         $stmt = $dbh->prepare($query);
-        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':username', $loggedInUsername);
         $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -21,22 +21,59 @@ if (isset($_SESSION['username'])) {
     } catch (PDOException $e) {
         echo "Bağlantı Hatası: " . $e->getMessage();
     }
-} else {
-    header("Location: login");
+
+    try {
+        $query_posts = "SELECT photo FROM post WHERE username = :username";
+        $stmt_posts = $dbh->prepare($query_posts);
+        $stmt_posts->bindParam(':username', $loggedInUsername);
+        $stmt_posts->execute();
+
+        $loggedInUserPosts = $stmt_posts->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo "Bağlantı Hatası: " . $e->getMessage();
+    }
+
+    if (isset($_GET['username'])) {
+        $clickedUsername = $_GET['username'];
+
+        try {
+            $query = "SELECT * FROM user WHERE username = :username";
+            $stmt = $dbh->prepare($query);
+            $stmt->bindParam(':username', $clickedUsername);
+            $stmt->execute();
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($row) {
+                $clickedProfilePhoto = $row['profilephoto'];
+                $clickedBiography = $row['biography'];
+            } else {
+                echo "Data not found or connection error";
+            }
+        } catch (PDOException $e) {
+            echo "Bağlantı Hatası: " . $e->getMessage();
+        }
+
+        try {
+            $query_posts = "SELECT photo FROM post WHERE username = :username ORDER BY time DESC";
+            $stmt_posts = $dbh->prepare($query_posts);
+            $stmt_posts->bindParam(':username', $clickedUsername);
+            $stmt_posts->execute();
+
+            $clickedUserPosts = $stmt_posts->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Bağlantı Hatası: " . $e->getMessage();
+        }
+    }
+}
+if (isset($_POST['logout'])) {
+    session_unset();
+    session_destroy();
+    header("Location: index.php");
     exit();
 }
-
-try {
-    $query_posts = "SELECT photo FROM post WHERE username = :username ORDER BY time DESC";
-    $stmt_posts = $dbh->prepare($query_posts);
-    $stmt_posts->bindParam(':username', $username);
-    $stmt_posts->execute();
-
-    $posts = $stmt_posts->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    echo "Bağlantı Hatası: " . $e->getMessage();
-}
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -68,6 +105,23 @@ try {
         .scrollable-container::-webkit-scrollbar-thumb {
             background-color: transparent;
         }
+
+        .dropdown {
+            display: inline-block;
+        }
+
+        .dropdown-content {
+
+            visibility: hidden;
+
+
+
+        }
+
+        .dropdown:hover .dropdown-content {
+
+            visibility: visible;
+        }
     </style>
 </head>
 
@@ -80,13 +134,33 @@ try {
             style="margin-left:12%;"><img class="border border-black border-3 rounded-circle" style="width: 6%;"
                 src="astronomy.png" alt="logo"></a></div>
     <div>
+        <div class="position-absolute mt-2 w-25 text-center dropdown end-0" style="top:0;right:0;">
+            <a href="profile.php" style="text-decoration:none;font-family:'Courier New', Courier, monospace;">
+                <img <?php echo 'src="' . $profilePhoto . '"' ?> class=" border border-dark border-opacity-25 border-5"
+                    alt="123" style="border-radius:50%;width:6.5rem;;height:6.5rem;" />
+                <p class="text-light text-center">
+                    <?php echo $loggedInUsername ?>
+                </p>
+            </a>
+            <a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content"
+                    style="font-size:12.5px;width:32%;">Profile</button></a>
+            <br>
+            <button class="btn btn-outline-light mt-2 dropdown-content"
+                style="font-size:12.5px;width:32%;">Settings</button>
+            <br>
+            <form method="post" action=""><button type="submit" name="logout"
+                    class="btn btn-outline-light mt-2 dropdown-content"
+                    style="font-size:12.5px;width:32%;">Logout</button>
+            </form>
+
+        </div>
         <div class="top-0 start-50 position-absolute translate-middle-x mt-2 text-center">
             <input type="image" class="rounded-circle mx-2 border border-black" style="width:6.5rem;height:6.5rem;"
-                <?php echo 'src="' . $profilePhoto . '"' ?>>
+                <?php echo 'src="' . $clickedProfilePhoto . '"' ?>>
 
             <br>
             <p class="h3 text-light" style="font-family: system-ui;">
-                <?php echo '' . $username . '' ?>
+                <?php echo '' . $clickedUsername . '' ?>
             </p>
 
             <a href="" style="text-decoration: none;">
@@ -96,30 +170,20 @@ try {
                 <p class="h5 text-white-50">Following : 671</p>
             </a>
             <p class="h5 text-light" style="font-family:Gill Sans, sans-serif;">
-                <?php echo '' . $biography . '' ?>
+                <?php echo '' . $clickedBiography . '' ?>
             </p>
-            <a href="edit.php"><button class="btn btn-outline-light" style="width:25%;">Edit Profile</button></a>
-            <a class="btn btn-outline-light" style="width:25%;">Settings</a>
-            <br>
-            <div class="scrollable-container w-100 mt-1">
-                <?php foreach ($posts as $post): ?>
-                    <img class="w-25 rounded-1 border-black imghoverprofile" src="data/posts/<?php echo $post['photo']; ?>"
-                        style="height:12rem;" data-photo="<?php echo $post['photo']; ?>">
-                <?php endforeach; ?>
-            </div>
-            <div id="myModal" class="modal scrollable-container mt-5 position-absolute translate-middle start-50 top-50"
-                style="width:70%;height:49rem;border:none;">
-                <button class="close h5 btn btn-danger text-light">&times;</button>
-                <div class="modal-content" style="background-color:transparent;border:none;">
-                    <img id="modalImage" src="" style="max-width: 40rem; max-height: 25rem;">
-                    <div>
-                        <button class="btn btn-danger w-100 mt-2" id="deleteButton">Delete Photo</button>
-                        <button class="btn btn-primary w-100 mt-2" id="editButton">Edit Photo Description</button>
-                    </div>
-                    <br>
 
-                    <br>
-                </div>
+
+            <button type="submit" name="follow" id="followButton" class="w-100 btn btn-primary">Follow</button>
+
+
+
+
+            <div class="scrollable-container w-100 mt-1">
+                <?php foreach ($clickedUserPosts as $post): ?>
+                    <input type="image" class="w-25 rounded-1 border-black imghoverprofile"
+                        src="data/posts/<?php echo $post['photo']; ?>" style="height:12rem;">
+                <?php endforeach; ?>
             </div>
         </div>
 
@@ -155,25 +219,6 @@ try {
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
-<script>
-    var images = document.getElementsByClassName('imghoverprofile');
-    var modal = document.getElementById('myModal');
-    var modalImg = document.getElementById('modalImage');
-
-    for (var i = 0; i < images.length; i++) {
-        images[i].addEventListener('click', function () {
-            modal.style.display = 'block';
-            modalImg.src = this.src;
-            modalImg.dataset.photo = this.getAttribute('data-photo');
-        });
-    }
-
-    var span = document.getElementsByClassName('close')[0];
-    span.onclick = function () {
-        modal.style.display = 'none';
-    };
-
-
-</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </html>

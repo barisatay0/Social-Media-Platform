@@ -14,7 +14,8 @@
 
 <body class="informationbg">
     <a href="" class="mx-3 mt-2"></a>
-    <div><a href="https://egoistsky.free.nf" class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
+    <div><a href="https://egoistsky.free.nf"
+            class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
             style="margin-left:12%;"><img class="border border-black border-3 rounded-circle" style="width: 6%;"
                 src="images/astronomy.png" alt="logo"></a></div>
     <div class="position-absolute top-0 start-50 translate-middle mt-4" style="width:33%;">

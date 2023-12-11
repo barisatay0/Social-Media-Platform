@@ -67,9 +67,10 @@ if (isset($_POST['logout'])) {
 </head>
 
 <body class="grad" style="background-image: url(ngtsky.jpg);
-	background-size: cover;">
+    background-size: cover;">
     <a href="" class="mx-3 mt-2"></a>
-    <div><a href="https://egoistsky.free.nf" class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
+    <div><a href="https://egoistsky.free.nf"
+            class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
             style="margin-left:12%;"><img class="border border-black border-3 rounded-circle" style="width: 6%;"
                 src="astronomy.png" alt="logo"></a></div>
     <div class="position-absolute top-0 start-50 translate-middle mt-4" style="width:33%;">
@@ -77,27 +78,27 @@ if (isset($_POST['logout'])) {
     </div>
     <div class="top-50 start-0 translate-middle-y mx-1" style="width:24%;margin-top:1%;position: fixed;">
         <a href="Reels.php"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover "
-                style="margin-left: 50%;" src="telescope.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="Reels"></a>
+                style="margin-left: 50%;" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Reels"></a>
         <a href="trends.php"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="comet.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="Trends"></a>
+                style="margin-left: 50%;" src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Trends"></a>
         <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="bootes.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="Groups"></a>
+                style="margin-left: 50%;" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Groups"></a>
         <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="earth.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="Languages"></a>
+                style="margin-left: 50%;" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Languages"></a>
         <a href="information.php"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="saturn.png" alt="" data-bs-toggle="tooltip"
-                data-bs-placement="right" data-bs-title="İnformation"></a>
+                style="margin-left: 50%;" src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="İnformation"></a>
     </div>
     <div class=" scrollable-container start-50 position-absolute translate-middle-x w-25"
         style="overflow-y: auto;height:43rem;margin-top:-3%;">
         <div class="w-100 post">
             <div class="card post text-white">
                 <video width="372" height="660" controls>
-                    <source src=""  alt="video1" type="video/mp4">
+                    <source src="" alt="video1" type="video/mp4">
                 </video>
                 <div class="card-body" style="background-color:black;width:100%;">
                     <a href=""><img src="" class="rounded-5 mx-4" style="width:15%;" alt="???"></a>
@@ -106,8 +107,8 @@ if (isset($_POST['logout'])) {
                     </p>
                     <br>
                     <p class="card-text"><small class="text-white-50">Last updated 3 mins ago</small></p>
-                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
+                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png" data-bs-toggle="tooltip"
+                        data-bs-placement="top" data-bs-title="Like">
                     <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png"
                         data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
                 </div>
@@ -117,7 +118,7 @@ if (isset($_POST['logout'])) {
         <div class="w-100 post">
             <div class="card post text-white">
                 <video width="372" height="660" controls>
-                    <source src=""  alt="video2" type="video/mp4">
+                    <source src="" alt="video2" type="video/mp4">
                 </video>
                 <div class="card-body" style="background-color:black;width:100%;">
                     <a href=""><img src="" class="rounded-5 mx-4" style="width:15%;" alt="???"></a>
@@ -126,8 +127,8 @@ if (isset($_POST['logout'])) {
                     </p>
                     <br>
                     <p class="card-text"><small class="text-white-50">Last updated 3 mins ago</small></p>
-                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
+                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png" data-bs-toggle="tooltip"
+                        data-bs-placement="top" data-bs-title="Like">
                     <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png"
                         data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
                 </div>
@@ -136,7 +137,7 @@ if (isset($_POST['logout'])) {
         <div class="w-100 post">
             <div class="card post text-white">
                 <video width="372" height="660" controls>
-                    <source src=""  alt="video3" type="video/mp4">
+                    <source src="" alt="video3" type="video/mp4">
                 </video>
                 <div class="card-body" style="background-color:black;width:100%;">
                     <a href=""><img src="" class="rounded-5 mx-4" style="width:15%;" alt="???"></a>
@@ -145,8 +146,8 @@ if (isset($_POST['logout'])) {
                     </p>
                     <br>
                     <p class="card-text"><small class="text-white-50">Last updated 3 mins ago</small></p>
-                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
+                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png" data-bs-toggle="tooltip"
+                        data-bs-placement="top" data-bs-title="Like">
                     <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png"
                         data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
                 </div>
@@ -164,8 +165,8 @@ if (isset($_POST['logout'])) {
                     </p>
                     <br>
                     <p class="card-text"><small class="text-white-50">Last updated 3 mins ago</small></p>
-                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
+                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png" data-bs-toggle="tooltip"
+                        data-bs-placement="top" data-bs-title="Like">
                     <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png"
                         data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
                 </div>
@@ -183,8 +184,8 @@ if (isset($_POST['logout'])) {
                     </p>
                     <br>
                     <p class="card-text"><small class="text-white-50">Last updated 3 mins ago</small></p>
-                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
+                    <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png" data-bs-toggle="tooltip"
+                        data-bs-placement="top" data-bs-title="Like">
                     <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png"
                         data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
                 </div>

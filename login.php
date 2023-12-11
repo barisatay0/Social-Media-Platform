@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "User not found.";
         }
     } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage(); // Bağlantı hatası
+        echo "Error: " . $e->getMessage();
     }
 }
 ?>
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body class="grad" style="background-image: url(ngtsky.jpg);
-	background-size: cover;">
+    background-size: cover;">
     <a href="https://egoistsky.free.nf" class="start-50 top-25 mt-5 text-center position-absolute translate-middle"><img
             src="astronomy.png" class="border border-black rounded-circle border-3 mt-5" style="width:16%;"></a>
     <form class="w-25 text-white position-absolute top-50 start-50 translate-middle" method="post">
@@ -70,4 +70,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
     integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
     crossorigin="anonymous"></script>
-</html>
+<script>
+</html >

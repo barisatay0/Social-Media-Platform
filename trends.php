@@ -32,7 +32,6 @@ if (isset($_POST['logout'])) {
     exit();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -85,11 +84,10 @@ if (isset($_POST['logout'])) {
 
 </head>
 
-<body class="grad" style="background-image: url(ngtsky.jpg);
-    background-size: cover;">
+<body class="grad"style="background-image: url(ngtsky.jpg);
+	background-size: cover;">
     <a href="" class="mx-3 mt-2"></a>
-    <div><a href="https://egoistsky.free.nf"
-            class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
+    <div><a href="https://egoistsky.free.nf" class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
             style="margin-left:12%;"><img class="border border-black border-3 rounded-circle" style="width: 6%;"
                 src="astronomy.png" alt="logo"></a></div>
     <div class="position-absolute top-0 start-50 translate-middle mt-4" style="width:33%;">
@@ -97,27 +95,27 @@ if (isset($_POST['logout'])) {
     </div>
     <div class="top-50 start-0 translate-middle-y mx-1" style="width:24%;margin-top:1%;position: fixed;">
         <a href="Reels.php"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover "
-                style="margin-left: 50%;" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="Reels"></a>
+                style="margin-left: 50%;" src="telescope.png" alt="" data-bs-toggle="tooltip"
+                data-bs-placement="right" data-bs-title="Reels"></a>
         <a href="trends.php"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="Trends"></a>
+                style="margin-left: 50%;" src="comet.png" alt="" data-bs-toggle="tooltip"
+                data-bs-placement="right" data-bs-title="Trends"></a>
         <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="Groups"></a>
+                style="margin-left: 50%;" src="bootes.png" alt="" data-bs-toggle="tooltip"
+                data-bs-placement="right" data-bs-title="Groups"></a>
         <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="Languages"></a>
+                style="margin-left: 50%;" src="earth.png" alt="" data-bs-toggle="tooltip"
+                data-bs-placement="right" data-bs-title="Languages"></a>
         <a href="information.php"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="İnformation"></a>
+                style="margin-left: 50%;" src="saturn.png" alt="" data-bs-toggle="tooltip"
+                data-bs-placement="right" data-bs-title="İnformation"></a>
 
     </div>
     <div class="position-absolute mt-4 w-25 text-center dropdown end-0" style="top:0;right:0;">
         <a href="profile.php" style="text-decoration:none;font-family:'Courier New', Courier, monospace;">
-            <img src="" alt="???" class="w-25 rounded-circle border border-light border-opacity-25 border-2"
+            <img src="Hideo.jpg" class="w-25 rounded-circle border border-light border-opacity-25 border-2"
                 alt="123" />
-            <p class="text-light text-center">???</p>
+            <p class="text-light text-center">Hideo Kojima</p>
         </a><a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content"
                 style="font-size:12.5px;width:32%;">Profile</button></a>
         <br>
@@ -142,19 +140,19 @@ if (isset($_POST['logout'])) {
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active" data-bs-interval="10000">
-                <img src="" class="d-block w-100" alt="...">
+                <img src="images\3441825.jpg" class="d-block w-100" alt="...">
                 <div class="carousel-caption d-none d-md-block">
                     <p class="text-white">Some representative placeholder content for the first slide.</p>
                 </div>
             </div>
             <div class="carousel-item" data-bs-interval="2000">
-                <img src="" class="d-block w-100" alt="...">
+                <img src="images\3441825.jpg" class="d-block w-100" alt="...">
                 <div class="carousel-caption d-none d-md-block">
                     <p class="text-white">Some representative placeholder content for the second slide.</p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="" class="d-block w-100" alt="...">
+                <img src="images\3441825.jpg" class="d-block w-100" alt="...">
                 <div class="carousel-caption d-none d-md-block">
                     <p class="text-white">Some representative placeholder content for the third slide.</p>
                 </div>
@@ -171,7 +169,7 @@ if (isset($_POST['logout'])) {
     </div>
     </div>
 
-
+    
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
     integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

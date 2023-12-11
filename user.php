@@ -117,10 +117,10 @@ if (isset($_POST['logout'])) {
                 style="margin-left: 50%;" src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="İnformation"></a>
     </div>
-    <div class="position-absolute mt-4 w-25 text-center dropdown end-0" style="top:0;right:0;">
+    <div class="position-absolute mt-3 w-25 text-center dropdown end-0" style="top:0;right:0;">
         <a href="profile.php" style="text-decoration:none;font-family:'Courier New', Courier, monospace;">
             <img <?php echo 'src="' . $profilePhoto . '"' ?> class=" border border-dark border-opacity-25 border-5"
-                alt="123" style="border-radius:68%;width:34%;" />
+                alt="123" style="border-radius:50%;width:6.5rem;;height:6.5rem;" />
             <p class="text-light text-center">
                 <?php echo $username; ?>
             </p>
@@ -139,9 +139,9 @@ if (isset($_POST['logout'])) {
     <div class="scrollable-container w-100 mt-1" style="overflow-y:auto;height:40rem;">
           <?php
 $servername = "";
-$username = "";
-$password = "";
-$dbname = "";
+$username = "username";
+$password = "0";
+$dbname = "0";
 
 try {
     $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -154,6 +154,7 @@ try {
             $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
             $userStmt = $dbh->query($userQuery);
             $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
+
             echo '
             <div class="w-25 post" style="margin-left:38%;">
                 <div class="card post text-white">
@@ -243,16 +244,18 @@ try {
 </html>
 <?php
 include 'connect.php';
-
 if(isset($_POST['search'])) {
     $search = $_POST['search'];
+    
     $query = "SELECT * FROM user WHERE username LIKE '%$search%'";
     $result = mysqli_query($connection, $query);
     if(!$result) {
         die("Sorgu hatası: " . mysqli_error($connection));
     }
+    
     if(mysqli_num_rows($result) > 0) {
         while($row = mysqli_fetch_assoc($result)) {
+            echo $row['username'] . "<br>";
         }
     } else {
         echo "Kullanıcı bulunamadı.";
