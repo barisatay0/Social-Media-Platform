@@ -33,10 +33,12 @@ if (isset($_SESSION['username'])) {
         echo "Bağlantı Hatası: " . $e->getMessage();
     }
 
+    // Eğer URL'den bir kullanıcı adı alındıysa, o kullanıcının verilerini ve postlarını al
     if (isset($_GET['username'])) {
         $clickedUsername = $_GET['username'];
 
         try {
+            // Tıklanan kullanıcının verilerini al
             $query = "SELECT * FROM user WHERE username = :username";
             $stmt = $dbh->prepare($query);
             $stmt->bindParam(':username', $clickedUsername);
@@ -53,6 +55,7 @@ if (isset($_SESSION['username'])) {
             echo "Bağlantı Hatası: " . $e->getMessage();
         }
 
+        // Tıklanan kullanıcının postlarını al
         try {
             $query_posts = "SELECT photo FROM post WHERE username = :username ORDER BY time DESC";
             $stmt_posts = $dbh->prepare($query_posts);
@@ -125,8 +128,7 @@ if (isset($_POST['logout'])) {
     </style>
 </head>
 
-<body class="grad" style="background-image: url(ngtsky.jpg);
-    background-size: cover;">
+<body class="bg-black">
     <a href="" class="mx-3 mt-2"></a>
 
     <div><a href="https://egoistsky.free.nf/user"
@@ -174,8 +176,9 @@ if (isset($_POST['logout'])) {
             </p>
 
 
-            <button type="submit" name="follow" id="followButton" class="w-100 btn btn-primary">Follow</button>
-
+            <button type="submit" name="follow" id="followButton" class="w-25 btn btn-primary">Follow</button>
+            <br>
+            <br>
 
 
 
