@@ -19,25 +19,20 @@
             margin-right: 16%;
             margin-top: -6%;
             scrollbar-width: thin;
-            /* For Firefox */
             scrollbar-color: transparent transparent;
-            /* For Firefox */
         }
 
         .scrollable-container::-webkit-scrollbar {
             width: 6px;
-            /* For Chrome, Safari, and Opera */
         }
 
         .scrollable-container::-webkit-scrollbar-thumb {
             background-color: transparent;
-            /* For Chrome, Safari, and Opera */
         }
     </style>
 </head>
 
-<body class="grad" style="background-image: url(ngtsky.jpg);
-    background-size: cover;">
+<body class="bg-black" ; background-size: cover;">
     <a href="" class="mx-3 mt-2"></a>
     <div><a href="https://egoistsky.free.nf/"
             class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
@@ -72,15 +67,14 @@
     </div>
     <div class="scrollable-container w-100 mt-1" style="overflow-y:auto;height:40rem;">
         <?php
-        $servername = "";
-        $username = "username";
-        $password = "0";
-        $dbname = "0";
+        $servername = "sql203.infinityfree.com";
+        $username = "if0_35435711";
+        $password = "hrtPcoQHzpRSu";
+        $dbname = "if0_35435711_users";
 
         try {
             $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
             $postQuery = "SELECT username, photo, description, time FROM post  ORDER BY time DESC";
             $postStmt = $dbh->query($postQuery);
 
@@ -91,9 +85,9 @@
                     $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
                     echo '
             <div class="w-25 post" style="margin-left:38%;">
-                <div class="card post text-white">
+                <div class="card post border border-dark text-white">
                     <img src="data/posts/' . $row["photo"] . '" class="card-img-top" alt="...">
-                    <div class="card-body" style="background-color:black;">
+                    <div class="card-body border border-dark" style="background-color:black;">
                         <a href=""><img src="' . $userRow["profilephoto"] . '" class="rounded-5 mx-1" style="width:15%;"></a>
                         <h5 class="card-title fs-4">' . $row["username"] . '</h5>
                         <p class="card-text">' . $row["description"] . '</p>
@@ -130,15 +124,12 @@
 <script>
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
-
     searchInput.addEventListener('input', function () {
         const searchValue = this.value;
-
         if (searchValue === '') {
             searchResults.innerHTML = '';
             return;
         }
-
         fetch(`search.php?search_query=${searchValue}`)
             .then(response => response.text())
             .then(data => {

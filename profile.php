@@ -71,8 +71,7 @@ try {
     </style>
 </head>
 
-<body class="grad" style="background-image: url(ngtsky.jpg);
-    background-size: cover;">
+<body class="bg-black">
     <a href="" class="mx-3 mt-2"></a>
 
     <div><a href="https://egoistsky.free.nf/user"
@@ -101,20 +100,23 @@ try {
             <a href="edit.php"><button class="btn btn-outline-light" style="width:25%;">Edit Profile</button></a>
             <a class="btn btn-outline-light" style="width:25%;">Settings</a>
             <br>
-            <div class="scrollable-container w-100 mt-1">
+            <br>
+            <div class="scrollable-container w-100 mt-2">
                 <?php foreach ($posts as $post): ?>
                     <img class="w-25 rounded-1 border-black imghoverprofile" src="data/posts/<?php echo $post['photo']; ?>"
                         style="height:12rem;" data-photo="<?php echo $post['photo']; ?>">
                 <?php endforeach; ?>
             </div>
             <div id="myModal" class="modal scrollable-container mt-5 position-absolute translate-middle start-50 top-50"
-                style="width:70%;height:49rem;border:none;">
+                style="width:60%;height:49rem;border:none;">
                 <button class="close h5 btn btn-danger text-light">&times;</button>
-                <div class="modal-content" style="background-color:transparent;border:none;">
-                    <img id="modalImage" src="" style="max-width: 40rem; max-height: 25rem;">
+                <div class="modal-content" style="background-color:#090918;border:none;">
+                    <img id="modalImage" src="" style="max-width: 35rem; max-height: 25rem;">
                     <div>
-                        <button class="btn btn-danger w-100 mt-2" id="deleteButton">Delete Photo</button>
-                        <button class="btn btn-primary w-100 mt-2" id="editButton">Edit Photo Description</button>
+                        <button class="btn btn-outline-danger w-100 mt-2" id="deleteButton" style="border:none;">Delete
+                            Photo</button>
+                        <button class="btn btn-outline-light  w-100 mt-2" id="editButton" style="border:none;">Edit
+                            Photo Description</button>
                     </div>
                     <br>
 
@@ -172,8 +174,6 @@ try {
     span.onclick = function () {
         modal.style.display = 'none';
     };
-
-
 </script>
 
 </html>

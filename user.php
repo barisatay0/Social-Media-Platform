@@ -77,8 +77,9 @@ if (isset($_POST['logout'])) {
 
         .scrollable-container::-webkit-scrollbar {
             width: 6px;
-  
+
         }
+
         .scrollable-container::-webkit-scrollbar-thumb {
             background-color: transparent;
         }
@@ -87,7 +88,7 @@ if (isset($_POST['logout'])) {
 
 
 
-<body class="grad bgimage">
+<body class="bg-black">
     <a href="" class="mx-3 mt-2"></a>
     <div><a href="https://egoistsky.free.nf/user"
             class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
@@ -95,11 +96,11 @@ if (isset($_POST['logout'])) {
                 src="astronomy.png" alt="logo"></a></div>
     <div class="position-absolute top-0 start-50 translate-middle mt-4" style="width:33%;">
         <form name="searcher" method="post" action="search.php">
-    <input type="search" id="searchInput" name="search" placeholder="Search..." class="form-control">
-</form>
+            <input type="search" id="searchInput" name="search" placeholder="Search..." class="form-control">
+        </form>
         <div id="searchResults"></div>
     </div>
-    
+
     <div class="top-50 start-0 translate-middle-y mx-1" style="width:24%;margin-top:1%;position: fixed;">
         <a href="Reels"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover "
                 style="margin-left: 50%;" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
@@ -137,29 +138,30 @@ if (isset($_POST['logout'])) {
 
     </div>
     <div class="scrollable-container w-100 mt-1" style="overflow-y:auto;height:40rem;">
-          <?php
-$servername = "";
-$username = "username";
-$password = "0";
-$dbname = "0";
+        <?php
+        $servername = "";
+        $username = "";
+        $password = "";
+        $dbname = "";
 
-try {
-    $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $postQuery = "SELECT username, photo, description, time FROM post  ORDER BY time DESC";
-    $postStmt = $dbh->query($postQuery);
+        try {
+            $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    if ($postStmt) {
-        while ($row = $postStmt->fetch(PDO::FETCH_ASSOC)) {
-            $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
-            $userStmt = $dbh->query($userQuery);
-            $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
+            $postQuery = "SELECT username, photo, description, time FROM post  ORDER BY time DESC";
+            $postStmt = $dbh->query($postQuery);
 
-            echo '
+            if ($postStmt) {
+                while ($row = $postStmt->fetch(PDO::FETCH_ASSOC)) {
+                    $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
+                    $userStmt = $dbh->query($userQuery);
+                    $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
+
+                    echo '
             <div class="w-25 post" style="margin-left:38%;">
-                <div class="card post text-white">
+                <div class="card post border border-dark text-white">
                     <img src="data/posts/' . $row["photo"] . '" class="card-img-top" alt="...">
-                    <div class="card-body" style="background-color:black;">
+                    <div class="card-body border border-dark" style="background-color:black;">
                         <a href=""><img src="' . $userRow["profilephoto"] . '" class="rounded-5 mx-1" style="width:15%;"></a>
                         <h5 class="card-title fs-4">' . $row["username"] . '</h5>
                         <p class="card-text">' . $row["description"] . '</p>
@@ -171,34 +173,37 @@ try {
                 </div>
             </div>
             <br>';
+                }
+            } else {
+                echo "Veri bulunamadı";
+            }
+        } catch (PDOException $e) {
+            echo "Bağlantı hatası: " . $e->getMessage();
         }
-    } else {
-        echo "Veri bulunamadı";
-    }
-} catch(PDOException $e) {
-    echo "Bağlantı hatası: " . $e->getMessage();
-}
-?>
+        ?>
         <br>
     </div>
     <div>
         <input type="image" class="top-100 end-0 translate-middle-y mx-3 imghover"
             style="width:5.5%;position:fixed;margin-top:-5%;opacity:75%;" src="bubble.png">
 
-        <input id="formOpener" type="image" class="top-100 end-0 translate-middle-y mx-4 imghover"
-            style="width:5%;position:fixed;margin-top:-10.5%;opacity:85%;" src="picture.png">
+        <input id="formOpener" type="image" class="top-100 end-0 translate-middle-y mx-3 imghover"
+            style="width:6%;position:fixed;margin-top:-10.5%;opacity:85%;" src="picture.png">
     </div>
-    <div class="w-50 border bg-dark rounded-5 light border-dark position-absolute top-50 start-50 translate-middle text-center"
+    <div class="w-50 border bg-black rounded-5 light border-dark position-absolute top-50 start-50 translate-middle text-center"
         id="hiddenForm" style="display: none;--bs-bg-opacity: .9;height:74%;">
-        <p class="h1 text-light mt-5">Post</p>
-       <form method="POST" action="https://egoistsky.free.nf/upload" id="myForm" class="mt-3" enctype="multipart/form-data">
-    <input class="btn btn-outline-light w-75 mt-3" type="file" name="fileToUpload" required>
-    <br>
-    <textarea class="mt-4 w-75" name="description" placeholder="Description" id="description" style="border-radius: 3%; height: 5rem;"></textarea>
-    <br>
-    <input class="btn btn-success w-75 mt-4" name="share" type="submit" value="Share">
-</form>
-    <button id="formCloser" class="w-25 mt-4 btn btn-danger">close</button>
+        <p class="h1 text-light mt-5" style="font-family:Fantasy;">Post</p>
+        <form method="POST" action="https://egoistsky.free.nf/upload" id="myForm" class="mt-3"
+            enctype="multipart/form-data">
+            <input class="btn btn-outline-light w-75 mt-3" type="file" name="fileToUpload" required>
+            <br>
+            <textarea class="mt-4 w-75" name="description" placeholder="Description" id="description"
+                style="border-radius: 3%; height: 5rem;"></textarea>
+            <br>
+            <input class="btn btn-outline-success w-75 mt-4" name="share" type="submit" value="Share"
+                style="font-family:Fantasy;">
+        </form>
+        <button id="formCloser" class="w-25 mt-4 btn btn-outline-danger" style="font-family:Fantasy;">close</button>
     </div>
 
 
@@ -214,25 +219,25 @@ try {
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
-  <script>
-        const searchInput = document.getElementById('searchInput');
-        const searchResults = document.getElementById('searchResults');
-        searchInput.addEventListener('input', function() {
-            const searchValue = this.value;
-            if (searchValue === '') {
-                searchResults.innerHTML = '';
-                return;
-            }
-            fetch(`search.php?search_query=${searchValue}`)
-                .then(response => response.text())
-                .then(data => {
-                    searchResults.innerHTML = data;
-                })
-                .catch(error => {
-                    console.error('Arama hatası:', error);
-                });
-        });
-    </script>
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    searchInput.addEventListener('input', function () {
+        const searchValue = this.value;
+        if (searchValue === '') {
+            searchResults.innerHTML = '';
+            return;
+        }
+        fetch(`search.php?search_query=${searchValue}`)
+            .then(response => response.text())
+            .then(data => {
+                searchResults.innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Arama hatası:', error);
+            });
+    });
+</script>
 <script>
     document.getElementById('formOpener').onclick = function () {
         document.getElementById('hiddenForm').style.display = 'block';
@@ -241,20 +246,20 @@ try {
         document.getElementById('hiddenForm').style.display = 'none';
     };
 </script>
+
 </html>
 <?php
 include 'connect.php';
-if(isset($_POST['search'])) {
+
+if (isset($_POST['search'])) {
     $search = $_POST['search'];
-    
     $query = "SELECT * FROM user WHERE username LIKE '%$search%'";
     $result = mysqli_query($connection, $query);
-    if(!$result) {
+    if (!$result) {
         die("Sorgu hatası: " . mysqli_error($connection));
     }
-    
-    if(mysqli_num_rows($result) > 0) {
-        while($row = mysqli_fetch_assoc($result)) {
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
             echo $row['username'] . "<br>";
         }
     } else {
