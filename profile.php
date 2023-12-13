@@ -140,10 +140,10 @@ try {
             </p>
             <br>
             <br>
-            <div class="scrollable-container mt-2 w-100">
+            <div class="scrollable-container mt-2 w-100 border-top border-bottom border-dark border-3">
                 <?php foreach ($posts as $post): ?>
                     <img class=" rounded-1 imghoverprofile border border-2 border-dark"
-                        src="data/posts/<?php echo $post['photo']; ?>" style="height:15rem;"
+                        src="data/posts/<?php echo $post['photo']; ?>" style="height:20rem;width:20rem;"
                         data-photo="<?php echo $post['photo']; ?>">
                     <form method="POST" action="">
                         <input type="hidden" name="delete" value="<?php echo $post['photo']; ?>">
@@ -213,7 +213,6 @@ try {
     var modal = document.getElementById('myModal');
     var modalImg = document.getElementById('modalImage');
     var deleteButton = document.getElementById('deleteButton');
-
     for (var i = 0; i < images.length; i++) {
         images[i].addEventListener('click', function () {
             modal.style.display = 'block';

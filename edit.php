@@ -18,7 +18,8 @@ if (isset($_SESSION['username'])) {
         $lastname = $_POST['lastname'];
         if (!empty($_FILES['profilephoto']['name'])) {
             $targetDirectory = "data/photos/";
-            $targetFile = $targetDirectory . basename($_FILES["profilephoto"]["name"]);
+            $randomFileName = uniqid() . '_' . $_FILES["profilephoto"]["name"];
+            $targetFile = $targetDirectory . basename($randomFileName);
 
             if (move_uploaded_file($_FILES["profilephoto"]["tmp_name"], $targetFile)) {
                 try {
@@ -131,9 +132,9 @@ if (isset($_SESSION['username'])) {
         <button type="submit" class="btn btn-success w-100">Save</button>
     </form>
     <div class="mb-4 position-absolute translate-middle-y end-0 w-25 text-center" style="">
-        <a href="profile.php"><img class="w-25 rounded-circle border border-black border-2 mt-1"
+        <a href="profile.php"><img class="rounded-circle border border-black border-2 mt-1"
                 src="<?php echo isset($user['profilephoto']) ? $user['profilephoto'] : ''; ?>"
-                style="margin-left:20px;"></a>
+                style="margin-left:20px;width:6.5rem;height:6.5rem;"></a>
         <br>
         <a href="password.php"><button class="btn btn-outline-light mt-4 w-50">Change Password</button></a>
     </div>
