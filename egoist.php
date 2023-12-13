@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 include 'connect.php';
@@ -126,42 +125,44 @@ if (isset($_POST['logout'])) {
 
             visibility: visible;
         }
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    padding-top: 50px;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.9);
-}
-.modal-content {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 700px;
-}
-.close {
-    position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
-}
 
-.close:hover,
-.close:focus {
-    color: #bbb;
-    text-decoration: none;
-    cursor: pointer;
-}
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.9);
+        }
 
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -203,34 +204,71 @@ if (isset($_POST['logout'])) {
             </p>
 
             <a href="" style="text-decoration: none;">
-                <p class="h5 text-white-50 mt-1">Followers : 60M</p>
+                <p class="h5 text-white-50 mt-1">Followers:
+                    <?php
+                    try {
+                        $query_followers_count = "SELECT followers FROM user WHERE username = :username";
+                        $stmt_followers_count = $dbh->prepare($query_followers_count);
+                        $stmt_followers_count->bindParam(':username', $clickedUsername);
+                        $stmt_followers_count->execute();
+
+                        $row_followers_count = $stmt_followers_count->fetch(PDO::FETCH_ASSOC);
+                        if ($row_followers_count) {
+                            $followers_count = count(explode(',', $row_followers_count['followers']));
+                            echo $followers_count;
+                        }
+                    } catch (PDOException $e) {
+                        echo "Bağlantı Hatası: " . $e->getMessage();
+                    }
+                    ?>
+                </p>
             </a>
             <a href="" style="text-decoration: none;">
-                <p class="h5 text-white-50">Following : 671</p>
+                <p class="h5 text-white-50">Following:
+                    <?php
+                    try {
+                        $query_following_count = "SELECT following FROM user WHERE username = :username";
+                        $stmt_following_count = $dbh->prepare($query_following_count);
+                        $stmt_following_count->bindParam(':username', $clickedUsername);
+                        $stmt_following_count->execute();
+
+                        $row_following_count = $stmt_following_count->fetch(PDO::FETCH_ASSOC);
+                        if ($row_following_count) {
+                            $following_count = count(explode(',', $row_following_count['following']));
+                            echo $following_count;
+                        }
+                    } catch (PDOException $e) {
+                        echo "Bağlantı Hatası: " . $e->getMessage();
+                    }
+                    ?>
+                </p>
             </a>
+
             <p class="h5 text-light" style="font-family:Gill Sans, sans-serif;">
                 <?php echo '' . $clickedBiography . '' ?>
             </p>
 
-<form method="post">
-            <button type="submit" name="follow" id="followButton" class="w-50 btn btn-primary">Follow</button>
-             <button type="submit" name="unfollow" id="followButton" class="w-50 btn btn-danger mt-1">Unfollow</button>
+            <form method="post">
+                <button type="submit" name="follow" id="followButton"
+                    class="w-50 btn btn-outline-primary">Follow</button>
+                <button type="submit" name="unfollow" id="followButton"
+                    class="w-50 btn btn-outline-danger mt-1">Unfollow</button>
             </form>
             <br>
             <br>
 
 
 
-           <div class="scrollable-container w-100 mt-1">
-    <?php foreach ($clickedUserPosts as $post): ?>
-        <img class="rounded-1 border-black imghoverprofile" src="data/posts/<?php echo $post['photo']; ?>"
-            style="height:16rem;width:14rem;" onclick="showImage(this);">
-    <?php endforeach; ?>
-</div>
-<div id="myModal" class="modal">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <img class="modal-content" id="modalImg">
-</div>
+            <div class="scrollable-container w-100 mt-1">
+                <?php foreach ($clickedUserPosts as $post): ?>
+                    <img class="rounded-1 border-black imghoverprofile" src="data/posts/<?php echo $post['photo']; ?>"
+                        style="height:16rem;width:14rem;" onclick="showImage(this);">
+                <?php endforeach; ?>
+            </div>
+            <div id="myModal" class="modal">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <img class="modal-content" id="modalImg">
+            </div>
 
         </div>
 
@@ -268,18 +306,17 @@ if (isset($_POST['logout'])) {
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-function showImage(img) {
-    var modal = document.getElementById('myModal');
-    var modalImg = document.getElementById('modalImg');
+    function showImage(img) {
+        var modal = document.getElementById('myModal');
+        var modalImg = document.getElementById('modalImg');
 
-    modal.style.display = 'block';
-    modalImg.src = img.src;
-}
-
-function closeModal() {
-    var modal = document.getElementById('myModal');
-    modal.style.display = 'none';
-}
+        modal.style.display = 'block';
+        modalImg.src = img.src;
+    }
+    function closeModal() {
+        var modal = document.getElementById('myModal');
+        modal.style.display = 'none';
+    }
 
 </script>
 <?php
@@ -326,12 +363,13 @@ if (isset($_POST['follow'])) {
                 $stmt_update_following->execute();
             }
         } else {
-            echo "Kullanıcı bulunamadı veya bağlantı hatası";
+            echo "";
         }
     } catch (PDOException $e) {
-        echo "Bağlantı Hatası: " . $e->getMessage();
+        echo "Connection Error: " . $e->getMessage();
     }
 }
+
 if (isset($_POST['unfollow'])) {
     $clickedUsername = $_GET['username'];
 
@@ -355,7 +393,7 @@ if (isset($_POST['unfollow'])) {
             $stmt_update->bindParam(':followers', $followers);
             $stmt_update->bindParam(':username', $clickedUsername);
             $stmt_update->execute();
-         header("Location:https://egoistsky.free.nf/egoist?username=$clickedusername");
+            header("Location:https://egoistsky.free.nf/egoist?username=$clickedusername");
             $query_following = "SELECT following FROM user WHERE username = :username";
             $stmt_following = $dbh->prepare($query_following);
             $stmt_following->bindParam(':username', $loggedInUsername);

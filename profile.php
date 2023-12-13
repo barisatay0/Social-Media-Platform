@@ -25,6 +25,7 @@ if (isset($_SESSION['username'])) {
     header("Location: login");
     exit();
 }
+
 try {
     $query_posts = "SELECT photo FROM post WHERE username = :username ORDER BY time DESC";
     $stmt_posts = $dbh->prepare($query_posts);
@@ -58,6 +59,7 @@ try {
             margin-top: -6%;
             scrollbar-width: thin;
             scrollbar-color: transparent transparent;
+
         }
 
         .scrollable-container::-webkit-scrollbar {
@@ -93,11 +95,46 @@ try {
             </p>
 
             <a href="" style="text-decoration: none;">
-                <p class="h5 text-white-50 mt-1">Followers : 950M</p>
+                <p class="h5 text-white-50 mt-1">Followers:
+                    <?php
+                    try {
+                        $query_followers_count = "SELECT followers FROM user WHERE username = :username";
+                        $stmt_followers_count = $dbh->prepare($query_followers_count);
+                        $stmt_followers_count->bindParam(':username', $username);
+                        $stmt_followers_count->execute();
+
+                        $row_followers_count = $stmt_followers_count->fetch(PDO::FETCH_ASSOC);
+                        if ($row_followers_count) {
+                            $followers_count = count(explode(',', $row_followers_count['followers']));
+                            echo $followers_count;
+                        }
+                    } catch (PDOException $e) {
+                        echo "Bağlantı Hatası: " . $e->getMessage();
+                    }
+                    ?>
+                </p>
             </a>
             <a href="" style="text-decoration: none;">
-                <p class="h5 text-white-50">Following : 571</p>
+                <p class="h5 text-white-50">Following:
+                    <?php
+                    try {
+                        $query_following_count = "SELECT following FROM user WHERE username = :username";
+                        $stmt_following_count = $dbh->prepare($query_following_count);
+                        $stmt_following_count->bindParam(':username', $username);
+                        $stmt_following_count->execute();
+
+                        $row_following_count = $stmt_following_count->fetch(PDO::FETCH_ASSOC);
+                        if ($row_following_count) {
+                            $following_count = count(explode(',', $row_following_count['following']));
+                            echo $following_count;
+                        }
+                    } catch (PDOException $e) {
+                        echo "Bağlantı Hatası: " . $e->getMessage();
+                    }
+                    ?>
+                </p>
             </a>
+
             <p class="h5 text-light" style="font-family:Gill Sans, sans-serif;">
                 <?php echo '' . $biography . '' ?>
             </p>
