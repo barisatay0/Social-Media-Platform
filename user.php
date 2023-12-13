@@ -139,15 +139,14 @@ if (isset($_POST['logout'])) {
     </div>
     <div class="scrollable-container w-100 mt-1" style="overflow-y:auto;height:40rem;">
         <?php
-        $servername = "";
-        $username = "";
-        $password = "";
-        $dbname = "";
+        $servername = "0";
+        $username = "0";
+        $password = "0";
+        $dbname = "0";
 
         try {
             $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
             $postQuery = "SELECT username, photo, description, time FROM post  ORDER BY time DESC";
             $postStmt = $dbh->query($postQuery);
 
@@ -156,14 +155,19 @@ if (isset($_POST['logout'])) {
                     $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
                     $userStmt = $dbh->query($userQuery);
                     $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
-
                     echo '
             <div class="w-25 post" style="margin-left:38%;">
+            
                 <div class="card post border border-dark text-white">
-                    <img src="data/posts/' . $row["photo"] . '" class="card-img-top" alt="...">
+                <div class="mt-2 mx-2">
+                <a class="text-light h3" style="text-decoration:none;" href="https://egoistsky.free.nf/egoist?username=' . $row["username"] . '"><img src="' . $userRow["profilephoto"] . '" class="rounded-circle mx-1" style="width:4rem;height:4rem;font-family: "Lucida Console", "Courier New", monospace;">' . $row["username"] . '</a>
+                </div>
+                
+                <br>
+                    <img src="data/posts/' . $row["photo"] . '" class="card-img-top" alt="..." style="height:18rem;">
                     <div class="card-body border border-dark" style="background-color:black;">
-                        <a href=""><img src="' . $userRow["profilephoto"] . '" class="rounded-5 mx-1" style="width:15%;"></a>
-                        <h5 class="card-title fs-4">' . $row["username"] . '</h5>
+                        
+
                         <p class="card-text">' . $row["description"] . '</p>
                         <br>
                         <p class="card-text"><small class="text-white-50">' . $row["time"] . '</small></p>
@@ -255,6 +259,7 @@ if (isset($_POST['search'])) {
     $search = $_POST['search'];
     $query = "SELECT * FROM user WHERE username LIKE '%$search%'";
     $result = mysqli_query($connection, $query);
+
     if (!$result) {
         die("Sorgu hatası: " . mysqli_error($connection));
     }

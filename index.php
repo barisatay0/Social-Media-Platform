@@ -1,3 +1,13 @@
+<?php
+session_start();
+if (isset($_SESSION['username'])) {
+    header("Location: user.php");
+    exit();
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -85,11 +95,17 @@
                     $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
                     echo '
             <div class="w-25 post" style="margin-left:38%;">
+            
                 <div class="card post border border-dark text-white">
-                    <img src="data/posts/' . $row["photo"] . '" class="card-img-top" alt="...">
+                <div class="mt-2 mx-2">
+                <a class="text-light h3" style="text-decoration:none;" href="https://egoistsky.free.nf/egoist?username=' . $row["username"] . '"><img src="' . $userRow["profilephoto"] . '" class="rounded-circle mx-1" style="width:4rem;height:4rem;">' . $row["username"] . '</a>
+                </div>
+                
+                <br>
+                    <img src="data/posts/' . $row["photo"] . '" class="card-img-top" alt="..." style="height:18rem;">
                     <div class="card-body border border-dark" style="background-color:black;">
-                        <a href=""><img src="' . $userRow["profilephoto"] . '" class="rounded-5 mx-1" style="width:15%;"></a>
-                        <h5 class="card-title fs-4">' . $row["username"] . '</h5>
+                        
+
                         <p class="card-text">' . $row["description"] . '</p>
                         <br>
                         <p class="card-text"><small class="text-white-50">' . $row["time"] . '</small></p>

@@ -5,6 +5,7 @@ include 'connect.php';
 if (isset($_SESSION['username'])) {
     $loggedInUsername = $_SESSION['username'];
 
+
     try {
         $query = "SELECT * FROM user WHERE username = :username";
         $stmt = $dbh->prepare($query);
@@ -33,12 +34,10 @@ if (isset($_SESSION['username'])) {
         echo "Bağlantı Hatası: " . $e->getMessage();
     }
 
-    // Eğer URL'den bir kullanıcı adı alındıysa, o kullanıcının verilerini ve postlarını al
     if (isset($_GET['username'])) {
         $clickedUsername = $_GET['username'];
 
         try {
-            // Tıklanan kullanıcının verilerini al
             $query = "SELECT * FROM user WHERE username = :username";
             $stmt = $dbh->prepare($query);
             $stmt->bindParam(':username', $clickedUsername);
@@ -54,8 +53,6 @@ if (isset($_SESSION['username'])) {
         } catch (PDOException $e) {
             echo "Bağlantı Hatası: " . $e->getMessage();
         }
-
-        // Tıklanan kullanıcının postlarını al
         try {
             $query_posts = "SELECT photo FROM post WHERE username = :username ORDER BY time DESC";
             $stmt_posts = $dbh->prepare($query_posts);
@@ -67,6 +64,9 @@ if (isset($_SESSION['username'])) {
             echo "Bağlantı Hatası: " . $e->getMessage();
         }
     }
+} else {
+    header("Location:login.php");
+    exit();
 }
 if (isset($_POST['logout'])) {
     session_unset();
@@ -184,8 +184,8 @@ if (isset($_POST['logout'])) {
 
             <div class="scrollable-container w-100 mt-1">
                 <?php foreach ($clickedUserPosts as $post): ?>
-                    <input type="image" class="w-25 rounded-1 border-black imghoverprofile"
-                        src="data/posts/<?php echo $post['photo']; ?>" style="height:12rem;">
+                    <input type="image" class=" rounded-1 border-black imghoverprofile"
+                        src="data/posts/<?php echo $post['photo']; ?>" style="height:16rem;width:14rem;">
                 <?php endforeach; ?>
             </div>
         </div>
