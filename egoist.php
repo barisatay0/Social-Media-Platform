@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 include 'connect.php';
@@ -125,41 +126,42 @@ if (isset($_POST['logout'])) {
 
             visibility: visible;
         }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            padding-top: 50px;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0, 0, 0);
-            background-color: rgba(0, 0, 0, 0.9);
-        }
-        .modal-content {
-            margin: auto;
-            display: block;
-            width: 80%;
-            max-width: 700px;
-        }
-        .close {
-            position: absolute;
-            top: 15px;
-            right: 35px;
-            color: #f1f1f1;
-            font-size: 40px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 50px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.9);
+}
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
 
-        .close:hover,
-        .close:focus {
-            color: #bbb;
-            text-decoration: none;
-            cursor: pointer;
-        }
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
     </style>
 </head>
 
@@ -210,23 +212,25 @@ if (isset($_POST['logout'])) {
                 <?php echo '' . $clickedBiography . '' ?>
             </p>
 
-
-            <button type="submit" name="follow" id="followButton" class="w-25 btn btn-primary">Follow</button>
+<form method="post">
+            <button type="submit" name="follow" id="followButton" class="w-50 btn btn-primary">Follow</button>
+             <button type="submit" name="unfollow" id="followButton" class="w-50 btn btn-danger mt-1">Unfollow</button>
+            </form>
             <br>
             <br>
 
 
 
-            <div class="scrollable-container w-100 mt-1">
-                <?php foreach ($clickedUserPosts as $post): ?>
-                    <img class="rounded-1 border-black imghoverprofile" src="data/posts/<?php echo $post['photo']; ?>"
-                        style="height:16rem;width:14rem;" onclick="showImage(this);">
-                <?php endforeach; ?>
-            </div>
-            <div id="myModal" class="modal">
-                <span class="close" onclick="closeModal()">&times;</span>
-                <img class="modal-content" id="modalImg">
-            </div>
+           <div class="scrollable-container w-100 mt-1">
+    <?php foreach ($clickedUserPosts as $post): ?>
+        <img class="rounded-1 border-black imghoverprofile" src="data/posts/<?php echo $post['photo']; ?>"
+            style="height:16rem;width:14rem;" onclick="showImage(this);">
+    <?php endforeach; ?>
+</div>
+<div id="myModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImg">
+</div>
 
         </div>
 
@@ -264,18 +268,121 @@ if (isset($_POST['logout'])) {
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    function showImage(img) {
-        var modal = document.getElementById('myModal');
-        var modalImg = document.getElementById('modalImg');
+function showImage(img) {
+    var modal = document.getElementById('myModal');
+    var modalImg = document.getElementById('modalImg');
 
-        modal.style.display = 'block';
-        modalImg.src = img.src;
-    }
-    function closeModal() {
-        var modal = document.getElementById('myModal');
-        modal.style.display = 'none';
-    }
+    modal.style.display = 'block';
+    modalImg.src = img.src;
+}
+
+function closeModal() {
+    var modal = document.getElementById('myModal');
+    modal.style.display = 'none';
+}
 
 </script>
+<?php
+session_start();
+include 'connect.php';
+if (isset($_POST['follow'])) {
+    $clickedUsername = $_GET['username'];
+
+    try {
+        $query_follow = "SELECT followers FROM user WHERE username = :username";
+        $stmt_follow = $dbh->prepare($query_follow);
+        $stmt_follow->bindParam(':username', $clickedUsername);
+        $stmt_follow->execute();
+
+        $row = $stmt_follow->fetch(PDO::FETCH_ASSOC);
+        if ($row) {
+            $followers = $row['followers'];
+            $followersArray = explode(',', $followers);
+            if (!in_array($loggedInUsername, $followersArray)) {
+                $followers .= $loggedInUsername . ',';
+            }
+            $update_query = "UPDATE user SET followers = :followers WHERE username = :username";
+            $stmt_update = $dbh->prepare($update_query);
+            $stmt_update->bindParam(':followers', $followers);
+            $stmt_update->bindParam(':username', $clickedUsername);
+            $stmt_update->execute();
+            header("Location:https://egoistsky.free.nf/egoist?username=$clickedusername");
+            $query_following = "SELECT following FROM user WHERE username = :username";
+            $stmt_following = $dbh->prepare($query_following);
+            $stmt_following->bindParam(':username', $loggedInUsername);
+            $stmt_following->execute();
+
+            $row_following = $stmt_following->fetch(PDO::FETCH_ASSOC);
+            if ($row_following) {
+                $following = $row_following['following'];
+                $followingArray = explode(',', $following);
+                if (!in_array($clickedUsername, $followingArray)) {
+                    $following .= $clickedUsername . ',';
+                }
+                $update_following_query = "UPDATE user SET following = :following WHERE username = :username";
+                $stmt_update_following = $dbh->prepare($update_following_query);
+                $stmt_update_following->bindParam(':following', $following);
+                $stmt_update_following->bindParam(':username', $loggedInUsername);
+                $stmt_update_following->execute();
+            }
+        } else {
+            echo "Kullanıcı bulunamadı veya bağlantı hatası";
+        }
+    } catch (PDOException $e) {
+        echo "Bağlantı Hatası: " . $e->getMessage();
+    }
+}
+if (isset($_POST['unfollow'])) {
+    $clickedUsername = $_GET['username'];
+
+    try {
+        $query_follow = "SELECT followers FROM user WHERE username = :username";
+        $stmt_follow = $dbh->prepare($query_follow);
+        $stmt_follow->bindParam(':username', $clickedUsername);
+        $stmt_follow->execute();
+
+        $row = $stmt_follow->fetch(PDO::FETCH_ASSOC);
+        if ($row) {
+            $followers = $row['followers'];
+            $followersArray = explode(',', $followers);
+            $key = array_search($loggedInUsername, $followersArray);
+            if ($key !== false) {
+                unset($followersArray[$key]);
+                $followers = implode(',', $followersArray);
+            }
+            $update_query = "UPDATE user SET followers = :followers WHERE username = :username";
+            $stmt_update = $dbh->prepare($update_query);
+            $stmt_update->bindParam(':followers', $followers);
+            $stmt_update->bindParam(':username', $clickedUsername);
+            $stmt_update->execute();
+         header("Location:https://egoistsky.free.nf/egoist?username=$clickedusername");
+            $query_following = "SELECT following FROM user WHERE username = :username";
+            $stmt_following = $dbh->prepare($query_following);
+            $stmt_following->bindParam(':username', $loggedInUsername);
+            $stmt_following->execute();
+
+            $row_following = $stmt_following->fetch(PDO::FETCH_ASSOC);
+            if ($row_following) {
+                $following = $row_following['following'];
+                $followingArray = explode(',', $following);
+                $key_following = array_search($clickedUsername, $followingArray);
+                if ($key_following !== false) {
+                    unset($followingArray[$key_following]);
+                    $following = implode(',', $followingArray);
+                }
+                $update_following_query = "UPDATE user SET following = :following WHERE username = :username";
+                $stmt_update_following = $dbh->prepare($update_following_query);
+                $stmt_update_following->bindParam(':following', $following);
+                $stmt_update_following->bindParam(':username', $loggedInUsername);
+                $stmt_update_following->execute();
+            }
+        } else {
+            echo "Kullanıcı bulunamadı veya bağlantı hatası";
+        }
+    } catch (PDOException $e) {
+        echo "Bağlantı Hatası: " . $e->getMessage();
+    }
+}
+?>
 
 </html>
