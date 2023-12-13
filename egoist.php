@@ -125,6 +125,41 @@ if (isset($_POST['logout'])) {
 
             visibility: visible;
         }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -184,10 +219,15 @@ if (isset($_POST['logout'])) {
 
             <div class="scrollable-container w-100 mt-1">
                 <?php foreach ($clickedUserPosts as $post): ?>
-                    <input type="image" class=" rounded-1 border-black imghoverprofile"
-                        src="data/posts/<?php echo $post['photo']; ?>" style="height:16rem;width:14rem;">
+                    <img class="rounded-1 border-black imghoverprofile" src="data/posts/<?php echo $post['photo']; ?>"
+                        style="height:16rem;width:14rem;" onclick="showImage(this);">
                 <?php endforeach; ?>
             </div>
+            <div id="myModal" class="modal">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <img class="modal-content" id="modalImg">
+            </div>
+
         </div>
 
     </div>
@@ -223,5 +263,19 @@ if (isset($_POST['logout'])) {
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function showImage(img) {
+        var modal = document.getElementById('myModal');
+        var modalImg = document.getElementById('modalImg');
+
+        modal.style.display = 'block';
+        modalImg.src = img.src;
+    }
+    function closeModal() {
+        var modal = document.getElementById('myModal');
+        modal.style.display = 'none';
+    }
+
+</script>
 
 </html>
