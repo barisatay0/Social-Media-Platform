@@ -69,6 +69,82 @@ try {
         .scrollable-container::-webkit-scrollbar-thumb {
             background-color: transparent;
         }
+
+        .profilebuttons {
+            width: 8rem;
+
+        }
+
+        .logo {
+            width: 6%;
+        }
+
+        .pagebuttons {
+            width: 24%;
+            margin-top: 1%;
+            position: fixed;
+        }
+
+        .pagebuttonsonly {
+            margin-left: 50%;
+
+        }
+
+        .photocontainer {
+            width: 100%;
+        }
+
+        .containerphotos {
+            height: 20rem;
+            width: 20rem;
+        }
+
+        .modalcontainer {
+            width: 50%;
+            height: 32rem;
+            border: none;
+        }
+
+        @media only screen and (max-width: 400px) {
+
+            .profilebuttons {
+                width: 6rem;
+                font-size: 10px;
+                margin-left: 1rem;
+            }
+
+            .logo {
+                width: 12%;
+                margin-left: -10%;
+            }
+
+            .pagebuttons {
+                width: 41%;
+                margin-top: -52%;
+                position: fixed;
+            }
+
+            .pagebuttonsonly {
+                margin-left: 5%;
+
+            }
+
+            .photocontainer {
+                width: 100%;
+                margin-left: 6%;
+            }
+
+            .containerphotos {
+                height: 14rem;
+                width: 14rem;
+            }
+
+            .modalcontainer {
+                width: 110%;
+                height: 32rem;
+                border: none;
+            }
+        }
     </style>
 </head>
 
@@ -77,13 +153,13 @@ try {
 
     <div><a href="https://egoistsky.free.nf/user"
             class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
-            style="margin-left:12%;"><img class="border border-black border-3 rounded-circle" style="width: 6%;"
+            style="margin-left:12%;"><img class="border border-black border-3 rounded-circle logo" style=""
                 src="astronomy.png" alt="logo"></a></div>
     <div>
-        <div class="top-0 end-0 position-absolute translate-middle-x mt-2" style="">
-            <a href="edit.php"><button class="btn btn-outline-light" style="width:8rem;">Edit Profile</button></a>
+        <div class="top-0 end-0 position-absolute translate-middle-x mt-2 profilebuttons" style="">
+            <a href="edit.php"><button class="btn btn-outline-light  profilebuttons" style="">Edit Profile</button></a>
             <br>
-            <a class="btn btn-outline-light mt-2" style="width:8rem;">Settings</a>
+            <a class="btn btn-outline-light mt-2 profilebuttons" style="">Settings</a>
         </div>
         <div class="top-0 start-50 position-absolute translate-middle-x mt-2 text-center">
             <input type="image" class="rounded-circle mx-2 border border-black" style="width:6.5rem;height:6.5rem;"
@@ -140,11 +216,10 @@ try {
             </p>
             <br>
             <br>
-            <div class="scrollable-container mt-2 w-100 border-top border-bottom border-dark border-3">
+            <div class="scrollable-container mt-2 photocontainer border-top border-bottom border-dark border-3">
                 <?php foreach ($posts as $post): ?>
-                    <img class=" rounded-1 imghoverprofile border border-2 border-dark"
-                        src="data/posts/<?php echo $post['photo']; ?>" style="height:20rem;width:20rem;"
-                        data-photo="<?php echo $post['photo']; ?>">
+                    <img class=" rounded-1 imghoverprofile containerphotos border border-2 border-dark"
+                        src="data/posts/<?php echo $post['photo']; ?>" style="" data-photo="<?php echo $post['photo']; ?>">
                     <form method="POST" action="">
                         <input type="hidden" name="delete" value="<?php echo $post['photo']; ?>">
                         <button type="submit" class="btn btn-outline-danger w-100 mt-2" style="border:none;">Delete
@@ -161,8 +236,8 @@ try {
 
         </div>
         <div id="myModal"
-            class="modal scrollable-container mt-5 position-absolute translate-middle start-50 top-50 text-center"
-            style="width:50%;height:32rem;border:none;">
+            class="modal scrollable-container mt-5 position-absolute translate-middle start-50 top-50 text-center modalcontainer"
+            style="">
             <button class="close h5 btn btn-danger text-light text-center">&times;</button>
             <div class="modal-content" style="background-color:#090918;border:none;">
                 <img id="modalImage" class="border border-5 border-dark w-100" src="">
@@ -176,21 +251,22 @@ try {
     </div>
 
     </div>
-    <div class="top-50 start-0 translate-middle-y mx-1" style="width:24%;margin-top:1%;position: fixed;">
-        <a href="Reels.php"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover "
-                style="margin-left: 50%;" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="Reels"></a>
-        <a href="trends.php"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="Trends"></a>
-        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+    <div class="top-50 start-0 translate-middle-y mx-1 pagebuttons" style="">
+        <a href="Reels.php"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover pagebuttonsonly" style=""
+                src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Reels"></a>
+        <a href="trends.php"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover pagebuttonsonly" style=""
+                src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Trends"></a>
+        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover pagebuttonsonly"
+                style="" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Groups"></a>
-        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover pagebuttonsonly"
+                style="" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Languages"></a>
-        <a href="information.php"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+        <a href="information.php"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover pagebuttonsonly" style=""
+                src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="İnformation"></a>
     </div>
 
@@ -213,6 +289,7 @@ try {
     var modal = document.getElementById('myModal');
     var modalImg = document.getElementById('modalImage');
     var deleteButton = document.getElementById('deleteButton');
+
     for (var i = 0; i < images.length; i++) {
         images[i].addEventListener('click', function () {
             modal.style.display = 'block';

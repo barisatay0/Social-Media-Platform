@@ -80,22 +80,100 @@ if (isset($_SESSION['username'])) {
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="icon" type="image/x-icon" href="astronom.ico">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .seacher {
+            width: 33%;
+        }
+
+        .logo {
+            width: 6%;
+        }
+
+        .formander {
+            width: 25%;
+        }
+
+        .profilephoto {
+            margin-left: 20px;
+            width: 6.5rem;
+            height: 6.5rem;
+        }
+
+        .buttona {
+            width: 50%;
+
+        }
+
+        @media only screen and (max-width: 600px) {
+            .seacher {
+                width: 50%;
+            }
+
+            .logo {
+                width: 10%;
+                margin-left: -8%;
+            }
+
+            .formander {
+                width: 50%;
+                margin-top: 10%;
+            }
+
+            .profilephoto {
+                margin-left: 18px;
+                width: 4rem;
+                height: 4rem;
+            }
+
+            .buttona {
+                width: 70%;
+                font-size: 10px;
+
+            }
+
+            @media only screen and (max-width: 400px) {
+                .seacher {
+                    width: 50%;
+                }
+
+                .logo {
+                    width: 15%;
+                    margin-left: -8%;
+                }
+
+                .formander {
+                    width: 75%;
+                }
+
+                .profilephoto {
+                    margin-left: 18px;
+                    width: 4rem;
+                    height: 4rem;
+                }
+
+                .buttona {
+                    width: 100%;
+                    font-size: 10px;
+
+                }
+            }
+    </style>
 </head>
 
-<body class="informationbg">
+<body class="bg-black">
     <a href="" class="mx-3 mt-2"></a>
     <div><a href="https://egoistsky.free.nf/user"
             class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
-            style="margin-left:12%;"><img class="border border-black border-3 rounded-circle" style="width: 6%;"
+            style="margin-left:12%;"><img class="border border-black border-3 rounded-circle logo" style=""
                 src="astronomy.png" alt="logo"></a></div>
-    <div class="position-absolute top-0 start-50 translate-middle mt-4" style="width:33%;">
+    <div class="position-absolute top-0 start-50 translate-middle mt-4 searcher" style="">
         <form name="searcher" method="post" action="search.php">
             <input type="search" id="searchInput" name="search" placeholder="Search..." class="form-control">
         </form>
         <div id="searchResults"></div>
     </div>
-    <form class="w-25 text-white position-absolute top-50 start-50 translate-middle mt-4" enctype="multipart/form-data"
-        method="post">
+    <form class="formander text-white position-absolute top-50 start-50 translate-middle mt-4"
+        enctype="multipart/form-data" method="post">
         <div class="mb-4">
             <label for="exampleInputEmail1" class="form-label">Username</label>
             <input type="text" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
@@ -132,11 +210,10 @@ if (isset($_SESSION['username'])) {
         <button type="submit" class="btn btn-success w-100">Save</button>
     </form>
     <div class="mb-4 position-absolute translate-middle-y end-0 w-25 text-center" style="">
-        <a href="profile.php"><img class="rounded-circle border border-black border-2 mt-1"
-                src="<?php echo isset($user['profilephoto']) ? $user['profilephoto'] : ''; ?>"
-                style="margin-left:20px;width:6.5rem;height:6.5rem;"></a>
+        <a href="profile.php"><img class="rounded-circle border border-black border-2 mt-1 profilephoto"
+                src="<?php echo isset($user['profilephoto']) ? $user['profilephoto'] : ''; ?>" style=""></a>
         <br>
-        <a href="password.php"><button class="btn btn-outline-light mt-4 w-50">Change Password</button></a>
+        <a href="password.php"><button class="btn btn-outline-light mt-4 buttona">Change Password</button></a>
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

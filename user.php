@@ -80,8 +80,294 @@ if (isset($_POST['logout'])) {
 
         }
 
-        .scrollable-container::-webkit-scrollbar-thumb {
-            background-color: transparent;
+        .scrollable-container::-webkit-scrollbar-thumb {}
+
+        .responsivelogo {
+            width: 6%;
+        }
+
+        .responsivepages {
+            position: fixed;
+            margin-top: 1%;
+            width: 24%;
+        }
+
+        .responsivepagelogos {
+            margin-left: 50%;
+        }
+
+        .responsivepost {
+            margin-left: 38%;
+        }
+
+        .responsivedropdowncontainer {
+            width: 25%;
+        }
+
+        .responsivedropdownpp {
+            border-radius: 50%;
+            width: 6.5rem;
+            height: 6.5rem;
+        }
+
+        .responsivepostphoto {
+            height: 18rem;
+        }
+
+        .responsiveposter {}
+
+        .responsivepostimage {
+            width: 4rem;
+            height: 4rem;
+            font-family: "Lucida Console", "Courier New", monospace;
+        }
+
+        .profilebuttons {
+            font-size: 12.5px;
+            width: 32%;
+        }
+
+        .responsivephotobutton {
+            width: 4%;
+            position: fixed;
+            margin-top: -5%;
+            opacity: 75%;
+        }
+
+        .responsivephotobutton2 {
+            width: 6%;
+            position: fixed;
+            margin-top: -10.5%;
+            opacity: 85%;
+        }
+
+        // 600px //
+        @media only screen and (max-width: 600px) {
+            .responsivepagelogos {
+                margin-left: 30%;
+            }
+
+            .responsivepages {
+                margin-top: -21%;
+                width: 34%;
+
+            }
+
+            .responsivelogo {
+                width: 9%;
+                margin-left: -1.5%;
+            }
+
+            .responsivesearch {
+                width: 125%;
+                margin-left: -12%;
+            }
+
+            .responsivepost {
+                margin-left: 25%;
+            }
+
+            .responsivepostimage {
+                width: 1.5rem;
+                height: 1.5rem;
+                font-family: "Lucida Console", "Courier New", monospace;
+            }
+
+            .responsivepostpp {}
+
+            responsivedropdowncontainer {
+                width: ;
+            }
+
+            .responsivedropdownpp {
+                border-radius: 50%;
+                width: 3.5rem;
+                height: 3.5rem;
+
+            }
+
+            .responsivepostphoto {
+                height: 18rem;
+                width: 100%;
+            }
+
+            .responsivecardpost {
+                width: 200%;
+            }
+
+            .dropdown-content {
+
+                visibility: visible;
+
+
+            }
+
+            .profilebuttons {
+                font-size: 12.5px;
+                width: 48%;
+            }
+        }
+
+        @media only screen and (max-width: 420px) {
+            .responsivepagelogos {
+                margin-left: 7%;
+            }
+
+            .responsivepages {
+                margin-top: -54%;
+                width: 45%;
+
+            }
+
+            .responsivelogo {
+                width: 12%;
+                margin-left: -8.5%;
+            }
+
+            .responsivesearch {
+                width: 165%;
+                margin-left: -40%;
+            }
+
+            .responsivepost {
+                margin-left: 20%;
+            }
+
+            .responsivepostimage {
+                width: 1.5rem;
+                height: 1.5rem;
+                font-family: "Lucida Console", "Courier New", monospace;
+            }
+
+            .responsivepostpp {}
+
+            responsivedropdowncontainer {
+                width: ;
+            }
+
+            .responsivedropdownpp {
+                border-radius: 50%;
+                width: 4rem;
+                height: 4rem;
+
+            }
+
+            .responsivepostphoto {
+                height: 18rem;
+                width: 100%;
+            }
+
+            .responsivecardpost {
+                width: 220%;
+            }
+
+            .dropdown-content {
+
+                visibility: visible;
+
+
+            }
+
+            .profilebuttons {
+                font-size: 12.5px;
+                width: 68%;
+                margin-left: -13%;
+            }
+
+            .responsivephotobutton {
+                width: 16%;
+                position: fixed;
+                margin-top: -15%;
+                opacity: 75%;
+            }
+
+            .responsivephotobutton2 {
+                width: 20%;
+                position: fixed;
+                margin-top: -40%;
+                opacity: 85%;
+            }
+        }
+
+        @media only screen and (max-width: 380px) {
+            .responsivepagelogos {
+                margin-left: 6.5%;
+            }
+
+            .responsivepages {
+                margin-top: -34%;
+                width: 45%;
+
+            }
+
+            .responsivelogo {
+                width: 12%;
+                margin-left: -8.5%;
+            }
+
+            .responsivesearch {
+                width: 165%;
+                margin-left: -40%;
+            }
+
+            .responsivepost {
+                margin-left: 20%;
+            }
+
+            .responsivepostimage {
+                width: 1.5rem;
+                height: 1.5rem;
+                font-family: "Lucida Console", "Courier New", monospace;
+            }
+
+            .responsivepostpp {}
+
+            responsivedropdowncontainer {
+                width: ;
+            }
+
+            .responsivedropdownpp {
+                border-radius: 50%;
+                width: 4rem;
+                height: 4rem;
+
+            }
+
+            .responsivepostphoto {
+                height: 18rem;
+                width: 100%;
+            }
+
+            .responsivecardpost {
+                width: 220%;
+            }
+
+            .dropdown-content {
+
+                visibility: visible;
+
+
+            }
+
+            .profilebuttons {
+                font-size: 12.5px;
+                width: 68%;
+                margin-left: -13%;
+            }
+
+            .responsivephotobutton {
+                width: 16%;
+                position: fixed;
+                margin-top: -15%;
+                opacity: 75%;
+            }
+
+            .responsivephotobutton2 {
+                width: 20%;
+                position: fixed;
+                margin-top: -40%;
+                opacity: 85%;
+            }
         }
     </style>
 </head>
@@ -91,62 +377,65 @@ if (isset($_POST['logout'])) {
 <body class="bg-black">
     <a href="" class="mx-3 mt-2"></a>
     <div><a href="https://egoistsky.free.nf/user"
-            class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
-            style="margin-left:12%;"><img class="border border-black border-3 rounded-circle" style="width: 6%;"
+            class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder "
+            style="margin-left:12%;"><img class="border border-black border-3 rounded-circle responsivelogo" style=""
                 src="astronomy.png" alt="logo"></a></div>
     <div class="position-absolute top-0 start-50 translate-middle mt-4" style="width:33%;">
         <form name="searcher" method="post" action="search.php">
-            <input type="search" id="searchInput" name="search" placeholder="Search..." class="form-control">
+            <input type="search" id="searchInput" name="search" placeholder="Search..."
+                class="form-control responsivesearch">
         </form>
         <div id="searchResults"></div>
     </div>
 
-    <div class="top-50 start-0 translate-middle-y mx-1" style="width:24%;margin-top:1%;position: fixed;">
-        <a href="Reels"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover "
-                style="margin-left: 50%;" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+    <div class="top-50 start-0 translate-middle-y mx-1 responsivepages">
+        <a href="Reels"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos "
+                style="" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Reels"></a>
-        <a href="trends"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="Trends"></a>
-        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+        <a href="trends"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Trends"></a>
+        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
+                style="" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Groups"></a>
-        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
+                style="" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Languages"></a>
-        <a href="information"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+        <a href="information"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="İnformation"></a>
     </div>
-    <div class="position-absolute mt-3 w-25 text-center dropdown end-0" style="top:0;right:0;">
+    <div class="position-absolute mt-3 text-center dropdown end-0 responsivedropdowncontainer" style="top:0;right:0;">
         <a href="profile.php" style="text-decoration:none;font-family:'Courier New', Courier, monospace;">
-            <img <?php echo 'src="' . $profilePhoto . '"' ?> class=" border border-dark border-opacity-25 border-5"
-                alt="123" style="border-radius:50%;width:6.5rem;;height:6.5rem;" />
+            <img <?php echo 'src="' . $profilePhoto . '"' ?>
+                class=" border border-dark border-opacity-25 border-5 responsivedropdownpp" alt="123" style="" />
             <p class="text-light text-center">
                 <?php echo $username; ?>
             </p>
         </a>
-        <a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content"
-                style="font-size:12.5px;width:32%;">Profile</button></a>
+        <a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
+                style="">Profile</button></a>
         <br>
-        <button class="btn btn-outline-light mt-2 dropdown-content"
-            style="font-size:12.5px;width:32%;">Settings</button>
+        <button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Settings</button>
         <br>
         <form method="post" action=""><button type="submit" name="logout"
-                class="btn btn-outline-light mt-2 dropdown-content" style="font-size:12.5px;width:32%;">Logout</button>
+                class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Logout</button>
         </form>
 
     </div>
-    <div class="scrollable-container w-100 mt-1" style="overflow-y:auto;height:40rem;">
+    <div class="scrollable-container w-100 mt-1 responsiveposter" style="overflow-y:auto;height:40rem;">
         <?php
-        $servername = "0";
-        $username = "0";
-        $password = "0";
-        $dbname = "0";
+        $servername = "";
+        $username = "";
+        $password = "";
+        $dbname = "";
 
         try {
             $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
             $postQuery = "SELECT username, photo, description, time FROM post  ORDER BY time DESC";
             $postStmt = $dbh->query($postQuery);
 
@@ -156,22 +445,22 @@ if (isset($_POST['logout'])) {
                     $userStmt = $dbh->query($userQuery);
                     $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
                     echo '
-            <div class="w-25 post" style="margin-left:38%;">
+            <div class="w-25 post responsivepost">
             
-                <div class="card post border border-dark text-white">
+                <div class="card post border border-dark text-white responsivecardpost">
                 <div class="mt-2 mx-2">
-                <a class="text-light h3" style="text-decoration:none;" href="https://egoistsky.free.nf/egoist?username=' . $row["username"] . '"><img src="' . $userRow["profilephoto"] . '" class="rounded-circle mx-1" style="width:4rem;height:4rem;font-family: "Lucida Console", "Courier New", monospace;">' . $row["username"] . '</a>
+                <a class="text-light h3" style="text-decoration:none;" href="https://egoistsky.free.nf/egoist?username=' . $row["username"] . '"><img src="' . $userRow["profilephoto"] . '" class="rounded-circle mx-1 responsivepostimage" style="">' . $row["username"] . '</a>
                 </div>
                 
                 <br>
-                    <img src="data/posts/' . $row["photo"] . '" class="card-img-top" alt="..." style="height:18rem;">
+                    <img src="data/posts/' . $row["photo"] . '" class="card-img-top responsivepostphoto" alt="...">
                     <div class="card-body border border-dark" style="background-color:black;">
                         
 
                         <p class="card-text">' . $row["description"] . '</p>
                         <br>
                         <p class="card-text"><small class="text-white-50">' . $row["time"] . '</small></p>
-                        <input type="image" class="mt-2 imghover" style="width: 10%;" src="sun.png" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
+<input type="image" class="mt-2 imghover like-button" style="width: 10%;" src="sun.png" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
                         <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
                     </div>
                 </div>
@@ -188,11 +477,11 @@ if (isset($_POST['logout'])) {
         <br>
     </div>
     <div>
-        <input type="image" class="top-100 end-0 translate-middle-y mx-3 imghover"
-            style="width:5.5%;position:fixed;margin-top:-5%;opacity:75%;" src="bubble.png">
+        <input type="image" class="top-100 end-0 translate-middle-y mx-4 imghover responsivephotobutton" style=""
+            src="bubble.png">
 
-        <input id="formOpener" type="image" class="top-100 end-0 translate-middle-y mx-3 imghover"
-            style="width:6%;position:fixed;margin-top:-10.5%;opacity:85%;" src="picture.png">
+        <input id="formOpener" type="image"
+            class="top-100 end-0 translate-middle-y mx-3 imghover responsivephotobutton2" style="" src="picture.png">
     </div>
     <div class="w-50 border bg-black rounded-5 light border-dark position-absolute top-50 start-50 translate-middle text-center"
         id="hiddenForm" style="display: none;--bs-bg-opacity: .9;height:74%;">
@@ -254,7 +543,6 @@ if (isset($_POST['logout'])) {
 </html>
 <?php
 include 'connect.php';
-
 if (isset($_POST['search'])) {
     $search = $_POST['search'];
     $query = "SELECT * FROM user WHERE username LIKE '%$search%'";
@@ -263,6 +551,7 @@ if (isset($_POST['search'])) {
     if (!$result) {
         die("Sorgu hatası: " . mysqli_error($connection));
     }
+
     if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
             echo $row['username'] . "<br>";
@@ -272,3 +561,4 @@ if (isset($_POST['search'])) {
     }
 }
 ?>
+-
