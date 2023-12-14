@@ -4,40 +4,45 @@ include 'connect.php';
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
     $username = $_POST['username'];
     $password = $_POST['password'];
 
     try {
-        $stmt = $dbh->prepare("SELECT password FROM user WHERE username = :username");
-        $stmt->bindParam(':username', $username);
-        $stmt->execute();
+        $sql = "SELECT password FROM user WHERE username='$username'";
+        $result = $dbh->query($sql);
 
         if ($result->rowCount() > 0) {
             $row = $result->fetch(PDO::FETCH_ASSOC);
             $stored_hash = $row['password'];
-            $role_sql = "SELECT role FROM role WHERE id = (SELECT id FROM user WHERE username='$username')";
-            $role_result = $dbh->query($role_sql);
 
-            if ($role_result->rowCount() > 0) {
-                $role_row = $role_result->fetch(PDO::FETCH_ASSOC);
-                $user_role = $role_row['role'];
-                switch ($user_role) {
-                    case 'user':
-                        header("Location: https://egoistsky.free.nf/user");
-                        exit();
-                    case 'admin':
-                        header("Location: https://egoistsky.free.nf/admin");
-                        exit();
-                    case 'moderator':
-                        header("Location: https://egoistsky.free.nf/moderator");
-                        exit();
-                    default:
-                        echo "Unknown role for the user.";
-                        break;
+            if (password_verify($password, $stored_hash)) {
+                $_SESSION['username'] = $username;
+                $sql_role = "SELECT role FROM roles WHERE id = (SELECT id FROM user WHERE username='$username')";
+                $result_role = $dbh->query($sql_role);
+
+                if ($result_role->rowCount() > 0) {
+                    $row_role = $result_role->fetch(PDO::FETCH_ASSOC);
+                    $user_role = $row_role['role'];
+                    switch ($user_role) {
+                        case 'user':
+                            header("Location: https://egoistsky.free.nf/user");
+                            break;
+                        case 'admin':
+                            header("Location: https://egoistsky.free.nf/admin");
+                            break;
+                        case 'moderator':
+                            header("Location: https://egoistsky.free.nf/moderator");
+                            break;
+                        default:
+                            echo "Invalid role";
+                            break;
+                    }
+                    exit();
+                } else {
+                    echo "User role not found.";
                 }
             } else {
-                echo "User role not found.";
+                echo "Invalid username or password.";
             }
         } else {
             echo "User not found.";
@@ -46,7 +51,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error: " . $e->getMessage();
     }
 }
-
 ?>
 
 
@@ -64,7 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="icon" type="image/x-icon" href="astronom.ico">
     <link rel="stylesheet" href="style.css">
-    <style></style>
 </head>
 
 <body class="bg-black">
