@@ -62,21 +62,57 @@ if (isset($_SESSION['username'])) {
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="icon" type="image/x-icon" href="astronom.ico">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .searcher {
+            width: 33%;
+        }
+
+        .formander {
+            width: 25%;
+        }
+
+        .logo {
+            width: 6%;
+        }
+
+        .return {
+            margin-top: 12%
+        }
+
+        @media only screen and (max-width: 400px) {
+            .formander {
+                width: 60%;
+            }
+
+            .searcher {
+                width: 60%;
+            }
+
+            .logo {
+                width: 15%;
+                margin-left: -10%;
+            }
+
+            .return {
+                margin-top: 50%
+            }
+        }
+    </style>
 </head>
 
-<body class="informationbg">
+<body class="bg-black">
     <a href="" class="mx-3 mt-2"></a>
     <div><a href="https://egoistsky.free.nf/user"
             class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
-            style="margin-left:12%;"><img class="border border-black border-3 rounded-circle" style="width: 6%;"
+            style="margin-left:12%;"><img class="border border-black border-3 rounded-circle logo" style=""
                 src="astronomy.png" alt="logo"></a></div>
-    <div class="position-absolute top-0 start-50 translate-middle mt-4" style="width:33%;">
+    <div class="position-absolute top-0 start-50 translate-middle mt-4 searcher" style="">
         <form name="searcher" method="post" action="search.php">
             <input type="search" id="searchInput" name="search" placeholder="Search..." class="form-control">
         </form>
         <div id="searchResults"></div>
     </div>
-    <form class="w-25 text-white position-absolute top-50 start-50 translate-middle" action="" method="post">
+    <form class="formander text-white position-absolute top-50 start-50 translate-middle" action="" method="post">
         <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Password</label>
             <input type="password" name="current_password" class="form-control" id="current_password" required>
@@ -91,7 +127,8 @@ if (isset($_SESSION['username'])) {
         </div>
         <button type="submit" name="submit" class="btn btn-success w-100">Save Password</button>
     </form>
-    <a href="edit.php"><button class="btn btn-light w-25 position-absolute top-50 start-50 translate-middle" style="margin-top:12%;">Return To Edit Page</button></a>
+    <a href="edit.php"><button class="btn btn-light position-absolute top-50 start-50 translate-middle return"
+            style=";">Return To Edit Page</button></a>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
     integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
