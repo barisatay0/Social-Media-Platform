@@ -4,22 +4,40 @@ include 'connect.php';
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     $username = $_POST['username'];
     $password = $_POST['password'];
 
     try {
-        $sql = "SELECT password FROM user WHERE username='$username'";
-        $result = $dbh->query($sql);
+        $stmt = $dbh->prepare("SELECT password FROM user WHERE username = :username");
+        $stmt->bindParam(':username', $username);
+        $stmt->execute();
 
         if ($result->rowCount() > 0) {
             $row = $result->fetch(PDO::FETCH_ASSOC);
             $stored_hash = $row['password'];
-            if (password_verify($password, $stored_hash)) {
-                $_SESSION['username'] = $username;
-                header("Location: https://egoistsky.free.nf/user");
-                exit();
+            $role_sql = "SELECT role FROM role WHERE id = (SELECT id FROM user WHERE username='$username')";
+            $role_result = $dbh->query($role_sql);
+
+            if ($role_result->rowCount() > 0) {
+                $role_row = $role_result->fetch(PDO::FETCH_ASSOC);
+                $user_role = $role_row['role'];
+                switch ($user_role) {
+                    case 'user':
+                        header("Location: https://egoistsky.free.nf/user");
+                        exit();
+                    case 'admin':
+                        header("Location: https://egoistsky.free.nf/admin");
+                        exit();
+                    case 'moderator':
+                        header("Location: https://egoistsky.free.nf/moderator");
+                        exit();
+                    default:
+                        echo "Unknown role for the user.";
+                        break;
+                }
             } else {
-                echo "Invalid username or password.";
+                echo "User role not found.";
             }
         } else {
             echo "User not found.";
@@ -28,6 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error: " . $e->getMessage();
     }
 }
+
 ?>
 
 
@@ -45,10 +64,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="icon" type="image/x-icon" href="astronom.ico">
     <link rel="stylesheet" href="style.css">
+    <style></style>
 </head>
 
-<body class="grad" style="background-image: url(ngtsky.jpg);
-    background-size: cover;">
+<body class="bg-black">
     <a href="https://egoistsky.free.nf" class="start-50 top-25 mt-5 text-center position-absolute translate-middle"><img
             src="astronomy.png" class="border border-black rounded-circle border-3 mt-5" style="width:16%;"></a>
     <form class="w-25 text-white position-absolute top-50 start-50 translate-middle" method="post">
