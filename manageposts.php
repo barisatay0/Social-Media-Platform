@@ -4,25 +4,26 @@ include 'connect.php';
 
 if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
+    $currentDate = date('Y-m-d');
 
     try {
         $query = "SELECT * FROM user WHERE username = :username";
         $stmt = $dbh->prepare($query);
         $stmt->bindParam(':username', $username);
         $stmt->execute();
-
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $totalLoginsQuery = "SELECT COUNT(*) AS total_logins FROM user_logs";
+        $stmtTotalLogins = $dbh->prepare($totalLoginsQuery);
+        $stmtTotalLogins->execute();
+        $totalLogins = $stmtTotalLogins->fetch(PDO::FETCH_ASSOC)['total_logins'];
+        
+        $todayLoginsQuery = "SELECT COUNT(*) AS today_logins FROM user_logs WHERE DATE(login_time) = :currentDate";
+        $stmtTodayLogins = $dbh->prepare($todayLoginsQuery);
+        $stmtTodayLogins->bindParam(':currentDate', $currentDate);
+        $stmtTodayLogins->execute();
+        $todayLogins = $stmtTodayLogins->fetch(PDO::FETCH_ASSOC)['today_logins'];
         if ($row) {
             $profilePhoto = $row['profilephoto'];
-            $queryUserRole = "SELECT role FROM roles WHERE id = :id";
-            $stmtUserRole = $dbh->prepare($queryUserRole);
-            $stmtUserRole->bindParam(':id', $row['id']); 
-            $stmtUserRole->execute();
-            $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
-            if ($userRole !== 'admin') {
-                header("Location:user.php");
-                exit();
-            }
         } else {
             echo "Data not found or connection error";
         }
@@ -30,50 +31,36 @@ if (isset($_SESSION['username'])) {
         echo "Bağlantı Hatası: " . $e->getMessage();
     }
 } else {
-    header("Location:login.php");
+    header("Location: login");
     exit();
 }
-
 if (isset($_POST['logout'])) {
     session_unset();
     session_destroy();
     header("Location: index.php");
     exit();
 }
-$queryUsers = "SELECT COUNT(*) as userCount FROM roles WHERE role = 'user'";
-$stmtUsers = $dbh->prepare($queryUsers);
-$stmtUsers->execute();
-$userCount = $stmtUsers->fetch(PDO::FETCH_ASSOC)['userCount'];
-
-$queryAdmins = "SELECT COUNT(*) as adminCount FROM roles WHERE role = 'admin'";
-$stmtAdmins = $dbh->prepare($queryAdmins);
-$stmtAdmins->execute();
-$adminCount = $stmtAdmins->fetch(PDO::FETCH_ASSOC)['adminCount'];
 
 
-$queryModerators = "SELECT COUNT(*) as moderatorCount FROM roles WHERE role = 'moderator'";
-$stmtModerators = $dbh->prepare($queryModerators);
-$stmtModerators->execute();
-$moderatorCount = $stmtModerators->fetch(PDO::FETCH_ASSOC)['moderatorCount'];
+// Kullanıcının rolünü almak için kullanıcı ID'sini belirle
+$userId = $row['id'];
 
-$queryPosts = "SELECT COUNT(*) as postCount FROM post";
-$stmtPosts = $dbh->prepare($queryPosts);
-$stmtPosts->execute();
-$postCount = $stmtPosts->fetch(PDO::FETCH_ASSOC)['postCount'];
-
-$queryUsersData = "SELECT * FROM user";
-$stmtUsersData = $dbh->prepare($queryUsersData);
-$stmtUsersData->execute();
-$usersData = $stmtUsersData->fetchAll(PDO::FETCH_ASSOC);
-
-// Belirli bir kullanıcının rolünü al
 $queryUserRole = "SELECT role FROM roles WHERE id = :id";
 $stmtUserRole = $dbh->prepare($queryUserRole);
 $stmtUserRole->bindParam(':id', $userId);
 $stmtUserRole->execute();
 $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
 
+// Eğer kullanıcı admin değilse, başka bir sayfaya yönlendir
+if ($userRole !== 'admin') {
+    header("Location:user.php");
+    exit();
+}
 
+$userLogsQuery = "SELECT * FROM user_logs";
+$stmtUserLogs = $dbh->prepare($userLogsQuery);
+$stmtUserLogs->execute();
+$userLogs = $stmtUserLogs->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 
@@ -430,93 +417,79 @@ $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
             <img <?php echo 'src="' . $profilePhoto . '"' ?>
                 class=" border border-dark border-opacity-25 border-5 responsivedropdownpp" alt="123" style="" />
             <p class="text-light text-center">
-               Admin Name : <?php echo $username; ?>
+                Admin Name :
+                <?php echo $username; ?>
             </p>
         </a>
         <a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
                 style="">Profile</button></a>
+
         <br>
-         <a href="admin.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
-                style="">Admin Page</button></a><br>
+        <a href="admin.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Admin
+                Page</button></a><br>
         <button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Settings</button>
         <br>
-           
-                 <a href="manageposts.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
+        <a href="manageposts.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
                 style="">Posts</button></a><br>
-                 <a href="login_logs.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
+        <a href="login_logs.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
                 style="">Login Logs</button></a><br>
         <form method="post" action=""><button type="submit" name="logout"
-       
                 class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Logout</button>
         </form>
 
     </div>
-    <div class="text-center" style="margin-left:10%;width:67%;">
-    <table class="table table-hover" style="">
-    <h5 class="h3 text-white">Statistics of Users</h5>
-  <tr>
-    <th>Admin Number</th>
-    <th>Moderator Number</th>
-    <th>User Number</th>
-    <th>Post Number</th>
-  </tr>
-  <tr>
-   <td><?php echo $adminCount; ?></td>
-            <td><?php echo $moderatorCount; ?></td>
-            <td><?php echo $userCount; ?></td>
-            <td><?php echo $postCount; ?></td>
-  </tr>
-</table>
-<br>
-    <h5 class="h3 text-white">Manage Users</h5>
- <table class="table table-hover" style="">
-  <tr>
-    <th>id</th>
-    <th>Username</th>
-    <th>Email</th>
-    <th>firstname</th>
-    <th>lastname</th>
-    <th>Delete User</th>
-    <th>Role</th>
-    <th>Ban</th>
-  </tr>
-  <tr>
-     <?php foreach ($usersData as $user) :
-    $rolesQuery = "SELECT role FROM roles WHERE id = :id";
-$stmtRoles = $dbh->prepare($rolesQuery);
-$stmtRoles->bindParam(':id', $user['id']);
-$stmtRoles->execute();
-$userRole = $stmtRoles->fetch(PDO::FETCH_ASSOC)['role'];
- ?>
-     
-        <tr>
-            <td><?php echo $user['id']; ?></td>
-            <td><a href="https://egoistsky.free.nf/egoist?username=<?php echo $user['username']; ?>"><?php echo $user['username']; ?></a></td>
-            <td><?php echo $user['email']; ?></td>
-            <td><?php echo $user['firstname']; ?></td>
-            <td><?php echo $user['lastname']; ?></td>
-            <form method="post" action="">
-             <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
-            <td><button name="delete" class="btn btn-outline-danger">Delete</button></td>
-            </form>
-            <form method="post" action="">
-        <td>
-      <div class="input-group mt-1">
-       <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
-  <input type="text" class="form-control" placeholder=""  value="<?php echo $userRole ?>" class="form-control" name="newRole" placeholder="New Role" aria-label="New Role" aria-describedby="button-addon1">
-  <button class="btn btn-outline-warning" name="editRole" type="submit" id="button-addon1">Edit Role</button>
-</div>
-            </td>
-            </form>
-              <form method="post" action="">
-             <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
-            <td><button type="submit" name="Ban" class="btn btn-outline-danger">Ban</button>
-            <button type="submit" name="UnBan" class="btn btn-outline-primary">Un Ban</button></td>
-            </form>
-        </tr>
-    <?php endforeach; ?>
-</table>
-</div>
+    <div class="scrollable-container w-100 mt-1 responsiveposter" style="overflow-y:auto;height:40rem;">
+        <?php
+        $servername = "sql203.infinityfree.com";
+        $username = "if0_35435711";
+        $password = "hrtPcoQHzpRSu";
+        $dbname = "if0_35435711_users";
+
+        try {
+            $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $postQuery = "SELECT username, photo, description, time FROM post  ORDER BY time DESC";
+            $postStmt = $dbh->query($postQuery);
+
+            if ($postStmt) {
+                while ($row = $postStmt->fetch(PDO::FETCH_ASSOC)) {
+                    $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
+                    $userStmt = $dbh->query($userQuery);
+                    $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
+                    echo '
+            <div class="w-25 post responsivepost">
+            
+                <div class="card post border border-dark text-white responsivecardpost">
+                <div class="mt-2 mx-2">
+                <a class="text-light h3" style="text-decoration:none;" href="https://egoistsky.free.nf/egoist?username=' . $row["username"] . '"><img src="' . $userRow["profilephoto"] . '" class="rounded-circle mx-1 responsivepostimage" style="">' . $row["username"] . '</a>
+                </div>
+                
+                <br>
+                    <img src="data/posts/' . $row["photo"] . '" class="card-img-top responsivepostphoto" alt="...">
+                    <div class="card-body border border-dark" style="background-color:black;">
+                        
+
+                        <p class="card-text">' . $row["description"] . '</p>
+                        <br>
+                        <p class="card-text"><small class="text-white-50">' . $row["time"] . '</small></p>
+                        <form method="post" action="">
+                        <button type="submit" name="deleteButton" class="btn btn-outline-danger mt-1 w-100">Delete Post</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <br>';
+                }
+            } else {
+                echo "Veri bulunamadı";
+            }
+        } catch (PDOException $e) {
+            echo "Bağlantı hatası: " . $e->getMessage();
+        }
+        ?>
+        <br>
+    </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
     integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -528,52 +501,5 @@ $userRole = $stmtRoles->fetch(PDO::FETCH_ASSOC)['role'];
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
+
 </html>
-<?php
-if (isset($_POST['delete'])) {
-    $userId = $_POST['id'];
-
-    $deleteUserRoleQuery = "DELETE FROM roles WHERE id = :id";
-    $stmtDeleteUserRole = $dbh->prepare($deleteUserRoleQuery);
-    $stmtDeleteUserRole->bindParam(':id', $userId);
-    $stmtDeleteUserRole->execute();
-
-    $deleteUserQuery = "DELETE FROM user WHERE id = :id";
-    $stmtDeleteUser = $dbh->prepare($deleteUserQuery);
-    $stmtDeleteUser->bindParam(':id', $userId);
-    $stmtDeleteUser->execute();
-    header("Location: current_page.php"); 
-    exit();
-}
-if (isset($_POST['editRole'])) {
-    $userId = $_POST['id'];
-    $newRole = $_POST['newRole'];
-
-    $updateRoleQuery = "UPDATE roles SET role = :newRole WHERE id = :id";
-    $stmtUpdateRole = $dbh->prepare($updateRoleQuery);
-    $stmtUpdateRole->bindParam(':newRole', $newRole);
-    $stmtUpdateRole->bindParam(':id', $userId);
-    $stmtUpdateRole->execute();
-    header("Location: current_page.php");
-    exit();
-}
-if (isset($_POST['Ban'])) {
-    $userId = $_POST['id'];
-
-    $banUserQuery = "UPDATE user SET banned = true WHERE id = :id";
-    $stmtBanUser = $dbh->prepare($banUserQuery);
-    $stmtBanUser->bindParam(':id', $userId);
-    $stmtBanUser->execute();
-} elseif (isset($_POST['UnBan'])) {
-    $userId = $_POST['id'];
-
-    $unbanUserQuery = "UPDATE user SET banned = false WHERE id = :id";
-    $stmtUnbanUser = $dbh->prepare($unbanUserQuery);
-    $stmtUnbanUser->bindParam(':id', $userId);
-    $stmtUnbanUser->execute();
-
-    header("Location: current_page.php");
-    exit();
-}
-
-?>
