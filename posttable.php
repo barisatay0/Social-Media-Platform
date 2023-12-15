@@ -42,7 +42,6 @@ if (isset($_POST['logout'])) {
 }
 
 
-// Kullanıcının rolünü almak için kullanıcı ID'sini belirle
 $userId = $row['id'];
 
 $queryUserRole = "SELECT role FROM roles WHERE id = :id";
@@ -51,8 +50,7 @@ $stmtUserRole->bindParam(':id', $userId);
 $stmtUserRole->execute();
 $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
 
-// Eğer kullanıcı admin değilse, başka bir sayfaya yönlendir
-if ($userRole !== 'admin') {
+if ($userRole !== 'admin' && $userRole !== 'moderator') {
     header("Location:user.php");
     exit();
 }
@@ -417,7 +415,7 @@ $userLogs = $stmtUserLogs->fetchAll(PDO::FETCH_ASSOC);
             <img <?php echo 'src="' . $profilePhoto . '"' ?>
                 class=" border border-dark border-opacity-25 border-5 responsivedropdownpp" alt="123" style="" />
             <p class="text-light text-center">
-                Admin Name :
+                Moderator Name :
                 <?php echo $username; ?>
             </p>
         </a>
@@ -427,69 +425,47 @@ $userLogs = $stmtUserLogs->fetchAll(PDO::FETCH_ASSOC);
         <br>
         <a href="admin.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Admin
                 Page</button></a><br>
-        <button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Settings</button>
-        <br>
-        <a href="manageposts.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
-                style="">Posts</button></a><br>
-        <a href="login_logs.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
-                style="">Login Logs</button></a><br>
+        <a href="moderator.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Moderator
+                Page</button></a><br>
         <form method="post" action=""><button type="submit" name="logout"
                 class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Logout</button>
         </form>
 
     </div>
-    <div class="scrollable-container w-100 mt-1 responsiveposter" style="overflow-y:auto;height:40rem;">
-        <?php
-        $servername = "sql203.infinityfree.com";
-        $username = "if0_35435711";
-        $password = "hrtPcoQHzpRSu";
-        $dbname = "if0_35435711_users";
+   <table class="table w-50 text-light position-absolute translate-middle start-50">
+        <thead>
+            <tr>
+                <th scope="col">Photo</th>
+                <th scope="col">Description</th>
+                <th scope="col">Username</th>
+                <th scope="col">Time</th>
+                <th scope="col">Delete Post</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $postQuery = "SELECT * FROM post";
+            $stmtPosts = $dbh->prepare($postQuery);
+            $stmtPosts->execute();
+            $posts = $stmtPosts->fetchAll(PDO::FETCH_ASSOC);
 
-        try {
-            $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-            $postQuery = "SELECT username, photo, description, time FROM post  ORDER BY time DESC";
-            $postStmt = $dbh->query($postQuery);
-
-            if ($postStmt) {
-                while ($row = $postStmt->fetch(PDO::FETCH_ASSOC)) {
-                    $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
-                    $userStmt = $dbh->query($userQuery);
-                    $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
-                    echo '
-            <div class="w-25 post responsivepost">
-            
-                <div class="card post border border-dark text-white responsivecardpost">
-                <div class="mt-2 mx-2">
-                <a class="text-light h3" style="text-decoration:none;" href="https://egoistsky.free.nf/egoist?username=' . $row["username"] . '"><img src="' . $userRow["profilephoto"] . '" class="rounded-circle mx-1 responsivepostimage" style="">' . $row["username"] . '</a>
-                </div>
-                
-                <br>
-                    <img src="data/posts/' . $row["photo"] . '" class="card-img-top responsivepostphoto" alt="...">
-                    <div class="card-body border border-dark" style="background-color:black;">
-                        
-
-                        <p class="card-text">' . $row["description"] . '</p>
-                        <br>
-                        <p class="card-text"><small class="text-white-50">' . $row["time"] . '</small></p>
-                        <form method="post" action="">
-                        <button type="submit" name="deleteButton" class="btn btn-outline-danger mt-1 w-100">Delete Post</button>
+            foreach ($posts as $post) {
+                echo '<tr>';
+                echo '<td class="w-25"><img class="w-75" src="data/posts/' . $post['photo'] . '" alt="Post Photo"></td>';
+                echo '<td>' . $post['description'] . '</td>';
+                echo '<td>' . $post['username'] . '</td>';
+                echo '<td>' . $post['time'] . '</td>';
+                echo '<td>
+                        <form action="" method="post">
+                            <input type="hidden" name="postid" value="' . $post['postid'] . '">
+                            <button class="btn btn-danger" type="submit" name="deleteButton">Delete Post</button>
                         </form>
-                    </div>
-                </div>
-            </div>
-            <br>';
-                }
-            } else {
-                echo "Veri bulunamadı";
+                    </td>';
+                echo '</tr>';
             }
-        } catch (PDOException $e) {
-            echo "Bağlantı hatası: " . $e->getMessage();
-        }
-        ?>
-        <br>
-    </div>
+            ?>
+        </tbody>
+    </table>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
     integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -503,3 +479,34 @@ $userLogs = $stmtUserLogs->fetchAll(PDO::FETCH_ASSOC);
 </script>
 
 </html>
+<?php
+if (isset($_POST['deleteButton'])) {
+    $postId = $_POST['postid'];
+
+
+    $getPhotoQuery = "SELECT photo FROM post WHERE postid = :postid";
+    $stmtGetPhoto = $dbh->prepare($getPhotoQuery);
+    $stmtGetPhoto->bindParam(':postid', $postId);
+    $stmtGetPhoto->execute();
+    $photoName = $stmtGetPhoto->fetch(PDO::FETCH_ASSOC)['photo'];
+
+  
+    $photoPath = 'data/posts/' . $photoName;
+    if (file_exists($photoPath)) {
+        unlink($photoPath); 
+    }
+
+ 
+    $deleteQuery = "DELETE FROM post WHERE postid = :postid";
+    $stmtDelete = $dbh->prepare($deleteQuery);
+    $stmtDelete->bindParam(':postid', $postId);
+    
+   
+    if ($stmtDelete->execute()) {
+        echo '<script>alert("Post successfully deleted!");</script>';
+    } else {
+        echo '<script>alert("Failed to delete post!");</script>'; 
+    }
+}
+?>
+
