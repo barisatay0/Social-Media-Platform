@@ -425,56 +425,32 @@ if (isset($_POST['logout'])) {
         </form>
 
     </div>
-    <div class="scrollable-container w-100 mt-1 responsiveposter" style="overflow-y:auto;height:40rem;">
+    <div class="border border-light position-absolute translate-middle start-50 top-50" style="width:50%;height:50%;">
         <?php
-        $servername = "";
-        $username = "";
-        $password = "";
-        $dbname = "";
+        $url = 'https://newsapi.org/v2/everything?q=apple&from=2023-12-14&to=2023-12-14&sortBy=popularity&apiKey=';
 
-        try {
-            $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $response = file_get_contents($url);
 
-            $postQuery = "SELECT username, photo, description, time FROM post  ORDER BY time DESC";
-            $postStmt = $dbh->query($postQuery);
+        if ($response !== false) {
+            $newsData = json_decode($response, true);
 
-            if ($postStmt) {
-                while ($row = $postStmt->fetch(PDO::FETCH_ASSOC)) {
-                    $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
-                    $userStmt = $dbh->query($userQuery);
-                    $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
-                    echo '
-            <div class="w-25 post responsivepost">
-            
-                <div class="card post border border-dark text-white responsivecardpost">
-                <div class="mt-2 mx-2">
-                <a class="text-light h3" style="text-decoration:none;" href="https://egoistsky.free.nf/egoist?username=' . $row["username"] . '"><img src="' . $userRow["profilephoto"] . '" class="rounded-circle mx-1 responsivepostimage" style="">' . $row["username"] . '</a>
-                </div>
-                
-                <br>
-                    <img src="data/posts/' . $row["photo"] . '" class="card-img-top responsivepostphoto" alt="...">
-                    <div class="card-body border border-dark" style="background-color:black;">
-                        
+            if ($newsData['status'] === 'ok') {
+                $articles = $newsData['articles'];
 
-                        <p class="card-text">' . $row["description"] . '</p>
-                        <br>
-                        <p class="card-text"><small class="text-white-50">' . $row["time"] . '</small></p>
-<input type="image" class="mt-2 imghover like-button" style="width: 10%;" src="sun.png" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
-                        <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
-                    </div>
-                </div>
-            </div>
-            <br>';
+                foreach ($articles as $article) {
+                    $title = $article['title'];
+                    $description = $article['description'];
+                    echo '<h2>' . $title . '</h2>';
+                    echo '<p>' . $description . '</p>';
                 }
             } else {
-                echo "Data not found";
+                echo '<p class="text-white">News Doesnt Find</p>';
             }
-        } catch (PDOException $e) {
-            echo "Connect Error: " . $e->getMessage();
+        } else {
+            echo '<p class="text-white">API Doesnt Connect!</p>';
         }
         ?>
-        <br>
+
     </div>
     <div>
         <input type="image" class="top-100 end-0 translate-middle-y mx-4 imghover responsivephotobutton" style=""
@@ -527,7 +503,7 @@ if (isset($_POST['logout'])) {
                 searchResults.innerHTML = data;
             })
             .catch(error => {
-                console.error('Arama hatası:', error);
+                console.error('Search Error:', error);
             });
     });
 </script>

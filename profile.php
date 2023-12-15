@@ -252,9 +252,10 @@ try {
 
     </div>
     <div class="top-50 start-0 translate-middle-y mx-1 pagebuttons" style="">
-        <a href="Reels.php"><img
+        <a href="Explore.php"><img
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover pagebuttonsonly" style=""
-                src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Reels"></a>
+                src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Explore"></a>
         <a href="trends.php"><img
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover pagebuttonsonly" style=""
                 src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Trends"></a>
