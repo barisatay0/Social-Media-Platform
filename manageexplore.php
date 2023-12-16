@@ -48,19 +48,19 @@ $stmtUsers = $dbh->prepare($queryUsers);
 $stmtUsers->execute();
 $userCount = $stmtUsers->fetch(PDO::FETCH_ASSOC)['userCount'];
 
-
+// Admin sayısını al
 $queryAdmins = "SELECT COUNT(*) as adminCount FROM roles WHERE role = 'admin'";
 $stmtAdmins = $dbh->prepare($queryAdmins);
 $stmtAdmins->execute();
 $adminCount = $stmtAdmins->fetch(PDO::FETCH_ASSOC)['adminCount'];
 
-
+// Moderator sayısını al
 $queryModerators = "SELECT COUNT(*) as moderatorCount FROM roles WHERE role = 'moderator'";
 $stmtModerators = $dbh->prepare($queryModerators);
 $stmtModerators->execute();
 $moderatorCount = $stmtModerators->fetch(PDO::FETCH_ASSOC)['moderatorCount'];
 
-
+// Post sayısını al
 $queryPosts = "SELECT COUNT(*) as postCount FROM post";
 $stmtPosts = $dbh->prepare($queryPosts);
 $stmtPosts->execute();
@@ -71,7 +71,7 @@ $stmtUsersData = $dbh->prepare($queryUsersData);
 $stmtUsersData->execute();
 $usersData = $stmtUsersData->fetchAll(PDO::FETCH_ASSOC);
 
-
+// Belirli bir kullanıcının rolünü al
 $queryUserRole = "SELECT role FROM roles WHERE id = :id";
 $stmtUserRole = $dbh->prepare($queryUserRole);
 $stmtUserRole->bindParam(':id', $userId);
@@ -79,18 +79,18 @@ $stmtUserRole->execute();
 $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
+    // Diğer form verilerini al
     $head = $_POST['head'];
     $content = $_POST['content'];
     $url = $_POST['url'];
 
-
+    // Dosyayı yükleme işlemi
     $targetDirectory = "data/explore/";
     $targetFile = $targetDirectory . basename($_FILES["file"]["name"]);
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
-
+    // Dosya türünü kontrol et
     if (
         $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
         && $imageFileType != "gif"
@@ -99,13 +99,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $uploadOk = 0;
     }
 
-
+    // Dosyayı sunucuya kaydet
     if ($uploadOk == 0) {
         echo "Dosyanız yüklenemedi.";
     } else {
         if (move_uploaded_file($_FILES["file"]["tmp_name"], $targetFile)) {
             echo "Dosya " . htmlspecialchars(basename($_FILES["file"]["name"])) . " başarıyla yüklendi.";
 
+            // Veritabanına ekleme işlemi
+            // Bu kısımda $targetFile değişkenini veritabanına kaydedebilirsiniz
+
+            // Örnek olarak, veritabanı sorgusu hazırlama
             $query = "INSERT INTO explore (photo, head, content, url) VALUES (:photo, :head, :content, :url)";
             $stmt = $dbh->prepare($query);
             $stmt->bindParam(':photo', $targetFile);
@@ -128,13 +132,16 @@ $exploreData = $stmtExplore->fetchAll(PDO::FETCH_ASSOC);
 if (isset($_POST['delete_explore'])) {
     $explore_id = $_POST['explore_id'];
 
-
+    // Veritabanından ilgili keşfet içeriğini silme sorgusu
     $deleteQuery = "DELETE FROM explore WHERE id = :explore_id";
     $stmt = $dbh->prepare($deleteQuery);
     $stmt->bindParam(':explore_id', $explore_id);
     $stmt->execute();
 
+    // Eğer fotoğrafı da silmek istiyorsanız, o dosyayı da silebilirsiniz
+    // unlink($explore['photo']); // Bu satır, ilgili dosyayı siler
 
+    // Silme işleminden sonra sayfayı yeniden yükleme veya başka bir işlem yapabilirsiniz
     header("Location: success.php");
     exit();
 }
@@ -502,13 +509,17 @@ if (isset($_POST['delete_explore'])) {
         <a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
                 style="">Profile</button></a>
         <br>
+        <a href="admin.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Admin
+                Page</button></a>
+        <br>
+        <a href="moderator.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
+                style="">moderator Page</button></a>
+        <br>
         <a href="manageexplore.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
                 style="">Manage Explore</button></a>
         <br>
         <a href="posttable.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Post
                 Table</button></a>
-        <br>
-        <button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Settings</button>
         <br>
         <form method="post" action=""><button type="submit" name="logout"
                 class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Logout</button>

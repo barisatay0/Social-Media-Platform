@@ -29,14 +29,12 @@ if (isset($_SESSION['username'])) {
             margin-right: 16%;
             margin-top: -6%;
             scrollbar-width: thin;
-
             scrollbar-color: transparent transparent;
-
         }
 
         .scrollable-container::-webkit-scrollbar {
             width: 6px;
- 
+
         }
 
         .scrollable-container::-webkit-scrollbar-thumb {
@@ -71,9 +69,10 @@ if (isset($_SESSION['username'])) {
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
                 src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Random Match"></a>
-        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
-                style="" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="Groups"></a>
+        <a href="following.php"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Following"></a>
         <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
                 style="" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Languages"></a>
@@ -84,10 +83,10 @@ if (isset($_SESSION['username'])) {
     </div>
     <div class="scrollable-container w-100 mt-1" style="overflow-y:auto;height:40rem;">
         <?php
-        $servername = "";
-        $username = "";
-        $password = "";
-        $dbname = "";
+        $servername = "sql203.infinityfree.com";
+        $username = "if0_35435711";
+        $password = "hrtPcoQHzpRSu";
+        $dbname = "if0_35435711_users";
 
         try {
             $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -99,9 +98,11 @@ if (isset($_SESSION['username'])) {
 
             if ($postStmt) {
                 while ($row = $postStmt->fetch(PDO::FETCH_ASSOC)) {
+
                     $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
                     $userStmt = $dbh->query($userQuery);
                     $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
+
 
                     echo '
             <div class="w-25 post" style="margin-left:38%;">
@@ -152,9 +153,10 @@ if (isset($_SESSION['username'])) {
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
 
- 
+
     searchInput.addEventListener('input', function () {
-        const searchValue = this.value; 
+        const searchValue = this.value;
+
 
         if (searchValue === '') {
             searchResults.innerHTML = '';

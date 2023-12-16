@@ -532,9 +532,10 @@ if (isset($_POST['logout'])) {
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
                 src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Random Match"></a>
-        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
-                style="" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="Groups"></a>
+        <a href="following.php"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Following"></a>
         <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
                 style="" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Languages"></a>
@@ -567,7 +568,6 @@ if (isset($_POST['logout'])) {
         modalImg.src = img.src;
     }
 
-
     function closeModal() {
         var modal = document.getElementById('myModal');
         modal.style.display = 'none';
@@ -578,12 +578,12 @@ if (isset($_POST['logout'])) {
 session_start();
 include 'connect.php';
 
+// Diğer kodlar...
 
 if (isset($_POST['follow'])) {
     $clickedUsername = $_GET['username'];
 
     try {
-
         $query_follow = "SELECT followers FROM user WHERE username = :username";
         $stmt_follow = $dbh->prepare($query_follow);
         $stmt_follow->bindParam(':username', $clickedUsername);
@@ -592,7 +592,6 @@ if (isset($_POST['follow'])) {
         $row = $stmt_follow->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             $followers = $row['followers'];
-
 
             $followersArray = explode(',', $followers);
             if (!in_array($loggedInUsername, $followersArray)) {
@@ -605,9 +604,7 @@ if (isset($_POST['follow'])) {
             $stmt_update->bindParam(':username', $clickedUsername);
             $stmt_update->execute();
 
-
             header("Location:https://egoistsky.free.nf/egoist?username=$clickedusername");
-
 
             $query_following = "SELECT following FROM user WHERE username = :username";
             $stmt_following = $dbh->prepare($query_following);
@@ -641,7 +638,6 @@ if (isset($_POST['unfollow'])) {
     $clickedUsername = $_GET['username'];
 
     try {
-
         $query_follow = "SELECT followers FROM user WHERE username = :username";
         $stmt_follow = $dbh->prepare($query_follow);
         $stmt_follow->bindParam(':username', $clickedUsername);
@@ -695,6 +691,11 @@ if (isset($_POST['unfollow'])) {
         echo "Bağlantı Hatası: " . $e->getMessage();
     }
 }
+
+// Diğer kodlar devam eder...
+
+// Diğer kodlar devam eder...
+
 ?>
 
 </html>

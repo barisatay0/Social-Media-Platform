@@ -402,9 +402,10 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
                 src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Random Match"></a>
-        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
-                style="" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="Groups"></a>
+        <a href="following.php"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Following"></a>
         <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
                 style="" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Languages"></a>
@@ -527,7 +528,7 @@ if (isset($_POST['search'])) {
             echo $row['username'] . "<br>";
         }
     } else {
-        echo "Kullanıcı bulunamadı.";
+        echo "User not found.";
     }
 }
 ?>

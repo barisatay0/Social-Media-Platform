@@ -15,6 +15,7 @@ if (isset($_SESSION['username'])) {
         if ($row) {
             $profilePhoto = $row['profilephoto'];
 
+
             $queryUserRole = "SELECT role FROM roles WHERE id = :id";
             $stmtUserRole = $dbh->prepare($queryUserRole);
             $stmtUserRole->bindParam(':id', $row['id']);
@@ -57,7 +58,6 @@ $queryModerators = "SELECT COUNT(*) as moderatorCount FROM roles WHERE role = 'm
 $stmtModerators = $dbh->prepare($queryModerators);
 $stmtModerators->execute();
 $moderatorCount = $stmtModerators->fetch(PDO::FETCH_ASSOC)['moderatorCount'];
-
 
 $queryPosts = "SELECT COUNT(*) as postCount FROM post";
 $stmtPosts = $dbh->prepare($queryPosts);
@@ -439,8 +439,8 @@ $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
         <a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
                 style="">Profile</button></a>
         <br>
-        <a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Manage
-                Explore</button></a>
+        <a href="manageexplore.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
+                style="">Manage Explore</button></a>
         <br>
         <a href="posttable.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Post
                 Table</button></a>
@@ -542,7 +542,6 @@ if (isset($_POST['editRole'])) {
     $userId = $_POST['id'];
     $newRole = $_POST['newRole'];
 
-
     $updateRoleQuery = "UPDATE roles SET role = :newRole WHERE id = :id";
     $stmtUpdateRole = $dbh->prepare($updateRoleQuery);
     $stmtUpdateRole->bindParam(':newRole', $newRole);
@@ -555,7 +554,6 @@ if (isset($_POST['editRole'])) {
 }
 if (isset($_POST['Ban'])) {
     $userId = $_POST['id'];
-
 
     $banUserQuery = "UPDATE user SET banned = true WHERE id = :id";
     $stmtBanUser = $dbh->prepare($banUserQuery);

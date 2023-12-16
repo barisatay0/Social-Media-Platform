@@ -266,9 +266,10 @@ try {
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover pagebuttonsonly" style=""
                 src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Random Match"></a>
-        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover pagebuttonsonly"
-                style="" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="Groups"></a>
+        <a href="following.php"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover pagebuttonsonly" style=""
+                src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Following"></a>
         <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover pagebuttonsonly"
                 style="" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Languages"></a>
@@ -305,11 +306,9 @@ try {
             modalImg.src = this.src;
             modalImg.dataset.photo = this.getAttribute('data-photo');
 
-
             deleteButton.name = this.getAttribute('data-photo');
         });
     }
-
 
     var span = document.getElementsByClassName('close')[0];
     span.onclick = function () {
@@ -337,7 +336,6 @@ if (isset($_POST['delete'])) {
         if (file_exists($filePath)) {
             unlink($filePath);
         }
-
 
         echo '<script>window.location.replace("profile.php");</script>';
         exit();
