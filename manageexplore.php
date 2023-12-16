@@ -48,10 +48,12 @@ $stmtUsers = $dbh->prepare($queryUsers);
 $stmtUsers->execute();
 $userCount = $stmtUsers->fetch(PDO::FETCH_ASSOC)['userCount'];
 
+
 $queryAdmins = "SELECT COUNT(*) as adminCount FROM roles WHERE role = 'admin'";
 $stmtAdmins = $dbh->prepare($queryAdmins);
 $stmtAdmins->execute();
 $adminCount = $stmtAdmins->fetch(PDO::FETCH_ASSOC)['adminCount'];
+
 
 $queryModerators = "SELECT COUNT(*) as moderatorCount FROM roles WHERE role = 'moderator'";
 $stmtModerators = $dbh->prepare($queryModerators);
@@ -69,12 +71,73 @@ $stmtUsersData = $dbh->prepare($queryUsersData);
 $stmtUsersData->execute();
 $usersData = $stmtUsersData->fetchAll(PDO::FETCH_ASSOC);
 
+
 $queryUserRole = "SELECT role FROM roles WHERE id = :id";
 $stmtUserRole = $dbh->prepare($queryUserRole);
 $stmtUserRole->bindParam(':id', $userId);
 $stmtUserRole->execute();
 $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $head = $_POST['head'];
+    $content = $_POST['content'];
+    $url = $_POST['url'];
+
+
+    $targetDirectory = "data/explore/";
+    $targetFile = $targetDirectory . basename($_FILES["file"]["name"]);
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+
+    if (
+        $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        && $imageFileType != "gif"
+    ) {
+        echo "Sadece JPG, JPEG, PNG & GIF dosya formatları yüklenebilir.";
+        $uploadOk = 0;
+    }
+
+
+    if ($uploadOk == 0) {
+        echo "Dosyanız yüklenemedi.";
+    } else {
+        if (move_uploaded_file($_FILES["file"]["tmp_name"], $targetFile)) {
+            echo "Dosya " . htmlspecialchars(basename($_FILES["file"]["name"])) . " başarıyla yüklendi.";
+
+            $query = "INSERT INTO explore (photo, head, content, url) VALUES (:photo, :head, :content, :url)";
+            $stmt = $dbh->prepare($query);
+            $stmt->bindParam(':photo', $targetFile);
+            $stmt->bindParam(':head', $head);
+            $stmt->bindParam(':content', $content);
+            $stmt->bindParam(':url', $url);
+            $stmt->execute();
+
+            header("Location: success.php");
+        } else {
+            echo "Dosya yüklenirken bir hata oluştu.";
+        }
+    }
+}
+$queryExplore = "SELECT * FROM explore";
+$stmtExplore = $dbh->prepare($queryExplore);
+$stmtExplore->execute();
+$exploreData = $stmtExplore->fetchAll(PDO::FETCH_ASSOC);
+
+if (isset($_POST['delete_explore'])) {
+    $explore_id = $_POST['explore_id'];
+
+
+    $deleteQuery = "DELETE FROM explore WHERE id = :explore_id";
+    $stmt = $dbh->prepare($deleteQuery);
+    $stmt->bindParam(':explore_id', $explore_id);
+    $stmt->execute();
+
+
+    header("Location: success.php");
+    exit();
+}
 
 ?>
 
@@ -439,8 +502,8 @@ $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
         <a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
                 style="">Profile</button></a>
         <br>
-        <a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Manage
-                Explore</button></a>
+        <a href="manageexplore.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
+                style="">Manage Explore</button></a>
         <br>
         <a href="posttable.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Post
                 Table</button></a>
@@ -452,59 +515,63 @@ $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
         </form>
 
     </div>
-    <div class="text-center" style="margin-left:10%;width:67%;">
+    <div class="text-center text-white" style="margin-left:30%;width:45%;">
+        <form method="post" action="" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">photo</label>
+                <input type="file" name="file" class="form-control" id="exampleInputEmail1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">head</label>
+                <input type="text" name="head" class="form-control" id="exampleInputEmail1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">content</label>
+                <input type="text" name="content" class="form-control" id="exampleInputEmail1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">url</label>
+                <input type="text" name="url" class="form-control" id="exampleInputPassword1">
+            </div>
+            <button type="submit" class="btn btn-success w-50">Share Explore Content</button>
+        </form>
         <br>
-        <h5 class="h3 text-white">Manage Users</h5>
-        <table class="table table-hover" style="">
-            <tr>
-                <th>id</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>firstname</th>
-                <th>lastname</th>
-                <th>Role</th>
-                <th>Ban</th>
-            </tr>
-            <tr>
-                <?php foreach ($usersData as $user):
-                    $rolesQuery = "SELECT role FROM roles WHERE id = :id";
-                    $stmtRoles = $dbh->prepare($rolesQuery);
-                    $stmtRoles->bindParam(':id', $user['id']);
-                    $stmtRoles->execute();
-                    $userRole = $stmtRoles->fetch(PDO::FETCH_ASSOC)['role'];
-                    ?>
-
+        <table class="table table-hover text-center">
+            <thead>
                 <tr>
-                    <td>
-                        <?php echo $user['id']; ?>
-                    </td>
-                    <td><a href="https://egoistsky.free.nf/egoist?username=<?php echo $user['username']; ?>">
-                            <?php echo $user['username']; ?>
-                        </a></td>
-                    <td>
-                        <?php echo $user['email']; ?>
-                    </td>
-                    <td>
-                        <?php echo $user['firstname']; ?>
-                    </td>
-                    <td>
-                        <?php echo $user['lastname']; ?>
-                    </td>
-                    <td>
-                        <div class="input-group mt-1">
-                            <input type="text" class="form-control" value="<?php echo $userRole ?>" readonly>
-
-                        </div>
-                    </td>
-                    <form method="post" action="">
-                        <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
-                        <td><button type="submit" name="Ban" class="btn btn-outline-danger">Ban</button>
-                            <button type="submit" name="UnBan" class="btn btn-outline-primary">Un Ban</button>
-                        </td>
-                    </form>
+                    <th scope="col">Photo</th>
+                    <th scope="col">head</th>
+                    <th scope="col">content</th>
+                    <th scope="col">url</th>
+                    <th scope="col">Delete</th>
                 </tr>
-            <?php endforeach; ?>
+            </thead>
+            <tbody>
+                <?php foreach ($exploreData as $explore): ?>
+                    <tr>
+                        <td class="w-25"><img src="<?php echo $explore['photo']; ?>" class="w-100"></td>
+                        <td>
+                            <?php echo $explore['head']; ?>
+                        </td>
+                        <td>
+                            <?php echo $explore['content']; ?>
+                        </td>
+                        <td>
+                            <?php echo $explore['url']; ?>
+                        </td>
+                        <td>
+                            <form method="post" action="">
+                                <input type="hidden" name="explore_id" value="<?php echo $explore['id']; ?>">
+                                <button type="submit" name="delete_explore" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
         </table>
+
+
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -519,61 +586,3 @@ $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
 </script>
 
 </html>
-<?php
-if (isset($_POST['delete'])) {
-    $userId = $_POST['id'];
-
-
-    $deleteUserRoleQuery = "DELETE FROM roles WHERE id = :id";
-    $stmtDeleteUserRole = $dbh->prepare($deleteUserRoleQuery);
-    $stmtDeleteUserRole->bindParam(':id', $userId);
-    $stmtDeleteUserRole->execute();
-
-    $deleteUserQuery = "DELETE FROM user WHERE id = :id";
-    $stmtDeleteUser = $dbh->prepare($deleteUserQuery);
-    $stmtDeleteUser->bindParam(':id', $userId);
-    $stmtDeleteUser->execute();
-
-
-    header("Location: current_page.php");
-    exit();
-}
-if (isset($_POST['editRole'])) {
-    $userId = $_POST['id'];
-    $newRole = $_POST['newRole'];
-
-
-    $updateRoleQuery = "UPDATE roles SET role = :newRole WHERE id = :id";
-    $stmtUpdateRole = $dbh->prepare($updateRoleQuery);
-    $stmtUpdateRole->bindParam(':newRole', $newRole);
-    $stmtUpdateRole->bindParam(':id', $userId);
-    $stmtUpdateRole->execute();
-
-
-    header("Location: current_page.php");
-    exit();
-}
-if (isset($_POST['Ban'])) {
-    $userId = $_POST['id'];
-
-
-    $banUserQuery = "UPDATE user SET banned = true WHERE id = :id";
-    $stmtBanUser = $dbh->prepare($banUserQuery);
-    $stmtBanUser->bindParam(':id', $userId);
-    $stmtBanUser->execute();
-
-
-} elseif (isset($_POST['UnBan'])) {
-    $userId = $_POST['id'];
-
-
-    $unbanUserQuery = "UPDATE user SET banned = false WHERE id = :id";
-    $stmtUnbanUser = $dbh->prepare($unbanUserQuery);
-    $stmtUnbanUser->bindParam(':id', $userId);
-    $stmtUnbanUser->execute();
-
-    header("Location: current_page.php");
-    exit();
-}
-
-?>

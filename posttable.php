@@ -16,7 +16,7 @@ if (isset($_SESSION['username'])) {
         $stmtTotalLogins = $dbh->prepare($totalLoginsQuery);
         $stmtTotalLogins->execute();
         $totalLogins = $stmtTotalLogins->fetch(PDO::FETCH_ASSOC)['total_logins'];
-        
+
         $todayLoginsQuery = "SELECT COUNT(*) AS today_logins FROM user_logs WHERE DATE(login_time) = :currentDate";
         $stmtTodayLogins = $dbh->prepare($todayLoginsQuery);
         $stmtTodayLogins->bindParam(':currentDate', $currentDate);
@@ -40,7 +40,6 @@ if (isset($_POST['logout'])) {
     header("Location: index.php");
     exit();
 }
-
 
 $userId = $row['id'];
 
@@ -423,16 +422,21 @@ $userLogs = $stmtUserLogs->fetchAll(PDO::FETCH_ASSOC);
                 style="">Profile</button></a>
 
         <br>
+
         <a href="admin.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Admin
                 Page</button></a><br>
-        <a href="moderator.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Moderator
+        <a href="moderator.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
+                style="">Moderator
                 Page</button></a><br>
+        <a href="manageexplore.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
+                style="">Manage Explore</button></a>
+        <br>
         <form method="post" action=""><button type="submit" name="logout"
                 class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Logout</button>
         </form>
 
     </div>
-   <table class="table w-50 text-light position-absolute translate-middle start-50">
+    <table class="table w-50 text-light position-absolute translate-middle start-50">
         <thead>
             <tr>
                 <th scope="col">Photo</th>
@@ -444,10 +448,12 @@ $userLogs = $stmtUserLogs->fetchAll(PDO::FETCH_ASSOC);
         </thead>
         <tbody>
             <?php
+
             $postQuery = "SELECT * FROM post";
             $stmtPosts = $dbh->prepare($postQuery);
             $stmtPosts->execute();
             $posts = $stmtPosts->fetchAll(PDO::FETCH_ASSOC);
+
 
             foreach ($posts as $post) {
                 echo '<tr>';
@@ -490,23 +496,23 @@ if (isset($_POST['deleteButton'])) {
     $stmtGetPhoto->execute();
     $photoName = $stmtGetPhoto->fetch(PDO::FETCH_ASSOC)['photo'];
 
-  
+
     $photoPath = 'data/posts/' . $photoName;
     if (file_exists($photoPath)) {
-        unlink($photoPath); 
+        unlink($photoPath);
     }
 
- 
     $deleteQuery = "DELETE FROM post WHERE postid = :postid";
     $stmtDelete = $dbh->prepare($deleteQuery);
     $stmtDelete->bindParam(':postid', $postId);
-    
-   
+
+
     if ($stmtDelete->execute()) {
         echo '<script>alert("Post successfully deleted!");</script>';
+
+
     } else {
-        echo '<script>alert("Failed to delete post!");</script>'; 
+        echo '<script>alert("Failed to delete post!");</script>';
     }
 }
 ?>
-

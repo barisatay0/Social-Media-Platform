@@ -393,9 +393,10 @@ if (isset($_POST['logout'])) {
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos "
                 style="" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Explore"></a>
-        <a href="trends"><img
+        <a href="Random"><img
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
-                src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Trends"></a>
+                src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Random Match"></a>
         <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
                 style="" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Groups"></a>
@@ -425,32 +426,27 @@ if (isset($_POST['logout'])) {
         </form>
 
     </div>
-    <div class="border border-light position-absolute translate-middle start-50 top-50" style="width:50%;height:50%;">
+    <div class="scrollable-container w-100 mt-1 responsiveposter" style="overflow-y:auto;height:40rem;">
         <?php
-        $url = 'https://newsapi.org/v2/everything?q=apple&from=2023-12-14&to=2023-12-14&sortBy=popularity&apiKey=';
+        $exploreQuery = "SELECT photo, head, content, url, content_time FROM explore";
+        $exploreResult = $dbh->query($exploreQuery);
 
-        $response = file_get_contents($url);
-
-        if ($response !== false) {
-            $newsData = json_decode($response, true);
-
-            if ($newsData['status'] === 'ok') {
-                $articles = $newsData['articles'];
-
-                foreach ($articles as $article) {
-                    $title = $article['title'];
-                    $description = $article['description'];
-                    echo '<h2>' . $title . '</h2>';
-                    echo '<p>' . $description . '</p>';
-                }
-            } else {
-                echo '<p class="text-white">News Doesnt Find</p>';
+        if ($exploreResult) {
+            foreach ($exploreResult as $row) {
+                echo '<div class="w-25 post responsivepost">';
+                echo '<div class="card post border border-dark text-white responsivecardpost">';
+                echo '<div class="mt-2 mx-2">';
+                echo '<a class="text-light h3" style="text-decoration:none;" href="' . $row['url'] . '">' . $row['head'] . '</a>';
+                echo '</div><br>';
+                echo '<a href="' . $row['url'] . '"><img src="' . $row['photo'] . '" class="card-img-top responsivepostphoto" alt="..."></a>';
+                echo '<div class="card-body border border-dark" style="background-color:black;">';
+                echo '<p class="card-text">' . $row['content'] . '</p><br>';
+                echo '<p class="card-text"><small class="text-white-50">' . $row['content_time'] . '</small></p>';
+                echo '</div></div></div><br><br>';
             }
         } else {
-            echo '<p class="text-white">API Doesnt Connect!</p>';
-        }
-        ?>
-
+            echo "Veri bulunamadı veya bağlantı hatası.";
+        } ?>
     </div>
     <div>
         <input type="image" class="top-100 end-0 translate-middle-y mx-4 imghover responsivephotobutton" style=""
@@ -503,7 +499,7 @@ if (isset($_POST['logout'])) {
                 searchResults.innerHTML = data;
             })
             .catch(error => {
-                console.error('Search Error:', error);
+                console.error('Arama hatası:', error);
             });
     });
 </script>

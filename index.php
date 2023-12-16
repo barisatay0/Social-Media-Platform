@@ -29,15 +29,19 @@ if (isset($_SESSION['username'])) {
             margin-right: 16%;
             margin-top: -6%;
             scrollbar-width: thin;
+
             scrollbar-color: transparent transparent;
+
         }
 
         .scrollable-container::-webkit-scrollbar {
             width: 6px;
+ 
         }
 
         .scrollable-container::-webkit-scrollbar-thumb {
             background-color: transparent;
+
         }
     </style>
 </head>
@@ -59,20 +63,23 @@ if (isset($_SESSION['username'])) {
     <a href="signup"><button type="button" class="btn btn-outline-light top-0 end-0 translate-middle mt-4"
             style="margin-right:5rem;position: fixed;">Sign Up</button></a>
     <div class="top-50 start-0 translate-middle-y mx-1" style="width:24%;margin-top:1%;position: fixed;">
-        <a href="Reels"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover "
-                style="margin-left: 50%;" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="Reels"></a>
-        <a href="trends"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="Trends"></a>
-        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+        <a href="Explore"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos "
+                style="" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Explore"></a>
+        <a href="Random"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Random Match"></a>
+        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
+                style="" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Groups"></a>
-        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
+                style="" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Languages"></a>
-        <a href="information"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+        <a href="information"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="İnformation"></a>
     </div>
     <div class="scrollable-container w-100 mt-1" style="overflow-y:auto;height:40rem;">
@@ -85,6 +92,8 @@ if (isset($_SESSION['username'])) {
         try {
             $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
             $postQuery = "SELECT username, photo, description, time FROM post  ORDER BY time DESC";
             $postStmt = $dbh->query($postQuery);
 
@@ -93,6 +102,7 @@ if (isset($_SESSION['username'])) {
                     $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
                     $userStmt = $dbh->query($userQuery);
                     $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
+
                     echo '
             <div class="w-25 post" style="margin-left:38%;">
             
@@ -138,14 +148,19 @@ if (isset($_SESSION['username'])) {
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
 <script>
+
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
+
+ 
     searchInput.addEventListener('input', function () {
-        const searchValue = this.value;
+        const searchValue = this.value; 
+
         if (searchValue === '') {
             searchResults.innerHTML = '';
             return;
         }
+
         fetch(`search.php?search_query=${searchValue}`)
             .then(response => response.text())
             .then(data => {

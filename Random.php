@@ -14,18 +14,6 @@ if (isset($_SESSION['username'])) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             $profilePhoto = $row['profilephoto'];
-
-            $queryUserRole = "SELECT role FROM roles WHERE id = :id";
-            $stmtUserRole = $dbh->prepare($queryUserRole);
-            $stmtUserRole->bindParam(':id', $row['id']);
-            $stmtUserRole->execute();
-            $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
-
-            if ($userRole !== 'admin' && $userRole !== 'moderator') {
-                header("Location:user.php");
-                exit();
-            }
-
         } else {
             echo "Data not found or connection error";
         }
@@ -33,48 +21,19 @@ if (isset($_SESSION['username'])) {
         echo "Bağlantı Hatası: " . $e->getMessage();
     }
 } else {
-    header("Location:login.php");
+    header("Location: login");
     exit();
 }
-
 if (isset($_POST['logout'])) {
     session_unset();
     session_destroy();
     header("Location: index.php");
     exit();
 }
-$queryUsers = "SELECT COUNT(*) as userCount FROM roles WHERE role = 'user'";
-$stmtUsers = $dbh->prepare($queryUsers);
-$stmtUsers->execute();
-$userCount = $stmtUsers->fetch(PDO::FETCH_ASSOC)['userCount'];
-
-$queryAdmins = "SELECT COUNT(*) as adminCount FROM roles WHERE role = 'admin'";
-$stmtAdmins = $dbh->prepare($queryAdmins);
-$stmtAdmins->execute();
-$adminCount = $stmtAdmins->fetch(PDO::FETCH_ASSOC)['adminCount'];
-
-$queryModerators = "SELECT COUNT(*) as moderatorCount FROM roles WHERE role = 'moderator'";
-$stmtModerators = $dbh->prepare($queryModerators);
-$stmtModerators->execute();
-$moderatorCount = $stmtModerators->fetch(PDO::FETCH_ASSOC)['moderatorCount'];
-
-
-$queryPosts = "SELECT COUNT(*) as postCount FROM post";
-$stmtPosts = $dbh->prepare($queryPosts);
-$stmtPosts->execute();
-$postCount = $stmtPosts->fetch(PDO::FETCH_ASSOC)['postCount'];
-
-$queryUsersData = "SELECT * FROM user";
-$stmtUsersData = $dbh->prepare($queryUsersData);
-$stmtUsersData->execute();
-$usersData = $stmtUsersData->fetchAll(PDO::FETCH_ASSOC);
-
-$queryUserRole = "SELECT role FROM roles WHERE id = :id";
-$stmtUserRole = $dbh->prepare($queryUserRole);
-$stmtUserRole->bindParam(':id', $userId);
-$stmtUserRole->execute();
-$userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
-
+$query = "SELECT * FROM user ORDER BY RAND() LIMIT 5";
+$stmt = $dbh->prepare($query);
+$stmt->execute();
+$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -420,30 +379,50 @@ $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
 
 
 
-<body class="bg-dark">
+<body class="bg-black">
     <a href="" class="mx-3 mt-2"></a>
     <div><a href="https://egoistsky.free.nf/user"
             class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder "
             style="margin-left:12%;"><img class="border border-black border-3 rounded-circle responsivelogo" style=""
                 src="astronomy.png" alt="logo"></a></div>
+    <div class="position-absolute top-0 start-50 translate-middle mt-4" style="width:33%;">
+        <form name="searcher" method="post" action="search.php">
+            <input type="search" id="searchInput" name="search" placeholder="Search..."
+                class="form-control responsivesearch">
+        </form>
+        <div id="searchResults"></div>
+    </div>
+
+    <div class="top-50 start-0 translate-middle-y mx-1 responsivepages">
+        <a href="Explore"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos "
+                style="" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Explore"></a>
+        <a href="Random"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Random Match"></a>
+        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
+                style="" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Groups"></a>
+        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
+                style="" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Languages"></a>
+        <a href="information"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="İnformation"></a>
     </div>
     <div class="position-absolute mt-3 text-center dropdown end-0 responsivedropdowncontainer" style="top:0;right:0;">
         <a href="profile.php" style="text-decoration:none;font-family:'Courier New', Courier, monospace;">
             <img <?php echo 'src="' . $profilePhoto . '"' ?>
                 class=" border border-dark border-opacity-25 border-5 responsivedropdownpp" alt="123" style="" />
             <p class="text-light text-center">
-                Moderator Name :
                 <?php echo $username; ?>
             </p>
         </a>
         <a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
                 style="">Profile</button></a>
-        <br>
-        <a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Manage
-                Explore</button></a>
-        <br>
-        <a href="posttable.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Post
-                Table</button></a>
         <br>
         <button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Settings</button>
         <br>
@@ -452,60 +431,46 @@ $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
         </form>
 
     </div>
-    <div class="text-center" style="margin-left:10%;width:67%;">
-        <br>
-        <h5 class="h3 text-white">Manage Users</h5>
-        <table class="table table-hover" style="">
-            <tr>
-                <th>id</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>firstname</th>
-                <th>lastname</th>
-                <th>Role</th>
-                <th>Ban</th>
-            </tr>
-            <tr>
-                <?php foreach ($usersData as $user):
-                    $rolesQuery = "SELECT role FROM roles WHERE id = :id";
-                    $stmtRoles = $dbh->prepare($rolesQuery);
-                    $stmtRoles->bindParam(':id', $user['id']);
-                    $stmtRoles->execute();
-                    $userRole = $stmtRoles->fetch(PDO::FETCH_ASSOC)['role'];
-                    ?>
+    <div class="scrollable-container w-100 mt-1 responsiveposter text-center" style="overflow-y:auto;height:40rem;">
+        <?php foreach ($users as $user): ?>
+            <div>
+                <a href="https://egoistsky.free.nf/egoist?username=<?php echo $user['username']; ?>"><img
+                        class="rounded-circle" src="<?php echo $user['profilephoto']; ?>" alt="Profile Photo"
+                        style="width:15rem;height:15rem;"></a>
 
-                <tr>
-                    <td>
-                        <?php echo $user['id']; ?>
-                    </td>
-                    <td><a href="https://egoistsky.free.nf/egoist?username=<?php echo $user['username']; ?>">
-                            <?php echo $user['username']; ?>
-                        </a></td>
-                    <td>
-                        <?php echo $user['email']; ?>
-                    </td>
-                    <td>
-                        <?php echo $user['firstname']; ?>
-                    </td>
-                    <td>
-                        <?php echo $user['lastname']; ?>
-                    </td>
-                    <td>
-                        <div class="input-group mt-1">
-                            <input type="text" class="form-control" value="<?php echo $userRole ?>" readonly>
+                <p class="text-white h2">
+                    <?php echo $user['username']; ?>
+                </p>
 
-                        </div>
-                    </td>
-                    <form method="post" action="">
-                        <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
-                        <td><button type="submit" name="Ban" class="btn btn-outline-danger">Ban</button>
-                            <button type="submit" name="UnBan" class="btn btn-outline-primary">Un Ban</button>
-                        </td>
-                    </form>
-                </tr>
-            <?php endforeach; ?>
-        </table>
+            </div>
+        <?php endforeach; ?>
     </div>
+
+    <div>
+        <input type="image" class="top-100 end-0 translate-middle-y mx-4 imghover responsivephotobutton" style=""
+            src="bubble.png">
+
+        <input id="formOpener" type="image"
+            class="top-100 end-0 translate-middle-y mx-3 imghover responsivephotobutton2" style="" src="picture.png">
+    </div>
+    <div class="w-50 border bg-black rounded-5 light border-dark position-absolute top-50 start-50 translate-middle text-center"
+        id="hiddenForm" style="display: none;--bs-bg-opacity: .9;height:74%;">
+        <p class="h1 text-light mt-5" style="font-family:Fantasy;">Post</p>
+        <form method="POST" action="https://egoistsky.free.nf/upload" id="myForm" class="mt-3"
+            enctype="multipart/form-data">
+            <input class="btn btn-outline-light w-75 mt-3" type="file" name="fileToUpload" required>
+            <br>
+            <textarea class="mt-4 w-75" name="description" placeholder="Description" id="description"
+                style="border-radius: 3%; height: 5rem;"></textarea>
+            <br>
+            <input class="btn btn-outline-success w-75 mt-4" name="share" type="submit" value="Share"
+                style="font-family:Fantasy;">
+        </form>
+        <button id="formCloser" class="w-25 mt-4 btn btn-outline-danger" style="font-family:Fantasy;">close</button>
+    </div>
+
+
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
     integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -517,63 +482,52 @@ $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    searchInput.addEventListener('input', function () {
+        const searchValue = this.value;
+        if (searchValue === '') {
+            searchResults.innerHTML = '';
+            return;
+        }
+        fetch(`search.php?search_query=${searchValue}`)
+            .then(response => response.text())
+            .then(data => {
+                searchResults.innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Arama hatası:', error);
+            });
+    });
+</script>
+<script>
+    document.getElementById('formOpener').onclick = function () {
+        document.getElementById('hiddenForm').style.display = 'block';
+    };
+    document.getElementById('formCloser').onclick = function () {
+        document.getElementById('hiddenForm').style.display = 'none';
+    };
+</script>
 
 </html>
 <?php
-if (isset($_POST['delete'])) {
-    $userId = $_POST['id'];
+include 'connect.php';
+if (isset($_POST['search'])) {
+    $search = $_POST['search'];
+    $query = "SELECT * FROM user WHERE username LIKE '%$search%'";
+    $result = mysqli_query($connection, $query);
 
+    if (!$result) {
+        die("Sorgu hatası: " . mysqli_error($connection));
+    }
 
-    $deleteUserRoleQuery = "DELETE FROM roles WHERE id = :id";
-    $stmtDeleteUserRole = $dbh->prepare($deleteUserRoleQuery);
-    $stmtDeleteUserRole->bindParam(':id', $userId);
-    $stmtDeleteUserRole->execute();
-
-    $deleteUserQuery = "DELETE FROM user WHERE id = :id";
-    $stmtDeleteUser = $dbh->prepare($deleteUserQuery);
-    $stmtDeleteUser->bindParam(':id', $userId);
-    $stmtDeleteUser->execute();
-
-
-    header("Location: current_page.php");
-    exit();
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo $row['username'] . "<br>";
+        }
+    } else {
+        echo "Kullanıcı bulunamadı.";
+    }
 }
-if (isset($_POST['editRole'])) {
-    $userId = $_POST['id'];
-    $newRole = $_POST['newRole'];
-
-
-    $updateRoleQuery = "UPDATE roles SET role = :newRole WHERE id = :id";
-    $stmtUpdateRole = $dbh->prepare($updateRoleQuery);
-    $stmtUpdateRole->bindParam(':newRole', $newRole);
-    $stmtUpdateRole->bindParam(':id', $userId);
-    $stmtUpdateRole->execute();
-
-
-    header("Location: current_page.php");
-    exit();
-}
-if (isset($_POST['Ban'])) {
-    $userId = $_POST['id'];
-
-
-    $banUserQuery = "UPDATE user SET banned = true WHERE id = :id";
-    $stmtBanUser = $dbh->prepare($banUserQuery);
-    $stmtBanUser->bindParam(':id', $userId);
-    $stmtBanUser->execute();
-
-
-} elseif (isset($_POST['UnBan'])) {
-    $userId = $_POST['id'];
-
-
-    $unbanUserQuery = "UPDATE user SET banned = false WHERE id = :id";
-    $stmtUnbanUser = $dbh->prepare($unbanUserQuery);
-    $stmtUnbanUser->bindParam(':id', $userId);
-    $stmtUnbanUser->execute();
-
-    header("Location: current_page.php");
-    exit();
-}
-
 ?>

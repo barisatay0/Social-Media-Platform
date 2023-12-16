@@ -41,6 +41,7 @@ if (isset($_POST['logout'])) {
     exit();
 }
 
+
 $userId = $row['id'];
 
 $queryUserRole = "SELECT role FROM roles WHERE id = :id";
@@ -48,6 +49,7 @@ $stmtUserRole = $dbh->prepare($queryUserRole);
 $stmtUserRole->bindParam(':id', $userId);
 $stmtUserRole->execute();
 $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
+
 
 if ($userRole !== 'admin') {
     header("Location:user.php");
@@ -420,14 +422,14 @@ $userLogs = $stmtUserLogs->fetchAll(PDO::FETCH_ASSOC);
         </a>
         <a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
                 style="">Profile</button></a>
-
         <br>
         <a href="admin.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Admin
                 Page</button></a><br>
-        <button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Settings</button>
+        <a href="manageexplore.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
+                style="">Manage Explore</button></a>
         <br>
-        <a href="manageposts.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
-                style="">Posts</button></a><br>
+        <a href="posttable.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Post
+                Table</button></a><br>
         <a href="login_logs.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
                 style="">Login Logs</button></a><br>
         <form method="post" action=""><button type="submit" name="logout"

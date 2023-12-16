@@ -393,9 +393,10 @@ if (isset($_POST['logout'])) {
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos "
                 style="" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Explore"></a>
-        <a href="trends"><img
+        <a href="Random"><img
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
-                src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Trends"></a>
+                src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Random Match"></a>
         <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
                 style="" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Groups"></a>
@@ -468,10 +469,10 @@ if (isset($_POST['logout'])) {
             <br>';
                 }
             } else {
-                echo "Data not found";
+                echo "Veri bulunamadı";
             }
         } catch (PDOException $e) {
-            echo "Connect Error: " . $e->getMessage();
+            echo "Bağlantı hatası: " . $e->getMessage();
         }
         ?>
         <br>

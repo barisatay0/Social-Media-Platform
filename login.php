@@ -14,14 +14,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($result->rowCount() > 0) {
             $row = $result->fetch(PDO::FETCH_ASSOC);
             $stored_hash = $row['password'];
+
+
             if (password_verify($password, $stored_hash)) {
                 $_SESSION['username'] = $username;
+
                 $sql_role = "SELECT role FROM roles WHERE id = (SELECT id FROM user WHERE username='$username')";
                 $result_role = $dbh->query($sql_role);
 
                 if ($result_role->rowCount() > 0) {
                     $row_role = $result_role->fetch(PDO::FETCH_ASSOC);
                     $user_role = $row_role['role'];
+
+
                     switch ($user_role) {
                         case 'user':
                             header("Location: https://egoistsky.free.nf/user");
@@ -36,9 +41,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             echo "Invalid role";
                             break;
                     }
+
                     $login_time = date('Y-m-d H:i:s');
                     $ip_address = $_SERVER['REMOTE_ADDR'];
                     $user_agent = $_SERVER['HTTP_USER_AGENT'];
+
                     $sql_log = "INSERT INTO user_logs (username, login_time, ip_address, user_agent) VALUES ('$username', '$login_time', '$ip_address', '$user_agent')";
                     $dbh->exec($sql_log);
 

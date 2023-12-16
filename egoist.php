@@ -90,25 +90,6 @@ if (isset($_POST['logout'])) {
     <link rel="icon" type="image/x-icon" href="astronom.ico">
     <link rel="stylesheet" href="style.css">
     <style>
-        .scrollable-container {
-            width: 20%;
-            right: 0;
-            height: 25rem;
-            overflow-y: auto;
-            margin-right: 16%;
-            margin-top: -6%;
-            scrollbar-width: thin;
-            scrollbar-color: transparent transparent;
-        }
-
-        .scrollable-container::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .scrollable-container::-webkit-scrollbar-thumb {
-            background-color: transparent;
-        }
-
         .dropdown {
             display: inline-block;
         }
@@ -126,42 +107,310 @@ if (isset($_POST['logout'])) {
             visibility: visible;
         }
 
-        .modal {
-            display: none;
+        .scrollable-container {
+            width: 20%;
+            right: 0;
+            height: 200px;
+            overflow-y: auto;
+            margin-right: 16%;
+            margin-top: -6%;
+            scrollbar-width: thin;
+            scrollbar-color: transparent transparent;
+        }
+
+        .scrollable-container::-webkit-scrollbar {
+            width: 6px;
+
+        }
+
+        .scrollable-container::-webkit-scrollbar-thumb {}
+
+        .responsivelogo {
+            width: 6%;
+        }
+
+        .responsivepages {
             position: fixed;
-            z-index: 1;
-            padding-top: 50px;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0, 0, 0);
-            background-color: rgba(0, 0, 0, 0.9);
+            margin-top: 1%;
+            width: 24%;
         }
 
-        .modal-content {
-            margin: auto;
-            display: block;
-            width: 80%;
-            max-width: 700px;
+        .responsivepagelogos {
+            margin-left: 50%;
         }
 
-        .close {
-            position: absolute;
-            top: 15px;
-            right: 35px;
-            color: #f1f1f1;
-            font-size: 40px;
-            font-weight: bold;
-            transition: 0.3s;
+        .responsivepost {
+            margin-left: 38%;
         }
 
-        .close:hover,
-        .close:focus {
-            color: #bbb;
-            text-decoration: none;
-            cursor: pointer;
+        .responsivedropdowncontainer {
+            width: 25%;
+        }
+
+        .responsivedropdownpp {
+            border-radius: 50%;
+            width: 6.5rem;
+            height: 6.5rem;
+        }
+
+        .responsivepostphoto {
+            height: 18rem;
+        }
+
+        .responsiveposter {}
+
+        .responsivepostimage {
+            width: 4rem;
+            height: 4rem;
+            font-family: "Lucida Console", "Courier New", monospace;
+        }
+
+        .profilebuttons {
+            font-size: 12.5px;
+            width: 32%;
+        }
+
+        .responsivephotobutton {
+            width: 4%;
+            position: fixed;
+            margin-top: -5%;
+            opacity: 75%;
+        }
+
+        .responsivephotobutton2 {
+            width: 6%;
+            position: fixed;
+            margin-top: -10.5%;
+            opacity: 85%;
+        }
+
+        // 600px //
+        @media only screen and (max-width: 600px) {
+            .responsivepagelogos {
+                margin-left: 30%;
+            }
+
+            .responsivepages {
+                margin-top: -21%;
+                width: 34%;
+
+            }
+
+            .responsivelogo {
+                width: 9%;
+                margin-left: -1.5%;
+            }
+
+            .responsivesearch {
+                width: 125%;
+                margin-left: -12%;
+            }
+
+            .responsivepost {
+                margin-left: 25%;
+            }
+
+            .responsivepostimage {
+                width: 1.5rem;
+                height: 1.5rem;
+                font-family: "Lucida Console", "Courier New", monospace;
+            }
+
+            .responsivepostpp {}
+
+            responsivedropdowncontainer {
+                width: ;
+            }
+
+            .responsivedropdownpp {
+                border-radius: 50%;
+                width: 3.5rem;
+                height: 3.5rem;
+
+            }
+
+            .responsivepostphoto {
+                height: 18rem;
+                width: 100%;
+            }
+
+            .responsivecardpost {
+                width: 200%;
+            }
+
+            .dropdown-content {
+
+                visibility: visible;
+
+
+            }
+
+            .profilebuttons {
+                font-size: 12.5px;
+                width: 48%;
+            }
+        }
+
+        @media only screen and (max-width: 420px) {
+            .responsivepagelogos {
+                margin-left: 7%;
+            }
+
+            .responsivepages {
+                margin-top: -54%;
+                width: 45%;
+
+            }
+
+            .responsivelogo {
+                width: 12%;
+                margin-left: -8.5%;
+            }
+
+            .responsivesearch {
+                width: 165%;
+                margin-left: -40%;
+            }
+
+            .responsivepost {
+                margin-left: 20%;
+            }
+
+            .responsivepostimage {
+                width: 1.5rem;
+                height: 1.5rem;
+                font-family: "Lucida Console", "Courier New", monospace;
+            }
+
+            .responsivepostpp {}
+
+            responsivedropdowncontainer {
+                width: ;
+            }
+
+            .responsivedropdownpp {
+                border-radius: 50%;
+                width: 4rem;
+                height: 4rem;
+
+            }
+
+            .responsivepostphoto {
+                height: 18rem;
+                width: 100%;
+            }
+
+            .responsivecardpost {
+                width: 220%;
+            }
+
+            .dropdown-content {
+
+                visibility: visible;
+
+
+            }
+
+            .profilebuttons {
+                font-size: 12.5px;
+                width: 68%;
+                margin-left: -13%;
+            }
+
+            .responsivephotobutton {
+                width: 16%;
+                position: fixed;
+                margin-top: -15%;
+                opacity: 75%;
+            }
+
+            .responsivephotobutton2 {
+                width: 20%;
+                position: fixed;
+                margin-top: -40%;
+                opacity: 85%;
+            }
+        }
+
+        @media only screen and (max-width: 380px) {
+            .responsivepagelogos {
+                margin-left: 6.5%;
+            }
+
+            .responsivepages {
+                margin-top: -34%;
+                width: 45%;
+
+            }
+
+            .responsivelogo {
+                width: 12%;
+                margin-left: -8.5%;
+            }
+
+            .responsivesearch {
+                width: 165%;
+                margin-left: -40%;
+            }
+
+            .responsivepost {
+                margin-left: 20%;
+            }
+
+            .responsivepostimage {
+                width: 1.5rem;
+                height: 1.5rem;
+                font-family: "Lucida Console", "Courier New", monospace;
+            }
+
+            .responsivepostpp {}
+
+            responsivedropdowncontainer {
+                width: ;
+            }
+
+            .responsivedropdownpp {
+                border-radius: 50%;
+                width: 4rem;
+                height: 4rem;
+
+            }
+
+            .responsivepostphoto {
+                height: 18rem;
+                width: 100%;
+            }
+
+            .responsivecardpost {
+                width: 220%;
+            }
+
+            .dropdown-content {
+
+                visibility: visible;
+
+
+            }
+
+            .profilebuttons {
+                font-size: 12.5px;
+                width: 68%;
+                margin-left: -13%;
+            }
+
+            .responsivephotobutton {
+                width: 16%;
+                position: fixed;
+                margin-top: -15%;
+                opacity: 75%;
+            }
+
+            .responsivephotobutton2 {
+                width: 20%;
+                position: fixed;
+                margin-top: -40%;
+                opacity: 85%;
+            }
         }
     </style>
 </head>
@@ -265,6 +514,7 @@ if (isset($_POST['logout'])) {
                         style="height:16rem;width:14rem;" onclick="showImage(this);">
                 <?php endforeach; ?>
             </div>
+
             <div id="myModal" class="modal">
                 <span class="close" onclick="closeModal()">&times;</span>
                 <img class="modal-content" id="modalImg">
@@ -274,20 +524,23 @@ if (isset($_POST['logout'])) {
 
     </div>
     <div class="top-50 start-0 translate-middle-y mx-1" style="width:24%;margin-top:1%;position: fixed;">
-        <a href="Reels.php"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover "
-                style="margin-left: 50%;" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="Reels"></a>
-        <a href="trends.php"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="Trends"></a>
-        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+        <a href="Explore"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos "
+                style="" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Explore"></a>
+        <a href="Random"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Random Match"></a>
+        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
+                style="" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Groups"></a>
-        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
+                style="" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Languages"></a>
-        <a href="information.php"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover"
-                style="margin-left: 50%;" src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+        <a href="information"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="İnformation"></a>
     </div>
 
@@ -313,6 +566,8 @@ if (isset($_POST['logout'])) {
         modal.style.display = 'block';
         modalImg.src = img.src;
     }
+
+
     function closeModal() {
         var modal = document.getElementById('myModal');
         modal.style.display = 'none';
@@ -322,10 +577,13 @@ if (isset($_POST['logout'])) {
 <?php
 session_start();
 include 'connect.php';
+
+
 if (isset($_POST['follow'])) {
     $clickedUsername = $_GET['username'];
 
     try {
+
         $query_follow = "SELECT followers FROM user WHERE username = :username";
         $stmt_follow = $dbh->prepare($query_follow);
         $stmt_follow->bindParam(':username', $clickedUsername);
@@ -334,16 +592,23 @@ if (isset($_POST['follow'])) {
         $row = $stmt_follow->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             $followers = $row['followers'];
+
+
             $followersArray = explode(',', $followers);
             if (!in_array($loggedInUsername, $followersArray)) {
                 $followers .= $loggedInUsername . ',';
             }
+
             $update_query = "UPDATE user SET followers = :followers WHERE username = :username";
             $stmt_update = $dbh->prepare($update_query);
             $stmt_update->bindParam(':followers', $followers);
             $stmt_update->bindParam(':username', $clickedUsername);
             $stmt_update->execute();
+
+
             header("Location:https://egoistsky.free.nf/egoist?username=$clickedusername");
+
+
             $query_following = "SELECT following FROM user WHERE username = :username";
             $stmt_following = $dbh->prepare($query_following);
             $stmt_following->bindParam(':username', $loggedInUsername);
@@ -352,10 +617,12 @@ if (isset($_POST['follow'])) {
             $row_following = $stmt_following->fetch(PDO::FETCH_ASSOC);
             if ($row_following) {
                 $following = $row_following['following'];
+
                 $followingArray = explode(',', $following);
                 if (!in_array($clickedUsername, $followingArray)) {
                     $following .= $clickedUsername . ',';
                 }
+
                 $update_following_query = "UPDATE user SET following = :following WHERE username = :username";
                 $stmt_update_following = $dbh->prepare($update_following_query);
                 $stmt_update_following->bindParam(':following', $following);
@@ -363,10 +630,10 @@ if (isset($_POST['follow'])) {
                 $stmt_update_following->execute();
             }
         } else {
-            echo "";
+            echo "Kullanıcı bulunamadı veya bağlantı hatası";
         }
     } catch (PDOException $e) {
-        echo "Connection Error: " . $e->getMessage();
+        echo "Bağlantı Hatası: " . $e->getMessage();
     }
 }
 
@@ -374,6 +641,7 @@ if (isset($_POST['unfollow'])) {
     $clickedUsername = $_GET['username'];
 
     try {
+
         $query_follow = "SELECT followers FROM user WHERE username = :username";
         $stmt_follow = $dbh->prepare($query_follow);
         $stmt_follow->bindParam(':username', $clickedUsername);
@@ -382,18 +650,22 @@ if (isset($_POST['unfollow'])) {
         $row = $stmt_follow->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             $followers = $row['followers'];
+
             $followersArray = explode(',', $followers);
             $key = array_search($loggedInUsername, $followersArray);
             if ($key !== false) {
                 unset($followersArray[$key]);
                 $followers = implode(',', $followersArray);
             }
+
             $update_query = "UPDATE user SET followers = :followers WHERE username = :username";
             $stmt_update = $dbh->prepare($update_query);
             $stmt_update->bindParam(':followers', $followers);
             $stmt_update->bindParam(':username', $clickedUsername);
             $stmt_update->execute();
+
             header("Location:https://egoistsky.free.nf/egoist?username=$clickedusername");
+
             $query_following = "SELECT following FROM user WHERE username = :username";
             $stmt_following = $dbh->prepare($query_following);
             $stmt_following->bindParam(':username', $loggedInUsername);
@@ -402,12 +674,14 @@ if (isset($_POST['unfollow'])) {
             $row_following = $stmt_following->fetch(PDO::FETCH_ASSOC);
             if ($row_following) {
                 $following = $row_following['following'];
+
                 $followingArray = explode(',', $following);
                 $key_following = array_search($clickedUsername, $followingArray);
                 if ($key_following !== false) {
                     unset($followingArray[$key_following]);
                     $following = implode(',', $followingArray);
                 }
+
                 $update_following_query = "UPDATE user SET following = :following WHERE username = :username";
                 $stmt_update_following = $dbh->prepare($update_following_query);
                 $stmt_update_following->bindParam(':following', $following);

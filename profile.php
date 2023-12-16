@@ -58,16 +58,20 @@ try {
             margin-right: 16%;
             margin-top: -6%;
             scrollbar-width: thin;
+
             scrollbar-color: transparent transparent;
+
 
         }
 
         .scrollable-container::-webkit-scrollbar {
             width: 6px;
+
         }
 
         .scrollable-container::-webkit-scrollbar-thumb {
             background-color: transparent;
+
         }
 
         .profilebuttons {
@@ -173,6 +177,7 @@ try {
             <a href="" style="text-decoration: none;">
                 <p class="h5 text-white-50 mt-1">Followers:
                     <?php
+
                     try {
                         $query_followers_count = "SELECT followers FROM user WHERE username = :username";
                         $stmt_followers_count = $dbh->prepare($query_followers_count);
@@ -193,6 +198,7 @@ try {
             <a href="" style="text-decoration: none;">
                 <p class="h5 text-white-50">Following:
                     <?php
+
                     try {
                         $query_following_count = "SELECT following FROM user WHERE username = :username";
                         $stmt_following_count = $dbh->prepare($query_following_count);
@@ -256,9 +262,10 @@ try {
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover pagebuttonsonly" style=""
                 src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Explore"></a>
-        <a href="trends.php"><img
+        <a href="Random"><img
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover pagebuttonsonly" style=""
-                src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Trends"></a>
+                src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Random Match"></a>
         <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover pagebuttonsonly"
                 style="" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Groups"></a>
@@ -286,6 +293,7 @@ try {
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
 <script>
+
     var images = document.getElementsByClassName('imghoverprofile');
     var modal = document.getElementById('myModal');
     var modalImg = document.getElementById('modalImage');
@@ -296,9 +304,13 @@ try {
             modal.style.display = 'block';
             modalImg.src = this.src;
             modalImg.dataset.photo = this.getAttribute('data-photo');
+
+
             deleteButton.name = this.getAttribute('data-photo');
         });
     }
+
+
     var span = document.getElementsByClassName('close')[0];
     span.onclick = function () {
         modal.style.display = 'none';
@@ -314,14 +326,19 @@ if (isset($_POST['delete'])) {
     $photoName = $_POST['delete'];
 
     try {
+
         $sql = "DELETE FROM post WHERE photo = :photoName";
         $stmt = $dbh->prepare($sql);
         $stmt->bindParam(':photoName', $photoName, PDO::PARAM_STR);
         $stmt->execute();
+
+
         $filePath = 'data/posts/' . $photoName;
         if (file_exists($filePath)) {
             unlink($filePath);
         }
+
+
         echo '<script>window.location.replace("profile.php");</script>';
         exit();
     } catch (PDOException $e) {
