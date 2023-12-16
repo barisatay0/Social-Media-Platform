@@ -83,10 +83,10 @@ if (isset($_SESSION['username'])) {
     </div>
     <div class="scrollable-container w-100 mt-1" style="overflow-y:auto;height:40rem;">
         <?php
-        $servername = "sql203.infinityfree.com";
-        $username = "if0_35435711";
-        $password = "hrtPcoQHzpRSu";
-        $dbname = "if0_35435711_users";
+        $servername = "";
+        $username = "";
+        $password = "";
+        $dbname = "";
 
         try {
             $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
