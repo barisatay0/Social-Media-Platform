@@ -14,9 +14,16 @@ if (isset($_SESSION['username'])) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             $profilePhoto = $row['profilephoto'];
+            $banned = $row['banned'];
+
+            if ($banned == 1) {
+                header("Location:banned.php");
+                exit();
+            }
         } else {
             echo "Data not found or connection error";
         }
+
     } catch (PDOException $e) {
         echo "Bağlantı Hatası: " . $e->getMessage();
     }
@@ -111,7 +118,7 @@ if (isset($_POST['logout'])) {
         }
 
         .responsivepostphoto {
-            height: 18rem;
+            height: 24rem;
         }
 
         .responsiveposter {}
@@ -401,9 +408,9 @@ if (isset($_POST['logout'])) {
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
                 src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Following"></a>
-        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
-                style="" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="Languages"></a>
+        <a href="world.php"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="World"></a>
         <a href="information"><img
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
                 src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
@@ -429,16 +436,16 @@ if (isset($_POST['logout'])) {
     </div>
     <div class="scrollable-container w-100 mt-1 responsiveposter" style="overflow-y:auto;height:40rem;">
         <?php
-        $servername = "";
-        $username = "";
-        $password = "";
-        $dbname = "";
+        $servername = "sql203.infinityfree.com";
+        $username = "if0_35435711";
+        $password = "hrtPcoQHzpRSu";
+        $dbname = "if0_35435711_users";
 
         try {
             $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $postQuery = "SELECT username, photo, description, time FROM post  ORDER BY time DESC";
+            $postQuery = "SELECT * FROM post  ORDER BY time DESC";
             $postStmt = $dbh->query($postQuery);
 
             if ($postStmt) {
@@ -446,28 +453,67 @@ if (isset($_POST['logout'])) {
                     $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
                     $userStmt = $dbh->query($userQuery);
                     $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
-                    echo '
-            <div class="w-25 post responsivepost">
-            
-                <div class="card post border border-dark text-white responsivecardpost">
-                <div class="mt-2 mx-2">
-                <a class="text-light h3" style="text-decoration:none;" href="https://egoistsky.free.nf/egoist?username=' . $row["username"] . '"><img src="' . $userRow["profilephoto"] . '" class="rounded-circle mx-1 responsivepostimage" style="">' . $row["username"] . '</a>
-                </div>
-                
-                <br>
-                    <img src="data/posts/' . $row["photo"] . '" class="card-img-top responsivepostphoto" alt="...">
-                    <div class="card-body border border-dark" style="background-color:black;">
-                        
+                    $postId = $row["postid"];
+                    $username = $_SESSION['username'];
 
-                        <p class="card-text">' . $row["description"] . '</p>
-                        <br>
-                        <p class="card-text"><small class="text-white-50">' . $row["time"] . '</small></p>
-<input type="image" class="mt-2 imghover like-button" style="width: 10%;" src="sun.png" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like">
-                        <input type="image" class="mt-2 mx-1 imghover" style="width: 10%;" src="mercury.png" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike">
-                    </div>
-                </div>
-            </div>
-            <br>';
+                    $checkQuery = "SELECT liked, unliked FROM post WHERE postid = '$postId'";
+                    $checkStmt = $dbh->query($checkQuery);
+                    $likesInfo = $checkStmt->fetch(PDO::FETCH_ASSOC);
+
+                    $likedUsers = $likesInfo['liked'];
+                    $unlikedUsers = $likesInfo['unliked'];
+
+                    if (isset($_POST['liked'])) {
+                        if (!empty($likedUsers) && strpos($likedUsers, $username) !== false) {
+                            echo "";
+                        } else {
+                            $updateQuery = "UPDATE post SET liked = CONCAT(IFNULL(liked, ''), '$username,') WHERE postid = '$postId'";
+                            $dbh->query($updateQuery);
+                        }
+                    }
+
+                    if (isset($_POST['unliked'])) {
+                        if (!empty($likedUsers) && strpos($likedUsers, $username) !== false) {
+                            $newLikedUsers = str_replace("$username,", "", $likedUsers);
+                            $updateQuery = "UPDATE post SET liked = '$newLikedUsers' WHERE postid = '$postId'";
+                            $dbh->query($updateQuery);
+                        }
+
+
+                        if (!empty($unlikedUsers) && strpos($unlikedUsers, $username) !== false) {
+                            echo "";
+                        } else {
+                            $updateQuery = "UPDATE post SET unliked = CONCAT(IFNULL(unliked, ''), '$username,') WHERE postid = '$postId'";
+                            $dbh->query($updateQuery);
+                        }
+                    }
+
+                    echo '
+<div class="w-25 post responsivepost">
+    
+    <div class="card post border border-dark text-white responsivecardpost">
+        <div class="mt-2 mx-2">
+            <a class="text-light h3" style="text-decoration:none;" href="https://egoistsky.free.nf/egoist?username=' . $row["username"] . '"><img src="' . $userRow["profilephoto"] . '" class="rounded-circle mx-1 responsivepostimage" style="">' . $row["username"] . '</a>
+        </div>
+        
+        <br>
+        <img src="data/posts/' . $row["photo"] . '" class="card-img-top responsivepostphoto" alt="...">
+        <div class="card-body border border-dark" style="background-color:black;">
+            
+
+            <p class="card-text">' . $row["description"] . '</p>
+            <br>
+            <p class="card-text"><small class="text-white-50">' . $row["time"] . '</small></p>
+            
+            <form method="post" action="">
+                <input type="hidden" name="postid" value="' . $row["postid"] . '">
+                <input type="submit" class="mt-2 imghover btn btn-outline-success w-25" name="liked" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like" value="Like">
+                <input type="submit" class="mt-2 mx-1 imghover btn btn-outline-danger w-25" name="unliked" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike" value="Unlike">
+            </form>
+        </div>
+    </div>
+</div>
+<br>';
                 }
             } else {
                 echo "Veri bulunamadı";
