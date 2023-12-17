@@ -21,6 +21,23 @@ if (isset($_SESSION['username'])) {
     <link rel="icon" type="image/x-icon" href="astronom.ico">
     <link rel="stylesheet" href="style.css">
     <style>
+        .dropdown {
+            display: inline-block;
+        }
+
+        .dropdown-content {
+
+            visibility: hidden;
+
+
+
+        }
+
+        .dropdown:hover .dropdown-content {
+
+            visibility: visible;
+        }
+
         .scrollable-container {
             width: 20%;
             right: 0;
@@ -37,9 +54,294 @@ if (isset($_SESSION['username'])) {
 
         }
 
-        .scrollable-container::-webkit-scrollbar-thumb {
-            background-color: transparent;
+        .scrollable-container::-webkit-scrollbar-thumb {}
 
+        .responsivelogo {
+            width: 6%;
+        }
+
+        .responsivepages {
+            position: fixed;
+            margin-top: 1%;
+            width: 24%;
+        }
+
+        .responsivepagelogos {
+            margin-left: 50%;
+        }
+
+        .responsivepost {
+            margin-left: 38%;
+        }
+
+        .responsivedropdowncontainer {
+            width: 25%;
+        }
+
+        .responsivedropdownpp {
+            border-radius: 50%;
+            width: 6.5rem;
+            height: 6.5rem;
+        }
+
+        .responsivepostphoto {
+            height: 18rem;
+        }
+
+        .responsiveposter {}
+
+        .responsivepostimage {
+            width: 4rem;
+            height: 4rem;
+            font-family: "Lucida Console", "Courier New", monospace;
+        }
+
+        .profilebuttons {
+            font-size: 12.5px;
+            width: 32%;
+        }
+
+        .responsivephotobutton {
+            width: 4%;
+            position: fixed;
+            margin-top: -5%;
+            opacity: 75%;
+        }
+
+        .responsivephotobutton2 {
+            width: 6%;
+            position: fixed;
+            margin-top: -10.5%;
+            opacity: 85%;
+        }
+
+        // 600px //
+        @media only screen and (max-width: 600px) {
+            .responsivepagelogos {
+                margin-left: 30%;
+            }
+
+            .responsivepages {
+                margin-top: -21%;
+                width: 34%;
+
+            }
+
+            .responsivelogo {
+                width: 9%;
+                margin-left: -1.5%;
+            }
+
+            .responsivesearch {
+                width: 125%;
+                margin-left: -12%;
+            }
+
+            .responsivepost {
+                margin-left: 25%;
+            }
+
+            .responsivepostimage {
+                width: 1.5rem;
+                height: 1.5rem;
+                font-family: "Lucida Console", "Courier New", monospace;
+            }
+
+            .responsivepostpp {}
+
+            responsivedropdowncontainer {
+                width: ;
+            }
+
+            .responsivedropdownpp {
+                border-radius: 50%;
+                width: 3.5rem;
+                height: 3.5rem;
+
+            }
+
+            .responsivepostphoto {
+                height: 18rem;
+                width: 100%;
+            }
+
+            .responsivecardpost {
+                width: 200%;
+            }
+
+            .dropdown-content {
+
+                visibility: visible;
+
+
+            }
+
+            .profilebuttons {
+                font-size: 12.5px;
+                width: 48%;
+            }
+        }
+
+        @media only screen and (max-width: 420px) {
+            .responsivepagelogos {
+                margin-left: 7%;
+            }
+
+            .responsivepages {
+                margin-top: -54%;
+                width: 45%;
+
+            }
+
+            .responsivelogo {
+                width: 12%;
+                margin-left: -8.5%;
+            }
+
+            .responsivesearch {
+                width: 165%;
+                margin-left: -40%;
+            }
+
+            .responsivepost {
+                margin-left: 20%;
+            }
+
+            .responsivepostimage {
+                width: 1.5rem;
+                height: 1.5rem;
+                font-family: "Lucida Console", "Courier New", monospace;
+            }
+
+            .responsivepostpp {}
+
+            responsivedropdowncontainer {
+                width: ;
+            }
+
+            .responsivedropdownpp {
+                border-radius: 50%;
+                width: 4rem;
+                height: 4rem;
+
+            }
+
+            .responsivepostphoto {
+                height: 18rem;
+                width: 100%;
+            }
+
+            .responsivecardpost {
+                width: 220%;
+            }
+
+            .dropdown-content {
+
+                visibility: visible;
+
+
+            }
+
+            .profilebuttons {
+                font-size: 12.5px;
+                width: 68%;
+                margin-left: -13%;
+            }
+
+            .responsivephotobutton {
+                width: 16%;
+                position: fixed;
+                margin-top: -15%;
+                opacity: 75%;
+            }
+
+            .responsivephotobutton2 {
+                width: 20%;
+                position: fixed;
+                margin-top: -40%;
+                opacity: 85%;
+            }
+        }
+
+        @media only screen and (max-width: 380px) {
+            .responsivepagelogos {
+                margin-left: 6.5%;
+            }
+
+            .responsivepages {
+                margin-top: -34%;
+                width: 45%;
+
+            }
+
+            .responsivelogo {
+                width: 12%;
+                margin-left: -8.5%;
+            }
+
+            .responsivesearch {
+                width: 165%;
+                margin-left: -40%;
+            }
+
+            .responsivepost {
+                margin-left: 20%;
+            }
+
+            .responsivepostimage {
+                width: 1.5rem;
+                height: 1.5rem;
+                font-family: "Lucida Console", "Courier New", monospace;
+            }
+
+            .responsivepostpp {}
+
+            responsivedropdowncontainer {
+                width: ;
+            }
+
+            .responsivedropdownpp {
+                border-radius: 50%;
+                width: 4rem;
+                height: 4rem;
+
+            }
+
+            .responsivepostphoto {
+                height: 18rem;
+                width: 100%;
+            }
+
+            .responsivecardpost {
+                width: 220%;
+            }
+
+            .dropdown-content {
+
+                visibility: visible;
+
+
+            }
+
+            .profilebuttons {
+                font-size: 12.5px;
+                width: 68%;
+                margin-left: -13%;
+            }
+
+            .responsivephotobutton {
+                width: 16%;
+                position: fixed;
+                margin-top: -15%;
+                opacity: 75%;
+            }
+
+            .responsivephotobutton2 {
+                width: 20%;
+                position: fixed;
+                margin-top: -40%;
+                opacity: 85%;
+            }
         }
     </style>
 </head>
@@ -73,9 +375,9 @@ if (isset($_SESSION['username'])) {
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
                 src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Following"></a>
-        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
-                style="" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="Languages"></a>
+        <a href="world.php"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="World"></a>
         <a href="information"><img
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
                 src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
@@ -83,26 +385,23 @@ if (isset($_SESSION['username'])) {
     </div>
     <div class="scrollable-container w-100 mt-1" style="overflow-y:auto;height:40rem;">
         <?php
-        $servername = "";
-        $username = "";
-        $password = "";
-        $dbname = "";
+        $servername = "sql203.infinityfree.com";
+        $username = "if0_35435711";
+        $password = "hrtPcoQHzpRSu";
+        $dbname = "if0_35435711_users";
 
         try {
             $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
 
             $postQuery = "SELECT username, photo, description, time FROM post  ORDER BY time DESC";
             $postStmt = $dbh->query($postQuery);
 
             if ($postStmt) {
                 while ($row = $postStmt->fetch(PDO::FETCH_ASSOC)) {
-
                     $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
                     $userStmt = $dbh->query($userQuery);
                     $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
-
 
                     echo '
             <div class="w-25 post" style="margin-left:38%;">
@@ -149,20 +448,15 @@ if (isset($_SESSION['username'])) {
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
 <script>
-
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
 
-
     searchInput.addEventListener('input', function () {
         const searchValue = this.value;
-
-
         if (searchValue === '') {
             searchResults.innerHTML = '';
             return;
         }
-
         fetch(`search.php?search_query=${searchValue}`)
             .then(response => response.text())
             .then(data => {

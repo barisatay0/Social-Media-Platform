@@ -24,6 +24,12 @@ if (isset($_SESSION['username'])) {
         $todayLogins = $stmtTodayLogins->fetch(PDO::FETCH_ASSOC)['today_logins'];
         if ($row) {
             $profilePhoto = $row['profilephoto'];
+            $banned = $row['banned'];
+
+            if ($banned == 1) {
+                header("Location: banned.php");
+                exit();
+            }
         } else {
             echo "Data not found or connection error";
         }
@@ -40,6 +46,7 @@ if (isset($_POST['logout'])) {
     header("Location: index.php");
     exit();
 }
+
 
 $userId = $row['id'];
 
@@ -436,7 +443,7 @@ $userLogs = $stmtUserLogs->fetchAll(PDO::FETCH_ASSOC);
         </form>
 
     </div>
-    <table class="table w-50 text-light position-absolute translate-middle start-50">
+    <table class="table w-50 top-50 text-light position-absolute translate-middle start-50">
         <thead>
             <tr>
                 <th scope="col">Photo</th>
@@ -448,12 +455,10 @@ $userLogs = $stmtUserLogs->fetchAll(PDO::FETCH_ASSOC);
         </thead>
         <tbody>
             <?php
-
             $postQuery = "SELECT * FROM post";
             $stmtPosts = $dbh->prepare($postQuery);
             $stmtPosts->execute();
             $posts = $stmtPosts->fetchAll(PDO::FETCH_ASSOC);
-
 
             foreach ($posts as $post) {
                 echo '<tr>';
@@ -489,13 +494,11 @@ $userLogs = $stmtUserLogs->fetchAll(PDO::FETCH_ASSOC);
 if (isset($_POST['deleteButton'])) {
     $postId = $_POST['postid'];
 
-
     $getPhotoQuery = "SELECT photo FROM post WHERE postid = :postid";
     $stmtGetPhoto = $dbh->prepare($getPhotoQuery);
     $stmtGetPhoto->bindParam(':postid', $postId);
     $stmtGetPhoto->execute();
     $photoName = $stmtGetPhoto->fetch(PDO::FETCH_ASSOC)['photo'];
-
 
     $photoPath = 'data/posts/' . $photoName;
     if (file_exists($photoPath)) {
@@ -505,7 +508,6 @@ if (isset($_POST['deleteButton'])) {
     $deleteQuery = "DELETE FROM post WHERE postid = :postid";
     $stmtDelete = $dbh->prepare($deleteQuery);
     $stmtDelete->bindParam(':postid', $postId);
-
 
     if ($stmtDelete->execute()) {
         echo '<script>alert("Post successfully deleted!");</script>';

@@ -15,6 +15,12 @@ if (isset($_SESSION['username'])) {
         if ($row) {
             $profilePhoto = $row['profilephoto'];
             $biography = $row['biography'];
+            $banned = $row['banned'];
+            if ($banned == 1) {
+                header("Location: banned.php");
+                exit();
+            }
+
         } else {
             echo "Data not found or connection error";
         }
@@ -58,20 +64,16 @@ try {
             margin-right: 16%;
             margin-top: -6%;
             scrollbar-width: thin;
-
             scrollbar-color: transparent transparent;
-
 
         }
 
         .scrollable-container::-webkit-scrollbar {
             width: 6px;
-
         }
 
         .scrollable-container::-webkit-scrollbar-thumb {
             background-color: transparent;
-
         }
 
         .profilebuttons {
@@ -177,7 +179,6 @@ try {
             <a href="" style="text-decoration: none;">
                 <p class="h5 text-white-50 mt-1">Followers:
                     <?php
-
                     try {
                         $query_followers_count = "SELECT followers FROM user WHERE username = :username";
                         $stmt_followers_count = $dbh->prepare($query_followers_count);
@@ -198,7 +199,6 @@ try {
             <a href="" style="text-decoration: none;">
                 <p class="h5 text-white-50">Following:
                     <?php
-
                     try {
                         $query_following_count = "SELECT following FROM user WHERE username = :username";
                         $stmt_following_count = $dbh->prepare($query_following_count);
@@ -229,11 +229,6 @@ try {
                     <form method="POST" action="">
                         <input type="hidden" name="delete" value="<?php echo $post['photo']; ?>">
                         <button type="submit" class="btn btn-outline-danger w-100 mt-2" style="border:none;">Delete
-                            Photo</button>
-                    </form>
-                    <form method="POST" action="">
-                        <input type="hidden" name="edit" value="<?php echo $post['photo']; ?>">
-                        <button type="submit" class="btn btn-outline-warning w-100 mt-2" style="border:none;">Edit
                             Photo</button>
                     </form>
                     <br>
@@ -270,9 +265,9 @@ try {
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover pagebuttonsonly" style=""
                 src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Following"></a>
-        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover pagebuttonsonly"
-                style="" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="Languages"></a>
+        <a href="world.php"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover pagebuttonsonly" style=""
+                src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="World"></a>
         <a href="information.php"><img
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover pagebuttonsonly" style=""
                 src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
@@ -294,7 +289,6 @@ try {
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
 <script>
-
     var images = document.getElementsByClassName('imghoverprofile');
     var modal = document.getElementById('myModal');
     var modalImg = document.getElementById('modalImage');
@@ -309,6 +303,7 @@ try {
             deleteButton.name = this.getAttribute('data-photo');
         });
     }
+
 
     var span = document.getElementsByClassName('close')[0];
     span.onclick = function () {

@@ -14,6 +14,12 @@ if (isset($_SESSION['username'])) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             $profilePhoto = $row['profilephoto'];
+            $banned = $row['banned'];
+
+            if ($banned == 1) {
+                header("Location: banned.php");
+                exit();
+            }
         } else {
             echo "Data not found or connection error";
         }
@@ -111,7 +117,7 @@ if (isset($_POST['logout'])) {
         }
 
         .responsivepostphoto {
-            height: 18rem;
+            height: 24rem;
         }
 
         .responsiveposter {}
@@ -401,9 +407,9 @@ if (isset($_POST['logout'])) {
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
                 src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Following"></a>
-        <a href=""><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
-                style="" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="Languages"></a>
+        <a href="world.php"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="World"></a>
         <a href="information"><img
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
                 src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
@@ -431,7 +437,6 @@ if (isset($_POST['logout'])) {
         <?php
         $exploreQuery = "SELECT photo, head, content, url, content_time FROM explore";
         $exploreResult = $dbh->query($exploreQuery);
-
 
         if ($exploreResult) {
             foreach ($exploreResult as $row) {

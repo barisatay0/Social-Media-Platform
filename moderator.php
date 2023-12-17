@@ -14,8 +14,12 @@ if (isset($_SESSION['username'])) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             $profilePhoto = $row['profilephoto'];
+            $banned = $row['banned'];
 
-
+            if ($banned == 1) {
+                header("Location: banned.php");
+                exit();
+            }
             $queryUserRole = "SELECT role FROM roles WHERE id = :id";
             $stmtUserRole = $dbh->prepare($queryUserRole);
             $stmtUserRole->bindParam(':id', $row['id']);
@@ -522,8 +526,6 @@ $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
 <?php
 if (isset($_POST['delete'])) {
     $userId = $_POST['id'];
-
-
     $deleteUserRoleQuery = "DELETE FROM roles WHERE id = :id";
     $stmtDeleteUserRole = $dbh->prepare($deleteUserRoleQuery);
     $stmtDeleteUserRole->bindParam(':id', $userId);
@@ -533,7 +535,6 @@ if (isset($_POST['delete'])) {
     $stmtDeleteUser = $dbh->prepare($deleteUserQuery);
     $stmtDeleteUser->bindParam(':id', $userId);
     $stmtDeleteUser->execute();
-
 
     header("Location: current_page.php");
     exit();
@@ -548,7 +549,6 @@ if (isset($_POST['editRole'])) {
     $stmtUpdateRole->bindParam(':id', $userId);
     $stmtUpdateRole->execute();
 
-
     header("Location: current_page.php");
     exit();
 }
@@ -560,10 +560,8 @@ if (isset($_POST['Ban'])) {
     $stmtBanUser->bindParam(':id', $userId);
     $stmtBanUser->execute();
 
-
 } elseif (isset($_POST['UnBan'])) {
     $userId = $_POST['id'];
-
 
     $unbanUserQuery = "UPDATE user SET banned = false WHERE id = :id";
     $stmtUnbanUser = $dbh->prepare($unbanUserQuery);

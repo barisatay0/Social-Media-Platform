@@ -24,6 +24,12 @@ if (isset($_SESSION['username'])) {
         $todayLogins = $stmtTodayLogins->fetch(PDO::FETCH_ASSOC)['today_logins'];
         if ($row) {
             $profilePhoto = $row['profilephoto'];
+            $banned = $row['banned'];
+
+            if ($banned == 1) {
+                header("Location: banned.php");
+                exit();
+            }
         } else {
             echo "Data not found or connection error";
         }
@@ -49,7 +55,6 @@ $stmtUserRole = $dbh->prepare($queryUserRole);
 $stmtUserRole->bindParam(':id', $userId);
 $stmtUserRole->execute();
 $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
-
 
 if ($userRole !== 'admin') {
     header("Location:user.php");
