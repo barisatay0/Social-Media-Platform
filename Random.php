@@ -24,7 +24,7 @@ if (isset($_SESSION['username'])) {
             echo "Data not found or connection error";
         }
     } catch (PDOException $e) {
-        echo "Bağlantı Hatası: " . $e->getMessage();
+        echo "Connection Error: " . $e->getMessage();
     }
 } else {
     header("Location: login");
@@ -524,7 +524,7 @@ if (isset($_POST['search'])) {
     $result = mysqli_query($connection, $query);
 
     if (!$result) {
-        die("Sorgu hatası: " . mysqli_error($connection));
+        die("Mysql Error: " . mysqli_error($connection));
     }
 
     if (mysqli_num_rows($result) > 0) {
@@ -532,7 +532,7 @@ if (isset($_POST['search'])) {
             echo $row['username'] . "<br>";
         }
     } else {
-        echo "Kullanıcı bulunamadı.";
+        echo "User dont found.";
     }
 }
 ?>
