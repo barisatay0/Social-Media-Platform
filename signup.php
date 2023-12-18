@@ -21,9 +21,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email_exists = $stmt_check_email->fetchColumn();
 
     if ($username_exists > 0) {
-        echo '<script>alert("Bu kullanıcı adı kullanımda!");</script>';
+        echo '<script>alert("This user not avaible!");</script>';
     } elseif ($email_exists > 0) {
-        echo '<script>alert("Bu eposta daha önce kullanılmıştır");</script>';
+        echo '<script>alert("This Email not avaible!");</script>';
     } else {
         try {
 
@@ -57,10 +57,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $stmt_photo->bindParam(':id', $new_id);
                         $stmt_photo->execute();
                     } else {
-                        echo '<script>alert("Dosya yükleme hatası.");</script>';
+                        echo '<script>alert("File Upload Error.");</script>';
                     }
                 } else {
-                    echo '<script>alert("Yalnızca JPG, JPEG, PNG ve GIF dosyaları yüklenebilir.");</script>';
+                    echo '<script>alert("Only JPG, JPEG, PNG ve GIF Files Can Be Upload.");</script>';
                 }
             }
 

@@ -26,7 +26,7 @@ if (isset($_SESSION['username'])) {
             echo "Data not found or connection error";
         }
     } catch (PDOException $e) {
-        echo "Bağlantı Hatası: " . $e->getMessage();
+        echo "Connection Error: " . $e->getMessage();
     }
 
     try {
@@ -37,7 +37,7 @@ if (isset($_SESSION['username'])) {
 
         $loggedInUserPosts = $stmt_posts->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
-        echo "Bağlantı Hatası: " . $e->getMessage();
+        echo "Connection Error: " . $e->getMessage();
     }
 
     if (isset($_GET['username'])) {
@@ -57,7 +57,7 @@ if (isset($_SESSION['username'])) {
                 echo "Data not found or connection error";
             }
         } catch (PDOException $e) {
-            echo "Bağlantı Hatası: " . $e->getMessage();
+            echo "Connection Error: " . $e->getMessage();
         }
         try {
             $query_posts = "SELECT photo FROM post WHERE username = :username ORDER BY time DESC";
@@ -67,7 +67,7 @@ if (isset($_SESSION['username'])) {
 
             $clickedUserPosts = $stmt_posts->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            echo "Bağlantı Hatası: " . $e->getMessage();
+            echo "Connection Error: " . $e->getMessage();
         }
     }
 } else {
@@ -473,7 +473,7 @@ if (isset($_POST['logout'])) {
                             echo $followers_count;
                         }
                     } catch (PDOException $e) {
-                        echo "Bağlantı Hatası: " . $e->getMessage();
+                        echo "Connection Error: " . $e->getMessage();
                     }
                     ?>
                 </p>
@@ -493,7 +493,7 @@ if (isset($_POST['logout'])) {
                             echo $following_count;
                         }
                     } catch (PDOException $e) {
-                        echo "Bağlantı Hatası: " . $e->getMessage();
+                        echo "Connection Error: " . $e->getMessage();
                     }
                     ?>
                 </p>
@@ -632,10 +632,10 @@ if (isset($_POST['follow'])) {
                 $stmt_update_following->execute();
             }
         } else {
-            echo "Kullanıcı bulunamadı veya bağlantı hatası";
+            echo "Kullanıcı bulunamadı veya Connection Error";
         }
     } catch (PDOException $e) {
-        echo "Bağlantı Hatası: " . $e->getMessage();
+        echo "Connection Error: " . $e->getMessage();
     }
 }
 
@@ -690,10 +690,10 @@ if (isset($_POST['unfollow'])) {
                 $stmt_update_following->execute();
             }
         } else {
-            echo "Kullanıcı bulunamadı veya bağlantı hatası";
+            echo "Kullanıcı bulunamadı veya Connection Error";
         }
     } catch (PDOException $e) {
-        echo "Bağlantı Hatası: " . $e->getMessage();
+        echo "Connection Error: " . $e->getMessage();
     }
 }
 

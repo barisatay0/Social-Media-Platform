@@ -37,10 +37,10 @@ if (isset($_SESSION['username'])) {
                     echo '<p class="text-danger h1">Mevcut şifre yanlış!</p>';
                 }
             } else {
-                echo '<p class="text-light h1">Kullanıcı bulunamadı veya bağlantı hatası!</p>';
+                echo '<p class="text-light h1">Kullanıcı bulunamadı veya Connection Error!</p>';
             }
         } catch (PDOException $e) {
-            echo "Bağlantı Hatası: " . $e->getMessage();
+            echo "Connection Error: " . $e->getMessage();
         }
     }
 } else {
@@ -151,7 +151,7 @@ if (isset($_SESSION['username'])) {
                 searchResults.innerHTML = data;
             })
             .catch(error => {
-                console.error('Arama hatası:', error);
+                console.error('Search Error:', error);
             });
     });
 </script>

@@ -10,7 +10,7 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="icon" type="image/x-icon" href="astronom.ico">
     <style>
-        #kacanResim {
+        #RunningEarth {
             position: absolute;
             top: 50px;
             left: 50px;
@@ -22,21 +22,21 @@
 
 <body class="bg-black">
     <div class="text-white h1 text-center w-100"><span>You cant go back if you cant hit the earth!</span></div>
-    <a href="index.php"><img style="width:10%;" id="kacanResim" src="earth.png" alt="Kaçan Resim"></a>
+    <a href="index.php"><img style="width:10%;" id="RunningEarth" src="earth.png" alt="Running Earth"></a>
 
 
     <script>
-        const kacanResim = document.getElementById('kacanResim');
+        const RunningEarth = document.getElementById('RunningEarth');
 
-        kacanResim.addEventListener('mouseover', () => {
-            const maxX = window.innerWidth - kacanResim.offsetWidth;
-            const maxY = window.innerHeight - kacanResim.offsetHeight;
+        RunningEarth.addEventListener('mouseover', () => {
+            const maxX = window.innerWidth - RunningEarth.offsetWidth;
+            const maxY = window.innerHeight - RunningEarth.offsetHeight;
 
             const newX = Math.random() * maxX;
             const newY = Math.random() * maxY;
 
-            kacanResim.style.left = `${newX}px`;
-            kacanResim.style.top = `${newY}px`;
+            RunningEarth.style.left = `${newX}px`;
+            RunningEarth.style.top = `${newY}px`;
         });
     </script>
 </body>

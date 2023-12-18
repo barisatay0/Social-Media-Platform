@@ -25,7 +25,7 @@ if (isset($_SESSION['username'])) {
             echo "Data not found or connection error";
         }
     } catch (PDOException $e) {
-        echo "Bağlantı Hatası: " . $e->getMessage();
+        echo "Connection Error: " . $e->getMessage();
     }
 } else {
     header("Location: login");
@@ -40,7 +40,7 @@ try {
 
     $posts = $stmt_posts->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    echo "Bağlantı Hatası: " . $e->getMessage();
+    echo "Connection Error: " . $e->getMessage();
 }
 ?>
 <!DOCTYPE html>
@@ -191,7 +191,7 @@ try {
                             echo $followers_count;
                         }
                     } catch (PDOException $e) {
-                        echo "Bağlantı Hatası: " . $e->getMessage();
+                        echo "Connection Error: " . $e->getMessage();
                     }
                     ?>
                 </p>
@@ -211,7 +211,7 @@ try {
                             echo $following_count;
                         }
                     } catch (PDOException $e) {
-                        echo "Bağlantı Hatası: " . $e->getMessage();
+                        echo "Connection Error: " . $e->getMessage();
                     }
                     ?>
                 </p>
@@ -335,7 +335,7 @@ if (isset($_POST['delete'])) {
         echo '<script>window.location.replace("profile.php");</script>';
         exit();
     } catch (PDOException $e) {
-        echo "Bağlantı Hatası: " . $e->getMessage();
+        echo "Connection Error: " . $e->getMessage();
     }
 }
 ?>

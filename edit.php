@@ -38,10 +38,10 @@ if (isset($_SESSION['username'])) {
                     header("Location: profile.php");
                     exit();
                 } catch (PDOException $e) {
-                    echo "Bağlantı Hatası: " . $e->getMessage();
+                    echo "Connection Error: " . $e->getMessage();
                 }
             } else {
-                echo "Dosya yüklenirken bir hata oluştu.";
+                echo "File upload error!";
             }
         } else {
             try {
@@ -59,7 +59,7 @@ if (isset($_SESSION['username'])) {
                 header("Location: profile.php");
                 exit();
             } catch (PDOException $e) {
-                echo "Bağlantı Hatası: " . $e->getMessage();
+                echo "Connection Error: " . $e->getMessage();
             }
         }
     }
@@ -237,7 +237,7 @@ if (isset($_SESSION['username'])) {
                 searchResults.innerHTML = data;
             })
             .catch(error => {
-                console.error('Arama hatası:', error);
+                console.error('Search Error:', error);
             });
     });
 </script>

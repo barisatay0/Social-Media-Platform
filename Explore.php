@@ -24,7 +24,7 @@ if (isset($_SESSION['username'])) {
             echo "Data not found or connection error";
         }
     } catch (PDOException $e) {
-        echo "Bağlantı Hatası: " . $e->getMessage();
+        echo "Connection Error: " . $e->getMessage();
     }
 } else {
     header("Location: login");
@@ -452,7 +452,7 @@ if (isset($_POST['logout'])) {
                 echo '</div></div></div><br><br>';
             }
         } else {
-            echo "Veri bulunamadı veya bağlantı hatası.";
+            echo "Data Not Found veya Connection Error.";
         } ?>
     </div>
     <div>
@@ -536,7 +536,7 @@ if (isset($_POST['search'])) {
             echo $row['username'] . "<br>";
         }
     } else {
-        echo "Kullanıcı bulunamadı.";
+        echo "User dont found.";
     }
 }
 ?>

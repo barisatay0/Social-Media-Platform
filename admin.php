@@ -29,7 +29,7 @@ if (isset($_SESSION['username'])) {
             echo "Data not found or connection error";
         }
     } catch (PDOException $e) {
-        echo "Bağlantı Hatası: " . $e->getMessage();
+        echo "Connection Error: " . $e->getMessage();
     }
 } else {
     header("Location:login.php");

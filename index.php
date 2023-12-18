@@ -427,10 +427,10 @@ if (isset($_SESSION['username'])) {
             <br>';
                 }
             } else {
-                echo "Veri bulunamadı";
+                echo "Data Not Found";
             }
         } catch (PDOException $e) {
-            echo "Bağlantı hatası: " . $e->getMessage();
+            echo "Connection Error: " . $e->getMessage();
         }
         ?>
         <br>
@@ -463,7 +463,7 @@ if (isset($_SESSION['username'])) {
                 searchResults.innerHTML = data;
             })
             .catch(error => {
-                console.error('Arama hatası:', error);
+                console.error('Search Error:', error);
             });
     });
 </script>

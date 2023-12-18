@@ -9,7 +9,7 @@ try {
     $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
-    echo "Bağlantı hatası: " . $e->getMessage();
+    echo "Connection Error: " . $e->getMessage();
 }
 
 if (isset($_POST['share'])) {

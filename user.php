@@ -25,7 +25,7 @@ if (isset($_SESSION['username'])) {
         }
 
     } catch (PDOException $e) {
-        echo "Bağlantı Hatası: " . $e->getMessage();
+        echo "Connection Error: " . $e->getMessage();
     }
 } else {
     header("Location: login");
@@ -516,10 +516,10 @@ if (isset($_POST['logout'])) {
 <br>';
                 }
             } else {
-                echo "Veri bulunamadı";
+                echo "Data Not Found";
             }
         } catch (PDOException $e) {
-            echo "Bağlantı hatası: " . $e->getMessage();
+            echo "Connection Error: " . $e->getMessage();
         }
         ?>
         <br>

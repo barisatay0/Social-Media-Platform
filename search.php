@@ -30,6 +30,6 @@ try {
 
     }
 } catch (PDOException $e) {
-    echo "Bağlantı hatası: " . $e->getMessage();
+    echo "Connection Error: " . $e->getMessage();
 }
 ?>
