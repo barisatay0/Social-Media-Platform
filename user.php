@@ -25,7 +25,7 @@ if (isset($_SESSION['username'])) {
         }
 
     } catch (PDOException $e) {
-        echo "Connection Error: " . $e->getMessage();
+        echo "Bağlantı Hatası: " . $e->getMessage();
     }
 } else {
     header("Location: login");
@@ -37,6 +37,53 @@ if (isset($_POST['logout'])) {
     header("Location: index.php");
     exit();
 }
+if (isset($_POST['likeAction'])) {
+    $postID = $_POST['postid'];
+    $likeAction = $_POST['likeAction'];
+    $currentUser = $_SESSION['username'];
+
+    $likeQuery = "SELECT * FROM likes WHERE postid = :postid AND username = :username";
+    $likeStmt = $dbh->prepare($likeQuery);
+    $likeStmt->bindParam(':postid', $postID);
+    $likeStmt->bindParam(':username', $currentUser);
+    $likeStmt->execute();
+    $existingLike = $likeStmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($likeAction === 'like') {
+        if ($existingLike) {
+            if ($existingLike['unliked'] == 1) {
+                $updateQuery = "UPDATE likes SET liked = 1, unliked = 0 WHERE postid = :postid AND username = :username";
+                $updateStmt = $dbh->prepare($updateQuery);
+                $updateStmt->bindParam(':postid', $postID);
+                $updateStmt->bindParam(':username', $currentUser);
+                $updateStmt->execute();
+            }
+        } else {
+            $insertQuery = "INSERT INTO likes (postid, username, liked, unliked) VALUES (:postid, :username, 1, 0)";
+            $insertStmt = $dbh->prepare($insertQuery);
+            $insertStmt->bindParam(':postid', $postID);
+            $insertStmt->bindParam(':username', $currentUser);
+            $insertStmt->execute();
+        }
+    } elseif ($likeAction === 'unlike') {
+        if ($existingLike) {
+            if ($existingLike['liked'] == 1) {
+                $updateQuery = "UPDATE likes SET liked = 0, unliked = 1 WHERE postid = :postid AND username = :username";
+                $updateStmt = $dbh->prepare($updateQuery);
+                $updateStmt->bindParam(':postid', $postID);
+                $updateStmt->bindParam(':username', $currentUser);
+                $updateStmt->execute();
+            }
+        } else {
+            $insertQuery = "INSERT INTO likes (postid, username, liked, unliked) VALUES (:postid, :username, 0, 1)";
+            $insertStmt = $dbh->prepare($insertQuery);
+            $insertStmt->bindParam(':postid', $postID);
+            $insertStmt->bindParam(':username', $currentUser);
+            $insertStmt->execute();
+        }
+    }
+}
+
 ?>
 
 
@@ -427,8 +474,6 @@ if (isset($_POST['logout'])) {
         <a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
                 style="">Profile</button></a>
         <br>
-        <button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Settings</button>
-        <br>
         <form method="post" action=""><button type="submit" name="logout"
                 class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Logout</button>
         </form>
@@ -445,7 +490,7 @@ if (isset($_POST['logout'])) {
             $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $postQuery = "SELECT * FROM post  ORDER BY time DESC";
+            $postQuery = "SELECT * FROM post ORDER BY time DESC";
             $postStmt = $dbh->query($postQuery);
 
             if ($postStmt) {
@@ -453,75 +498,61 @@ if (isset($_POST['logout'])) {
                     $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
                     $userStmt = $dbh->query($userQuery);
                     $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
-                    $postId = $row["postid"];
-                    $username = $_SESSION['username'];
 
-                    $checkQuery = "SELECT liked, unliked FROM post WHERE postid = '$postId'";
-                    $checkStmt = $dbh->query($checkQuery);
-                    $likesInfo = $checkStmt->fetch(PDO::FETCH_ASSOC);
+                    $likeCountQuery = "SELECT COUNT(*) AS likeCount FROM likes WHERE postid = :postid AND liked = 1";
+                    $likeCountStmt = $dbh->prepare($likeCountQuery);
+                    $likeCountStmt->bindParam(':postid', $row["postid"]);
+                    $likeCountStmt->execute();
+                    $likeCountRow = $likeCountStmt->fetch(PDO::FETCH_ASSOC);
 
-                    $likedUsers = $likesInfo['liked'];
-                    $unlikedUsers = $likesInfo['unliked'];
-
-                    if (isset($_POST['liked'])) {
-                        if (!empty($likedUsers) && strpos($likedUsers, $username) !== false) {
-                            echo "";
-                        } else {
-                            $updateQuery = "UPDATE post SET liked = CONCAT(IFNULL(liked, ''), '$username,') WHERE postid = '$postId'";
-                            $dbh->query($updateQuery);
-                        }
-                    }
-
-                    if (isset($_POST['unliked'])) {
-                        if (!empty($likedUsers) && strpos($likedUsers, $username) !== false) {
-                            $newLikedUsers = str_replace("$username,", "", $likedUsers);
-                            $updateQuery = "UPDATE post SET liked = '$newLikedUsers' WHERE postid = '$postId'";
-                            $dbh->query($updateQuery);
-                        }
-
-
-                        if (!empty($unlikedUsers) && strpos($unlikedUsers, $username) !== false) {
-                            echo "";
-                        } else {
-                            $updateQuery = "UPDATE post SET unliked = CONCAT(IFNULL(unliked, ''), '$username,') WHERE postid = '$postId'";
-                            $dbh->query($updateQuery);
-                        }
-                    }
+                    $unlikeCountQuery = "SELECT COUNT(*) AS unlikeCount FROM likes WHERE postid = :postid AND unliked = 1";
+                    $unlikeCountStmt = $dbh->prepare($unlikeCountQuery);
+                    $unlikeCountStmt->bindParam(':postid', $row["postid"]);
+                    $unlikeCountStmt->execute();
+                    $unlikeCountRow = $unlikeCountStmt->fetch(PDO::FETCH_ASSOC);
 
                     echo '
-<div class="w-25 post responsivepost">
-    
-    <div class="card post border border-dark text-white responsivecardpost">
-        <div class="mt-2 mx-2">
-            <a class="text-light h3" style="text-decoration:none;" href="https://egoistsky.free.nf/egoist?username=' . $row["username"] . '"><img src="' . $userRow["profilephoto"] . '" class="rounded-circle mx-1 responsivepostimage" style="">' . $row["username"] . '</a>
-        </div>
-        
-        <br>
-        <img src="data/posts/' . $row["photo"] . '" class="card-img-top responsivepostphoto" alt="...">
-        <div class="card-body border border-dark" style="background-color:black;">
-            
-
-            <p class="card-text">' . $row["description"] . '</p>
-            <br>
-            <p class="card-text"><small class="text-white-50">' . $row["time"] . '</small></p>
-            
-            <form method="post" action="">
-                <input type="hidden" name="postid" value="' . $row["postid"] . '">
-                <input type="submit" class="mt-2 imghover btn btn-outline-success w-25" name="liked" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Like" value="Like">
-                <input type="submit" class="mt-2 mx-1 imghover btn btn-outline-danger w-25" name="unliked" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Unlike" value="Unlike">
-            </form>
-        </div>
-    </div>
-</div>
-<br>';
+            <div class="w-25 post responsivepost">
+                <div class="card post border border-dark text-white responsivecardpost">
+                    <img src="data/posts/' . $row["photo"] . '" class="card-img-top responsivepostphoto" alt="...">
+                    <div class="card-body border border-dark" style="background-color:black;">
+                        <div class="mt-2 mx-2">
+                            <a class="text-light h4" style="text-decoration:none;" href="https://egoistsky.free.nf/egoist?username=' . $row["username"] . '">
+                                <img src="' . $userRow["profilephoto"] . '" class="rounded-circle mx-1 responsivepostimage" style="">
+                                ' . $row["username"] . '
+                            </a>
+                        </div>
+                        <br>
+                        <p class="card-text">' . $row["description"] . '</p>
+                        <br>
+                        <p class="card-text"><small class="text-white-50">' . $row["time"] . '</small></p>
+                        
+                        <form method="post" action="">
+                            <input type="hidden" name="postid" value="' . $row["postid"] . '">
+                            <button type="submit" class="mt-2 imghover btn btn-outline-success w-25" name="likeAction" value="like">
+                                Like
+                            </button>
+                            <button type="submit" class="mt-2 mx-1 imghover btn btn-outline-danger w-25" name="likeAction" value="unlike">
+                                Unlike
+                            </button>
+                        </form>
+                        <p class="card-text"><small class="text-white-50">Likes: ' . $likeCountRow["likeCount"] . '</small></p>
+                        <p class="card-text"><small class="text-white-50">Unlikes: ' . $unlikeCountRow["unlikeCount"] . '</small></p>
+                    </div>
+                </div>
+            </div>
+            <br>';
                 }
+
             } else {
-                echo "Data Not Found";
+                echo "Data Not found";
             }
         } catch (PDOException $e) {
             echo "Connection Error: " . $e->getMessage();
         }
         ?>
+
+
         <br>
     </div>
     <div>
@@ -575,7 +606,7 @@ if (isset($_POST['logout'])) {
                 searchResults.innerHTML = data;
             })
             .catch(error => {
-                console.error('Arama hatası:', error);
+                console.error('Search Errır:', error);
             });
     });
 </script>
@@ -597,7 +628,7 @@ if (isset($_POST['search'])) {
     $result = mysqli_query($connection, $query);
 
     if (!$result) {
-        die("Sorgu hatası: " . mysqli_error($connection));
+        die("Sql error: " . mysqli_error($connection));
     }
 
     if (mysqli_num_rows($result) > 0) {
@@ -605,7 +636,7 @@ if (isset($_POST['search'])) {
             echo $row['username'] . "<br>";
         }
     } else {
-        echo "Kullanıcı bulunamadı.";
+        echo "User not found.";
     }
 }
 ?>
