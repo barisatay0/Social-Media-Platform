@@ -143,4 +143,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
     crossorigin="anonymous"></script>
 <script>
-</html >
