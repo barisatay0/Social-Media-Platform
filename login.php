@@ -97,6 +97,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="password" name="password" class="form-control" id="exampleInputPassword1">
         </div>
         <button type="submit" class="btn btn-outline-light w-100">Login</button>
+        <div class="mb-3 text-center">
+            <a href="signup.php">if you dont have a account signup</a>
+        </div>
     </form>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
