@@ -134,6 +134,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 name="profilephoto" required>
         </div>
         <button type="submit" class="btn btn-outline-light w-100">Sign Up</button>
+        <div class="mb-3 text-center">
+            <a href="login.php">if you have a account login</a>
+        </div>
     </form>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
