@@ -39,7 +39,7 @@
         <br>
         <a href="https://www.instagram.com/barisatay0/">İnstagram</a>
         <br>
-        <a href="https://github.com/barmet1">Github</a>
+        <a href="https://github.com/barisatay0">Github</a>
     </div>
 
 </body>
