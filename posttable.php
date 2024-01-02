@@ -493,26 +493,24 @@ $userLogs = $stmtUserLogs->fetchAll(PDO::FETCH_ASSOC);
 <?php
 if (isset($_POST['deleteButton'])) {
     $postId = $_POST['postid'];
-
+    $deleteLikesQuery = "DELETE FROM likes WHERE postid = :postid";
+    $stmtDeleteLikes = $dbh->prepare($deleteLikesQuery);
+    $stmtDeleteLikes->bindParam(':postid', $postId);
     $getPhotoQuery = "SELECT photo FROM post WHERE postid = :postid";
     $stmtGetPhoto = $dbh->prepare($getPhotoQuery);
     $stmtGetPhoto->bindParam(':postid', $postId);
     $stmtGetPhoto->execute();
     $photoName = $stmtGetPhoto->fetch(PDO::FETCH_ASSOC)['photo'];
-
     $photoPath = 'data/posts/' . $photoName;
     if (file_exists($photoPath)) {
         unlink($photoPath);
     }
-
     $deleteQuery = "DELETE FROM post WHERE postid = :postid";
     $stmtDelete = $dbh->prepare($deleteQuery);
     $stmtDelete->bindParam(':postid', $postId);
-
-    if ($stmtDelete->execute()) {
+    $likesDeleted = $stmtDeleteLikes->execute();
+    if ($stmtDelete->execute() && $likesDeleted) {
         echo '<script>alert("Post successfully deleted!");</script>';
-
-
     } else {
         echo '<script>alert("Failed to delete post!");</script>';
     }
