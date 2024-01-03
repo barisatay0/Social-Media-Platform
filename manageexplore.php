@@ -248,7 +248,6 @@ if (isset($_POST['delete_explore'])) {
             opacity: 85%;
         }
 
-        // 600px //
         @media only screen and (max-width: 600px) {
             .responsivepagelogos {
                 margin-left: 30%;
@@ -283,7 +282,7 @@ if (isset($_POST['delete_explore'])) {
             .responsivepostpp {}
 
             responsivedropdowncontainer {
-                width: ;
+                width: 1px;
             }
 
             .responsivedropdownpp {
@@ -349,7 +348,7 @@ if (isset($_POST['delete_explore'])) {
             .responsivepostpp {}
 
             responsivedropdowncontainer {
-                width: ;
+                width: 1px;
             }
 
             .responsivedropdownpp {
@@ -430,7 +429,7 @@ if (isset($_POST['delete_explore'])) {
             .responsivepostpp {}
 
             responsivedropdowncontainer {
-                width: ;
+                width: 1px;
             }
 
             .responsivedropdownpp {

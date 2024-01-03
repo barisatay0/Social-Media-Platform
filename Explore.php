@@ -147,7 +147,6 @@ if (isset($_POST['logout'])) {
             opacity: 85%;
         }
 
-        // 600px //
         @media only screen and (max-width: 600px) {
             .responsivepagelogos {
                 margin-left: 30%;
@@ -182,7 +181,7 @@ if (isset($_POST['logout'])) {
             .responsivepostpp {}
 
             responsivedropdowncontainer {
-                width: ;
+                width: 1px;
             }
 
             .responsivedropdownpp {
@@ -248,7 +247,7 @@ if (isset($_POST['logout'])) {
             .responsivepostpp {}
 
             responsivedropdowncontainer {
-                width: ;
+                width: 1px;
             }
 
             .responsivedropdownpp {
@@ -329,7 +328,7 @@ if (isset($_POST['logout'])) {
             .responsivepostpp {}
 
             responsivedropdowncontainer {
-                width: ;
+                width: 1px;
             }
 
             .responsivedropdownpp {
