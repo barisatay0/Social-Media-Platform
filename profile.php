@@ -1,6 +1,8 @@
 <?php
 session_start();
 include 'connect.php';
+$clickedUsername = $_SESSION['username'];
+
 
 if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
@@ -180,36 +182,45 @@ try {
                 <p class="h5 text-white-50 mt-1">Followers:
                     <?php
                     try {
-                        $query_followers_count = "SELECT followers FROM user WHERE username = :username";
+                        $query_user_id = "SELECT id FROM user WHERE username = :username";
+                        $stmt_user_id = $dbh->prepare($query_user_id);
+                        $stmt_user_id->bindParam(':username', $clickedUsername);
+                        $stmt_user_id->execute();
+
+                        $clickedUserId = $stmt_user_id->fetch(PDO::FETCH_ASSOC)['id'];
+
+                        $query_followers_count = "SELECT COUNT(*) FROM follows WHERE followedid = :userId AND follow = 1";
                         $stmt_followers_count = $dbh->prepare($query_followers_count);
-                        $stmt_followers_count->bindParam(':username', $username);
+                        $stmt_followers_count->bindParam(':userId', $clickedUserId);
                         $stmt_followers_count->execute();
 
-                        $row_followers_count = $stmt_followers_count->fetch(PDO::FETCH_ASSOC);
-                        if ($row_followers_count) {
-                            $followers_count = count(explode(',', $row_followers_count['followers']));
-                            echo $followers_count;
-                        }
+                        $followers_count = $stmt_followers_count->fetchColumn();
+                        echo $followers_count;
                     } catch (PDOException $e) {
                         echo "Connection Error: " . $e->getMessage();
                     }
                     ?>
+
                 </p>
             </a>
             <a href="" style="text-decoration: none;">
                 <p class="h5 text-white-50">Following:
                     <?php
                     try {
-                        $query_following_count = "SELECT following FROM user WHERE username = :username";
+                        $query_user_id = "SELECT id FROM user WHERE username = :username";
+                        $stmt_user_id = $dbh->prepare($query_user_id);
+                        $stmt_user_id->bindParam(':username', $clickedUsername);
+                        $stmt_user_id->execute();
+
+                        $clickedUserId = $stmt_user_id->fetch(PDO::FETCH_ASSOC)['id'];
+
+                        $query_following_count = "SELECT COUNT(*) FROM follows WHERE followerid = :userId AND follow = 1";
                         $stmt_following_count = $dbh->prepare($query_following_count);
-                        $stmt_following_count->bindParam(':username', $username);
+                        $stmt_following_count->bindParam(':userId', $clickedUserId);
                         $stmt_following_count->execute();
 
-                        $row_following_count = $stmt_following_count->fetch(PDO::FETCH_ASSOC);
-                        if ($row_following_count) {
-                            $following_count = count(explode(',', $row_following_count['following']));
-                            echo $following_count;
-                        }
+                        $following_count = $stmt_following_count->fetchColumn();
+                        echo $following_count;
                     } catch (PDOException $e) {
                         echo "Connection Error: " . $e->getMessage();
                     }
