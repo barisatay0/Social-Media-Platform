@@ -14,12 +14,6 @@ if (isset($_SESSION['username'])) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             $profilePhoto = $row['profilephoto'];
-            $banned = $row['banned'];
-
-            if ($banned == 1) {
-                header("Location: banned.php");
-                exit();
-            }
 
             $queryUserRole = "SELECT role FROM roles WHERE id = :id";
             $stmtUserRole = $dbh->prepare($queryUserRole);
@@ -27,11 +21,10 @@ if (isset($_SESSION['username'])) {
             $stmtUserRole->execute();
             $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
 
-            if ($userRole !== 'admin' && $userRole !== 'moderator') {
+            if ($userRole !== 'admin') {
                 header("Location:user.php");
                 exit();
             }
-
         } else {
             echo "Data not found or connection error";
         }
@@ -80,62 +73,6 @@ $stmtUserRole->bindParam(':id', $userId);
 $stmtUserRole->execute();
 $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $head = $_POST['head'];
-    $content = $_POST['content'];
-    $url = $_POST['url'];
-
-    $targetDirectory = "data/explore/";
-    $targetFile = $targetDirectory . basename($_FILES["file"]["name"]);
-    $uploadOk = 1;
-    $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-
-    if (
-        $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-        && $imageFileType != "gif"
-    ) {
-        echo "Sadece JPG, JPEG, PNG & GIF dosya formatları yüklenebilir.";
-        $uploadOk = 0;
-    }
-
-    if ($uploadOk == 0) {
-        echo "Dosyanız yüklenemedi.";
-    } else {
-        if (move_uploaded_file($_FILES["file"]["tmp_name"], $targetFile)) {
-            echo "Dosya " . htmlspecialchars(basename($_FILES["file"]["name"])) . " başarıyla yüklendi.";
-
-
-            $query = "INSERT INTO explore (photo, head, content, url) VALUES (:photo, :head, :content, :url)";
-            $stmt = $dbh->prepare($query);
-            $stmt->bindParam(':photo', $targetFile);
-            $stmt->bindParam(':head', $head);
-            $stmt->bindParam(':content', $content);
-            $stmt->bindParam(':url', $url);
-            $stmt->execute();
-
-            header("Location: success.php");
-        } else {
-            echo "Dosya yüklenirken bir hata oluştu.";
-        }
-    }
-}
-$queryExplore = "SELECT * FROM explore";
-$stmtExplore = $dbh->prepare($queryExplore);
-$stmtExplore->execute();
-$exploreData = $stmtExplore->fetchAll(PDO::FETCH_ASSOC);
-
-if (isset($_POST['delete_explore'])) {
-    $explore_id = $_POST['explore_id'];
-
-    $deleteQuery = "DELETE FROM explore WHERE id = :explore_id";
-    $stmt = $dbh->prepare($deleteQuery);
-    $stmt->bindParam(':explore_id', $explore_id);
-    $stmt->execute();
-
-
-    header("Location: success.php");
-    exit();
-}
 
 ?>
 
@@ -248,6 +185,7 @@ if (isset($_POST['delete_explore'])) {
             opacity: 85%;
         }
 
+        // 600px //
         @media only screen and (max-width: 600px) {
             .responsivepagelogos {
                 margin-left: 30%;
@@ -282,7 +220,7 @@ if (isset($_POST['delete_explore'])) {
             .responsivepostpp {}
 
             responsivedropdowncontainer {
-                width: 1px;
+                width: ;
             }
 
             .responsivedropdownpp {
@@ -348,7 +286,7 @@ if (isset($_POST['delete_explore'])) {
             .responsivepostpp {}
 
             responsivedropdowncontainer {
-                width: 1px;
+                width: ;
             }
 
             .responsivedropdownpp {
@@ -429,7 +367,7 @@ if (isset($_POST['delete_explore'])) {
             .responsivepostpp {}
 
             responsivedropdowncontainer {
-                width: 1px;
+                width: ;
             }
 
             .responsivedropdownpp {
@@ -492,7 +430,7 @@ if (isset($_POST['delete_explore'])) {
             <img <?php echo 'src="' . $profilePhoto . '"' ?>
                 class=" border border-dark border-opacity-25 border-5 responsivedropdownpp" alt="123" style="" />
             <p class="text-light text-center">
-                Moderator Name :
+                Admin Name :
                 <?php echo $username; ?>
             </p>
         </a>
@@ -500,79 +438,110 @@ if (isset($_POST['delete_explore'])) {
                 style="">Profile</button></a>
         <br>
         <a href="admin.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Admin
-                Page</button></a>
-        <br>
-        <a href="moderator.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
-                style="">moderator Page</button></a>
-        <br>
+                Page</button></a><br>
         <a href="manageexplore.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
-                style="">Manage Explore</button></a>
-        <br>
+                style="">Manage Explore</button></a><br>
         <a href="posttable.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Post
-                Table</button></a>
-        <br>
+                Table</button></a><br>
+        <a href="login_logs.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
+                style="">Login Logs</button></a><br>
         <form method="post" action=""><button type="submit" name="logout"
                 class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Logout</button>
         </form>
 
     </div>
-    <div class="text-center text-white" style="margin-left:30%;width:45%;">
-        <form method="post" action="" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">photo</label>
-                <input type="file" name="file" class="form-control" id="exampleInputEmail1">
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">head</label>
-                <input type="text" name="head" class="form-control" id="exampleInputEmail1">
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">content</label>
-                <input type="text" name="content" class="form-control" id="exampleInputEmail1">
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">url</label>
-                <input type="text" name="url" class="form-control" id="exampleInputPassword1">
-            </div>
-            <button type="submit" class="btn btn-success w-50">Share Explore Content</button>
-        </form>
+    <div class="text-center" style="margin-left:10%;width:67%;">
+        <table class="table table-hover" style="">
+            <h5 class="h3 text-white">Statistics of Users</h5>
+            <tr>
+                <th>Admin Number</th>
+                <th>Moderator Number</th>
+                <th>User Number</th>
+                <th>Post Number</th>
+            </tr>
+            <tr>
+                <td>
+                    <?php echo $adminCount; ?>
+                </td>
+                <td>
+                    <?php echo $moderatorCount; ?>
+                </td>
+                <td>
+                    <?php echo $userCount; ?>
+                </td>
+                <td>
+                    <?php echo $postCount; ?>
+                </td>
+            </tr>
+        </table>
         <br>
-        <table class="table table-hover text-center">
-            <thead>
+        <a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Manage
+                Explore</button></a>
+        <br>
+        <h5 class="h3 text-white">Manage Users</h5>
+        <div style="overflow-x:auto;height:23rem;">
+            <table class="table table-hover" style="">
                 <tr>
-                    <th scope="col">Photo</th>
-                    <th scope="col">head</th>
-                    <th scope="col">content</th>
-                    <th scope="col">url</th>
-                    <th scope="col">Delete</th>
+                    <th>id</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>firstname</th>
+                    <th>lastname</th>
+                    <th>Delete User</th>
+                    <th>Role</th>
+                    <th>Ban</th>
                 </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($exploreData as $explore): ?>
-                    <tr>
-                        <td class="w-25"><img src="<?php echo $explore['photo']; ?>" class="w-100"></td>
-                        <td>
-                            <?php echo $explore['head']; ?>
-                        </td>
-                        <td>
-                            <?php echo $explore['content']; ?>
-                        </td>
-                        <td>
-                            <?php echo $explore['url']; ?>
-                        </td>
-                        <td>
-                            <form method="post" action="">
-                                <input type="hidden" name="explore_id" value="<?php echo $explore['id']; ?>">
-                                <button type="submit" name="delete_explore" class="btn btn-danger">Delete</button>
-                            </form>
-                        </td>
+                <tr>
+                    <?php foreach ($usersData as $user):
+                        $rolesQuery = "SELECT role FROM roles WHERE id = :id";
+                        $stmtRoles = $dbh->prepare($rolesQuery);
+                        $stmtRoles->bindParam(':id', $user['id']);
+                        $stmtRoles->execute();
+                        $userRole = $stmtRoles->fetch(PDO::FETCH_ASSOC)['role'];
+                        ?>
 
+                    <tr>
+                        <td>
+                            <?php echo $user['id']; ?>
+                        </td>
+                        <td><a href="https://egoistsky.free.nf/egoist?username=<?php echo $user['username']; ?>">
+                                <?php echo $user['username']; ?>
+                            </a></td>
+                        <td>
+                            <?php echo $user['email']; ?>
+                        </td>
+                        <td>
+                            <?php echo $user['firstname']; ?>
+                        </td>
+                        <td>
+                            <?php echo $user['lastname']; ?>
+                        </td>
+                        <form method="post" action="">
+                            <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
+                            <td><button name="delete" class="btn btn-outline-danger">Delete</button></td>
+                        </form>
+                        <form method="post" action="">
+                            <td>
+                                <div class="input-group mt-1">
+                                    <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
+                                    <input type="text" class="form-control" placeholder="" value="<?php echo $userRole ?>"
+                                        class="form-control" name="newRole" placeholder="New Role" aria-label="New Role"
+                                        aria-describedby="button-addon1">
+                                    <button class="btn btn-outline-warning" name="editRole" type="submit"
+                                        id="button-addon1">Edit Role</button>
+                                </div>
+                            </td>
+                        </form>
+                        <form method="post" action="">
+                            <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
+                            <td><button type="submit" name="Ban" class="btn btn-outline-danger">Ban</button>
+                                <button type="submit" name="UnBan" class="btn btn-outline-primary">Un Ban</button>
+                            </td>
+                        </form>
                     </tr>
                 <?php endforeach; ?>
-            </tbody>
-        </table>
-
-
+            </table>
+        </div>
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -587,3 +556,54 @@ if (isset($_POST['delete_explore'])) {
 </script>
 
 </html>
+<?php
+if (isset($_POST['delete'])) {
+    $userId = $_POST['id'];
+
+    $deleteUserRoleQuery = "DELETE FROM roles WHERE id = :id";
+    $stmtDeleteUserRole = $dbh->prepare($deleteUserRoleQuery);
+    $stmtDeleteUserRole->bindParam(':id', $userId);
+    $stmtDeleteUserRole->execute();
+
+    $deleteUserQuery = "DELETE FROM user WHERE id = :id";
+    $stmtDeleteUser = $dbh->prepare($deleteUserQuery);
+    $stmtDeleteUser->bindParam(':id', $userId);
+    $stmtDeleteUser->execute();
+
+    header("Location: current_page.php");
+    exit();
+}
+if (isset($_POST['editRole'])) {
+    $userId = $_POST['id'];
+    $newRole = $_POST['newRole'];
+
+    $updateRoleQuery = "UPDATE roles SET role = :newRole WHERE id = :id";
+    $stmtUpdateRole = $dbh->prepare($updateRoleQuery);
+    $stmtUpdateRole->bindParam(':newRole', $newRole);
+    $stmtUpdateRole->bindParam(':id', $userId);
+    $stmtUpdateRole->execute();
+
+    header("Location: current_page.php");
+    exit();
+}
+if (isset($_POST['Ban'])) {
+    $userId = $_POST['id'];
+
+    $banUserQuery = "UPDATE user SET banned = true WHERE id = :id";
+    $stmtBanUser = $dbh->prepare($banUserQuery);
+    $stmtBanUser->bindParam(':id', $userId);
+    $stmtBanUser->execute();
+
+} elseif (isset($_POST['UnBan'])) {
+    $userId = $_POST['id'];
+
+    $unbanUserQuery = "UPDATE user SET banned = false WHERE id = :id";
+    $stmtUnbanUser = $dbh->prepare($unbanUserQuery);
+    $stmtUnbanUser->bindParam(':id', $userId);
+    $stmtUnbanUser->execute();
+
+    header("Location: current_page.php");
+    exit();
+}
+
+?>
