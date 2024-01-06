@@ -320,18 +320,20 @@ if (isset($_POST['delete'])) {
     $photoName = $_POST['delete'];
 
     try {
+        $sqlLikes = "DELETE FROM likes WHERE postid IN (SELECT postid FROM post WHERE photo = :photoName)";
+        $stmtLikes = $dbh->prepare($sqlLikes);
+        $stmtLikes->bindParam(':photoName', $photoName, PDO::PARAM_STR);
+        $stmtLikes->execute();
 
-        $sql = "DELETE FROM post WHERE photo = :photoName";
-        $stmt = $dbh->prepare($sql);
-        $stmt->bindParam(':photoName', $photoName, PDO::PARAM_STR);
-        $stmt->execute();
-
+        $sqlPost = "DELETE FROM post WHERE photo = :photoName";
+        $stmtPost = $dbh->prepare($sqlPost);
+        $stmtPost->bindParam(':photoName', $photoName, PDO::PARAM_STR);
+        $stmtPost->execute();
 
         $filePath = 'data/posts/' . $photoName;
         if (file_exists($filePath)) {
             unlink($filePath);
         }
-
         echo '<script>window.location.replace("profile.php");</script>';
         exit();
     } catch (PDOException $e) {
