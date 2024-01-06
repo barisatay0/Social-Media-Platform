@@ -462,36 +462,45 @@ if (isset($_POST['logout'])) {
                 <p class="h5 text-white-50 mt-1">Followers:
                     <?php
                     try {
-                        $query_followers_count = "SELECT followers FROM user WHERE username = :username";
+                        $query_user_id = "SELECT id FROM user WHERE username = :username";
+                        $stmt_user_id = $dbh->prepare($query_user_id);
+                        $stmt_user_id->bindParam(':username', $clickedUsername);
+                        $stmt_user_id->execute();
+
+                        $clickedUserId = $stmt_user_id->fetch(PDO::FETCH_ASSOC)['id'];
+
+                        $query_followers_count = "SELECT COUNT(*) FROM follows WHERE followedid = :userId AND follow = 1";
                         $stmt_followers_count = $dbh->prepare($query_followers_count);
-                        $stmt_followers_count->bindParam(':username', $clickedUsername);
+                        $stmt_followers_count->bindParam(':userId', $clickedUserId);
                         $stmt_followers_count->execute();
 
-                        $row_followers_count = $stmt_followers_count->fetch(PDO::FETCH_ASSOC);
-                        if ($row_followers_count) {
-                            $followers_count = count(explode(',', $row_followers_count['followers']));
-                            echo $followers_count;
-                        }
+                        $followers_count = $stmt_followers_count->fetchColumn();
+                        echo $followers_count;
                     } catch (PDOException $e) {
                         echo "Connection Error: " . $e->getMessage();
                     }
                     ?>
+
                 </p>
             </a>
             <a href="" style="text-decoration: none;">
                 <p class="h5 text-white-50">Following:
                     <?php
                     try {
-                        $query_following_count = "SELECT following FROM user WHERE username = :username";
+                        $query_user_id = "SELECT id FROM user WHERE username = :username";
+                        $stmt_user_id = $dbh->prepare($query_user_id);
+                        $stmt_user_id->bindParam(':username', $clickedUsername);
+                        $stmt_user_id->execute();
+
+                        $clickedUserId = $stmt_user_id->fetch(PDO::FETCH_ASSOC)['id'];
+
+                        $query_following_count = "SELECT COUNT(*) FROM follows WHERE followerid = :userId AND follow = 1";
                         $stmt_following_count = $dbh->prepare($query_following_count);
-                        $stmt_following_count->bindParam(':username', $clickedUsername);
+                        $stmt_following_count->bindParam(':userId', $clickedUserId);
                         $stmt_following_count->execute();
 
-                        $row_following_count = $stmt_following_count->fetch(PDO::FETCH_ASSOC);
-                        if ($row_following_count) {
-                            $following_count = count(explode(',', $row_following_count['following']));
-                            echo $following_count;
-                        }
+                        $following_count = $stmt_following_count->fetchColumn();
+                        echo $following_count;
                     } catch (PDOException $e) {
                         echo "Connection Error: " . $e->getMessage();
                     }
@@ -584,121 +593,83 @@ if (isset($_POST['logout'])) {
 session_start();
 include 'connect.php';
 
-
 if (isset($_POST['follow'])) {
     $clickedUsername = $_GET['username'];
 
     try {
-        $query_follow = "SELECT followers FROM user WHERE username = :username";
-        $stmt_follow = $dbh->prepare($query_follow);
-        $stmt_follow->bindParam(':username', $clickedUsername);
-        $stmt_follow->execute();
+        $query_logged_in_user_id = "SELECT id FROM user WHERE username = :username";
+        $stmt_logged_in_user_id = $dbh->prepare($query_logged_in_user_id);
+        $stmt_logged_in_user_id->bindParam(':username', $loggedInUsername);
+        $stmt_logged_in_user_id->execute();
+        $loggedInUserId = $stmt_logged_in_user_id->fetch(PDO::FETCH_ASSOC)['id'];
 
-        $row = $stmt_follow->fetch(PDO::FETCH_ASSOC);
-        if ($row) {
-            $followers = $row['followers'];
+        $query_clicked_user_id = "SELECT id FROM user WHERE username = :username";
+        $stmt_clicked_user_id = $dbh->prepare($query_clicked_user_id);
+        $stmt_clicked_user_id->bindParam(':username', $clickedUsername);
+        $stmt_clicked_user_id->execute();
+        $clickedUserId = $stmt_clicked_user_id->fetch(PDO::FETCH_ASSOC)['id'];
 
-            $followersArray = explode(',', $followers);
-            if (!in_array($loggedInUsername, $followersArray)) {
-                $followers .= $loggedInUsername . ',';
-            }
+        $check_query = "SELECT * FROM follows WHERE followerid = :followerid AND followedid = :followedid";
+        $stmt_check = $dbh->prepare($check_query);
+        $stmt_check->bindParam(':followerid', $loggedInUserId);
+        $stmt_check->bindParam(':followedid', $clickedUserId);
+        $stmt_check->execute();
 
-            $update_query = "UPDATE user SET followers = :followers WHERE username = :username";
-            $stmt_update = $dbh->prepare($update_query);
-            $stmt_update->bindParam(':followers', $followers);
-            $stmt_update->bindParam(':username', $clickedUsername);
-            $stmt_update->execute();
+        $existing_follow = $stmt_check->fetch(PDO::FETCH_ASSOC);
 
-            header("Location:https://egoistsky.free.nf/egoist?username=$clickedusername");
-
-            $query_following = "SELECT following FROM user WHERE username = :username";
-            $stmt_following = $dbh->prepare($query_following);
-            $stmt_following->bindParam(':username', $loggedInUsername);
-            $stmt_following->execute();
-
-            $row_following = $stmt_following->fetch(PDO::FETCH_ASSOC);
-            if ($row_following) {
-                $following = $row_following['following'];
-
-                $followingArray = explode(',', $following);
-                if (!in_array($clickedUsername, $followingArray)) {
-                    $following .= $clickedUsername . ',';
-                }
-
-                $update_following_query = "UPDATE user SET following = :following WHERE username = :username";
-                $stmt_update_following = $dbh->prepare($update_following_query);
-                $stmt_update_following->bindParam(':following', $following);
-                $stmt_update_following->bindParam(':username', $loggedInUsername);
-                $stmt_update_following->execute();
-            }
+        if (!$existing_follow) {
+            $query_follow = "INSERT INTO follows (followerid, followedid, follow) VALUES (:followerid, :followedid, 1)";
+            $stmt_follow = $dbh->prepare($query_follow);
+            $stmt_follow->bindParam(':followerid', $loggedInUserId);
+            $stmt_follow->bindParam(':followedid', $clickedUserId);
+            $stmt_follow->execute();
         } else {
-            echo "Kullanıcı bulunamadı veya Connection Error";
+            if ($existing_follow['follow'] == 0) {
+                $query_restore_follow = "UPDATE follows SET follow = 1 WHERE followerid = :followerid AND followedid = :followedid";
+                $stmt_restore_follow = $dbh->prepare($query_restore_follow);
+                $stmt_restore_follow->bindParam(':followerid', $loggedInUserId);
+                $stmt_restore_follow->bindParam(':followedid', $clickedUserId);
+                $stmt_restore_follow->execute();
+            }
         }
+
+        header("Location:https://egoistsky.free.nf/egoist?username=$clickedusername");
+
     } catch (PDOException $e) {
         echo "Connection Error: " . $e->getMessage();
     }
 }
+
 
 if (isset($_POST['unfollow'])) {
     $clickedUsername = $_GET['username'];
 
     try {
-        $query_follow = "SELECT followers FROM user WHERE username = :username";
-        $stmt_follow = $dbh->prepare($query_follow);
-        $stmt_follow->bindParam(':username', $clickedUsername);
-        $stmt_follow->execute();
+        $query_ids = "SELECT id FROM user WHERE username = :username";
+        $stmt_ids = $dbh->prepare($query_ids);
+        $stmt_ids->bindParam(':username', $loggedInUsername);
+        $stmt_ids->execute();
 
-        $row = $stmt_follow->fetch(PDO::FETCH_ASSOC);
-        if ($row) {
-            $followers = $row['followers'];
+        $loggedInUserId = $stmt_ids->fetch(PDO::FETCH_ASSOC)['id'];
 
-            $followersArray = explode(',', $followers);
-            $key = array_search($loggedInUsername, $followersArray);
-            if ($key !== false) {
-                unset($followersArray[$key]);
-                $followers = implode(',', $followersArray);
-            }
+        $stmt_ids->bindParam(':username', $clickedUsername);
+        $stmt_ids->execute();
+        $clickedUserId = $stmt_ids->fetch(PDO::FETCH_ASSOC)['id'];
 
-            $update_query = "UPDATE user SET followers = :followers WHERE username = :username";
-            $stmt_update = $dbh->prepare($update_query);
-            $stmt_update->bindParam(':followers', $followers);
-            $stmt_update->bindParam(':username', $clickedUsername);
-            $stmt_update->execute();
+        $query_unfollow = "UPDATE follows SET follow = 0 WHERE followerid = :followerid AND followedid = :followedid";
+        $stmt_unfollow = $dbh->prepare($query_unfollow);
+        $stmt_unfollow->bindParam(':followerid', $loggedInUserId);
+        $stmt_unfollow->bindParam(':followedid', $clickedUserId);
+        $stmt_unfollow->execute();
 
-            header("Location:https://egoistsky.free.nf/egoist?username=$clickedusername");
+        header("Location:https://egoistsky.free.nf/egoist?username=$clickedusername");
 
-            $query_following = "SELECT following FROM user WHERE username = :username";
-            $stmt_following = $dbh->prepare($query_following);
-            $stmt_following->bindParam(':username', $loggedInUsername);
-            $stmt_following->execute();
-
-            $row_following = $stmt_following->fetch(PDO::FETCH_ASSOC);
-            if ($row_following) {
-                $following = $row_following['following'];
-
-                $followingArray = explode(',', $following);
-                $key_following = array_search($clickedUsername, $followingArray);
-                if ($key_following !== false) {
-                    unset($followingArray[$key_following]);
-                    $following = implode(',', $followingArray);
-                }
-
-                $update_following_query = "UPDATE user SET following = :following WHERE username = :username";
-                $stmt_update_following = $dbh->prepare($update_following_query);
-                $stmt_update_following->bindParam(':following', $following);
-                $stmt_update_following->bindParam(':username', $loggedInUsername);
-                $stmt_update_following->execute();
-            }
-        } else {
-            echo "Kullanıcı bulunamadı veya Connection Error";
-        }
     } catch (PDOException $e) {
         echo "Connection Error: " . $e->getMessage();
     }
 }
-
-
-
 ?>
+
+
 
 </html>
