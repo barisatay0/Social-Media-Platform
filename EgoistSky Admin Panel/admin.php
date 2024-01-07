@@ -450,30 +450,8 @@ $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
         </form>
 
     </div>
-    <div class="text-center" style="margin-left:10%;width:67%;">
-        <table class="table table-hover" style="">
-            <h5 class="h3 text-white">Statistics of Users</h5>
-            <tr>
-                <th>Admin Number</th>
-                <th>Moderator Number</th>
-                <th>User Number</th>
-                <th>Post Number</th>
-            </tr>
-            <tr>
-                <td>
-                    <?php echo $adminCount; ?>
-                </td>
-                <td>
-                    <?php echo $moderatorCount; ?>
-                </td>
-                <td>
-                    <?php echo $userCount; ?>
-                </td>
-                <td>
-                    <?php echo $postCount; ?>
-                </td>
-            </tr>
-        </table>
+    <div class="text-center" style="margin-left:8%;width:67%;">
+
         <br>
         <a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Manage
                 Explore</button></a>
@@ -481,6 +459,32 @@ $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
         <h5 class="h3 text-white">Manage Users</h5>
         <div style="overflow-x:auto;height:23rem;">
             <table class="table table-hover" style="">
+                <tr>
+                    <th>Admin Number</th>
+                    <th>Moderator Number</th>
+                    <th>User Number</th>
+                    <th>Post Number</th>
+                </tr>
+                <tr>
+                    <td>
+                        <?php echo $adminCount; ?>
+                    </td>
+                    <td>
+                        <?php echo $moderatorCount; ?>
+                    </td>
+                    <td>
+                        <?php echo $userCount; ?>
+                    </td>
+                    <td>
+                        <?php echo $postCount; ?>
+                    </td>
+                </tr>
+            </table>
+            <table id="userTable" class="table table-hover" style="">
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" id="searchInput" type="search" style="border-radius:0;"
+                        placeholder="Search" aria-label="Search" onkeyup="searchTable()">
+                </form>
                 <tr>
                     <th>id</th>
                     <th>Username</th>
@@ -534,8 +538,8 @@ $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
                         </form>
                         <form method="post" action="">
                             <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
-                            <td><button type="submit" name="Ban" class="btn btn-outline-danger">Ban</button>
-                                <button type="submit" name="UnBan" class="btn btn-outline-primary">Un Ban</button>
+                            <td><button type="submit" name="Ban" class="btn btn-outline-danger w-100">Ban</button>
+                                <button type="submit" name="UnBan" class="btn btn-outline-primary w-100">Unban</button>
                             </td>
                         </form>
                     </tr>
@@ -554,11 +558,38 @@ $userRole = $stmtUserRole->fetch(PDO::FETCH_ASSOC)['role'];
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
+<script>
+    function searchTable() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("userTable");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td");
+            for (var j = 0; j < td.length; j++) {
+                txtValue = td[j].textContent || td[j].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                    break;
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
 
 </html>
 <?php
 if (isset($_POST['delete'])) {
     $userId = $_POST['id'];
+
+    $deleteFollowersQuery = "DELETE FROM follows WHERE followerid = :userId OR followedid = :userId";
+    $stmtDeleteFollowers = $dbh->prepare($deleteFollowersQuery);
+    $stmtDeleteFollowers->bindParam(':userId', $userId);
+    $stmtDeleteFollowers->execute();
 
     $deleteUserRoleQuery = "DELETE FROM roles WHERE id = :id";
     $stmtDeleteUserRole = $dbh->prepare($deleteUserRoleQuery);
@@ -569,19 +600,6 @@ if (isset($_POST['delete'])) {
     $stmtDeleteUser = $dbh->prepare($deleteUserQuery);
     $stmtDeleteUser->bindParam(':id', $userId);
     $stmtDeleteUser->execute();
-
-    header("Location: current_page.php");
-    exit();
-}
-if (isset($_POST['editRole'])) {
-    $userId = $_POST['id'];
-    $newRole = $_POST['newRole'];
-
-    $updateRoleQuery = "UPDATE roles SET role = :newRole WHERE id = :id";
-    $stmtUpdateRole = $dbh->prepare($updateRoleQuery);
-    $stmtUpdateRole->bindParam(':newRole', $newRole);
-    $stmtUpdateRole->bindParam(':id', $userId);
-    $stmtUpdateRole->execute();
 
     header("Location: current_page.php");
     exit();
