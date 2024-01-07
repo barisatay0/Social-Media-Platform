@@ -35,13 +35,21 @@ if (isset($_SESSION['username'])) {
                     $stmt->execute();
 
                     $_SESSION['username'] = $newUsername;
+
+                    // Kullanıcı adını güncelledikten sonra post tablosundaki ilgili kullanıcıya ait gönderileri güncelle
+                    $queryUpdatePosts = "UPDATE post SET username = :newUsername WHERE username = :oldUsername";
+                    $stmtUpdatePosts = $dbh->prepare($queryUpdatePosts);
+                    $stmtUpdatePosts->bindParam(':newUsername', $newUsername);
+                    $stmtUpdatePosts->bindParam(':oldUsername', $username);
+                    $stmtUpdatePosts->execute();
+
                     header("Location: profile.php");
                     exit();
                 } catch (PDOException $e) {
                     echo "Connection Error: " . $e->getMessage();
                 }
             } else {
-                echo "File upload error!";
+                echo "Dosya yüklenirken bir hata oluştu.";
             }
         } else {
             try {
@@ -56,6 +64,13 @@ if (isset($_SESSION['username'])) {
                 $stmt->execute();
 
                 $_SESSION['username'] = $newUsername;
+
+                $queryUpdatePosts = "UPDATE post SET username = :newUsername WHERE username = :oldUsername";
+                $stmtUpdatePosts = $dbh->prepare($queryUpdatePosts);
+                $stmtUpdatePosts->bindParam(':newUsername', $newUsername);
+                $stmtUpdatePosts->bindParam(':oldUsername', $username);
+                $stmtUpdatePosts->execute();
+
                 header("Location: profile.php");
                 exit();
             } catch (PDOException $e) {
