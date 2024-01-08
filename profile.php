@@ -3,7 +3,6 @@ session_start();
 include 'connect.php';
 $clickedUsername = $_SESSION['username'];
 
-
 if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
 
@@ -167,7 +166,6 @@ try {
         <div class="top-0 end-0 position-absolute translate-middle-x mt-2 profilebuttons" style="">
             <a href="edit.php"><button class="btn btn-outline-light  profilebuttons" style="">Edit Profile</button></a>
             <br>
-            <a class="btn btn-outline-light mt-2 profilebuttons" style="">Settings</a>
         </div>
         <div class="top-0 start-50 position-absolute translate-middle-x mt-2 text-center">
             <input type="image" class="rounded-circle mx-2 border border-black" style="width:6.5rem;height:6.5rem;"
@@ -178,7 +176,7 @@ try {
                 <?php echo '' . $username . '' ?>
             </p>
 
-            <a href="" style="text-decoration: none;">
+            <a href="" style="text-decoration: none;" id="followersnumber">
                 <p class="h5 text-white-50 mt-1">Followers:
                     <?php
                     try {
@@ -203,7 +201,7 @@ try {
 
                 </p>
             </a>
-            <a href="" style="text-decoration: none;">
+            <a href="" style="text-decoration: none;" id="followingnumber">
                 <p class="h5 text-white-50">Following:
                     <?php
                     try {
@@ -214,6 +212,7 @@ try {
 
                         $clickedUserId = $stmt_user_id->fetch(PDO::FETCH_ASSOC)['id'];
 
+                        // Takip edilenlerin sayısını hesaplamak için bir sorgu
                         $query_following_count = "SELECT COUNT(*) FROM follows WHERE followerid = :userId AND follow = 1";
                         $stmt_following_count = $dbh->prepare($query_following_count);
                         $stmt_following_count->bindParam(':userId', $clickedUserId);
@@ -314,7 +313,6 @@ try {
             deleteButton.name = this.getAttribute('data-photo');
         });
     }
-
 
     var span = document.getElementsByClassName('close')[0];
     span.onclick = function () {

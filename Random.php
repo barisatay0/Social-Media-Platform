@@ -139,7 +139,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         .responsivephotobutton {
-            width: 4%;
+            width: 8%;
             position: fixed;
             margin-top: -5%;
             opacity: 75%;
@@ -443,7 +443,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div>
                 <a href="https://egoistsky.free.nf/egoist?username=<?php echo $user['username']; ?>"><img
                         class="rounded-circle" src="<?php echo $user['profilephoto']; ?>" alt="Profile Photo"
-                        style="width:15rem;height:15rem;"></a>
+                        style="width:10rem;height:10rem;"></a>
                 <p class="text-white h2">
                     <?php echo $user['username']; ?>
                 </p>
@@ -452,11 +452,8 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <div>
-        <input type="image" class="top-100 end-0 translate-middle-y mx-4 imghover responsivephotobutton" style=""
-            src="bubble.png">
-
-        <input id="formOpener" type="image"
-            class="top-100 end-0 translate-middle-y mx-3 imghover responsivephotobutton2" style="" src="picture.png">
+        <input id="formOpener" type="image" class="top-100 end-0 translate-middle-y mx-3 imghover responsivephotobutton"
+            style="" src="picture.png">
     </div>
     <div class="w-50 border bg-black rounded-5 light border-dark position-absolute top-50 start-50 translate-middle text-center"
         id="hiddenForm" style="display: none;--bs-bg-opacity: .9;height:74%;">
@@ -502,7 +499,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 searchResults.innerHTML = data;
             })
             .catch(error => {
-                console.error('Arama hatası:', error);
+                console.error('Search Error:', error);
             });
     });
 </script>
@@ -524,7 +521,7 @@ if (isset($_POST['search'])) {
     $result = mysqli_query($connection, $query);
 
     if (!$result) {
-        die("Mysql Error: " . mysqli_error($connection));
+        die("Sql Error: " . mysqli_error($connection));
     }
 
     if (mysqli_num_rows($result) > 0) {
@@ -532,7 +529,7 @@ if (isset($_POST['search'])) {
             echo $row['username'] . "<br>";
         }
     } else {
-        echo "User dont found.";
+        echo "User not found.";
     }
 }
 ?>

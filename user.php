@@ -13,16 +13,16 @@ if (isset($_SESSION['username'])) {
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
-    $profilePhoto = $row['profilephoto'];
-    $banned = $row['banned'];
+            $profilePhoto = $row['profilephoto'];
+            $banned = $row['banned'];
 
-    if ($banned == 1) {
-        header("Location:banned.php");
-        exit();
-    }
-} else {
-    echo "Data not found or connection error";
-}
+            if ($banned == 1) {
+                header("Location:banned.php");
+                exit();
+            }
+        } else {
+            echo "Data not found or connection error";
+        }
 
     } catch (PDOException $e) {
         echo "Connection Error: " . $e->getMessage();
@@ -85,7 +85,7 @@ if (isset($_POST['likeAction'])) {
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['message'])) {
     $message = $_POST['message'];
-    $username = $_SESSION['username']; 
+    $username = $_SESSION['username'];
 
     try {
         $insertQuery = "INSERT INTO globalchat (username, message) VALUES (:username, :message)";
@@ -95,23 +95,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['message'])) {
         $insertStmt->execute();
 
     } catch (PDOException $e) {
-        echo "Couldnt send: " . $e->getMessage();
+        echo "Message Error: " . $e->getMessage();
     }
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
     $message = $_POST['privatemessage'];
-    $sender = $_SESSION['username']; 
-$recipient = $_POST['recipient'];
+    $sender = $_SESSION['username'];
+    $recipient = $_POST['recipient'];
     try {
         $insertQuery = "INSERT INTO chat (sender ,recipient, message) VALUES (:sender,:recipient, :message)";
         $insertStmt = $dbh->prepare($insertQuery);
         $insertStmt->bindParam(':sender', $sender);
-         $insertStmt->bindParam(':recipient', $recipient);
+        $insertStmt->bindParam(':recipient', $recipient);
         $insertStmt->bindParam(':message', $message);
         $insertStmt->execute();
 
     } catch (PDOException $e) {
-        echo "Couldnt send: " . $e->getMessage();
+        echo "Message Error: " . $e->getMessage();
     }
 }
 
@@ -479,15 +479,17 @@ $recipient = $_POST['recipient'];
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos "
                 style="" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Explore"></a>
-      <a href="Random"><img
+        <a href="Random"><img
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
-                src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Random Match"></a>
-        <a href="following.php"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
-                style="" src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                data-bs-title="Random Match"></a>
+        <a href="following.php"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Following"></a>
-        <a href="world.php"><img class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
-                style="" src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
-                data-bs-title="World"></a>
+        <a href="world.php"><img
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="World"></a>
         <a href="information"><img
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
                 src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
@@ -510,36 +512,35 @@ $recipient = $_POST['recipient'];
 
     </div>
     <div class="scrollable-container w-100 mt-1 responsiveposter" style="overflow-y:auto;height:40rem;">
-   <?php
-include 'connect.php';
+        <?php
+        include 'connect.php';
 
-try {
-    $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        try {
+            $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $postQuery = "SELECT * FROM post ORDER BY time DESC";
-    $postStmt = $dbh->query($postQuery);
+            $postQuery = "SELECT * FROM post ORDER BY time DESC";
+            $postStmt = $dbh->query($postQuery);
 
-    if ($postStmt) {
-        while ($row = $postStmt->fetch(PDO::FETCH_ASSOC)) {
-            $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
-            $userStmt = $dbh->query($userQuery);
-            $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
-            
-            // Beğenme ve beğenmeme sayısını al
-            $likeCountQuery = "SELECT COUNT(*) AS likeCount FROM likes WHERE postid = :postid AND liked = 1";
-            $likeCountStmt = $dbh->prepare($likeCountQuery);
-            $likeCountStmt->bindParam(':postid', $row["postid"]);
-            $likeCountStmt->execute();
-            $likeCountRow = $likeCountStmt->fetch(PDO::FETCH_ASSOC);
+            if ($postStmt) {
+                while ($row = $postStmt->fetch(PDO::FETCH_ASSOC)) {
+                    $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
+                    $userStmt = $dbh->query($userQuery);
+                    $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
 
-            $unlikeCountQuery = "SELECT COUNT(*) AS unlikeCount FROM likes WHERE postid = :postid AND unliked = 1";
-            $unlikeCountStmt = $dbh->prepare($unlikeCountQuery);
-            $unlikeCountStmt->bindParam(':postid', $row["postid"]);
-            $unlikeCountStmt->execute();
-            $unlikeCountRow = $unlikeCountStmt->fetch(PDO::FETCH_ASSOC);
-            
-            echo '
+                    $likeCountQuery = "SELECT COUNT(*) AS likeCount FROM likes WHERE postid = :postid AND liked = 1";
+                    $likeCountStmt = $dbh->prepare($likeCountQuery);
+                    $likeCountStmt->bindParam(':postid', $row["postid"]);
+                    $likeCountStmt->execute();
+                    $likeCountRow = $likeCountStmt->fetch(PDO::FETCH_ASSOC);
+
+                    $unlikeCountQuery = "SELECT COUNT(*) AS unlikeCount FROM likes WHERE postid = :postid AND unliked = 1";
+                    $unlikeCountStmt = $dbh->prepare($unlikeCountQuery);
+                    $unlikeCountStmt->bindParam(':postid', $row["postid"]);
+                    $unlikeCountStmt->execute();
+                    $unlikeCountRow = $unlikeCountStmt->fetch(PDO::FETCH_ASSOC);
+
+                    echo '
             <div class="w-25 post responsivepost">
                 <div class="card post border border-dark text-white responsivecardpost">
                     <img src="data/posts/' . $row["photo"] . '" class="card-img-top responsivepostphoto" alt="...">
@@ -570,15 +571,15 @@ try {
                 </div>
             </div>
             <br>';
+                }
+
+            } else {
+                echo "Data not found";
+            }
+        } catch (PDOException $e) {
+            echo "Connection Error: " . $e->getMessage();
         }
-        
-    } else {
-        echo "Data not found";
-    }
-} catch (PDOException $e) {
-    echo "Connection Error: " . $e->getMessage();
-}
-?>
+        ?>
 
 
         <br>
@@ -606,133 +607,140 @@ try {
         <button id="formCloser" class="w-25 mt-4 btn btn-outline-danger" style="font-family:Fantasy;">close</button>
     </div>
 
- <div class=" border bg-light rounded-5 light border-dark position-absolute top-50 start-50 translate-middle text-center"
+    <div class=" border bg-light rounded-5 light border-dark position-absolute top-50 start-50 translate-middle text-center"
         id="hiddenForm2" style="display: none;--bs-bg-opacity: .9;height:30%;width:30%;">
         <button id="chat" class="w-25 mt-4 btn btn-outline-primary" style="font-family:Fantasy;">Private Chat</button>
         <br>
-        <button id="globalchat" class="w-25 mt-4 btn btn-outline-success" style="font-family:Fantasy;">Global Chat</button>
+        <button id="globalchat" class="w-25 mt-4 btn btn-outline-success" style="font-family:Fantasy;">Global
+            Chat</button>
         <br>
-         <button id="formCloser2" class="w-25 mt-4 btn btn-outline-danger" style="font-family:Fantasy;">close</button>
+        <button id="formCloser2" class="w-25 mt-4 btn btn-outline-danger" style="font-family:Fantasy;">close</button>
     </div>
-     <div class="w-50 border bg-dark rounded-5 light border-dark position-absolute top-50 start-50 translate-middle text-center"
+    <div class="w-50 border bg-dark rounded-5 light border-dark position-absolute top-50 start-50 translate-middle text-center"
         id="hiddenForm3" style="display: none;--bs-bg-opacity: .9;height:80%;">
         <input type="text" placeholder="searcher...">
         <div class="" style="height:30rem;overflow-y: auto;">
-    <?php
-try {
-    $query = "SELECT username FROM user";
-    $stmt = $dbh->query($query);
+            <?php
+            try {
+                $query = "SELECT username FROM user";
+                $stmt = $dbh->query($query);
 
-    if ($stmt) {
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            echo '<button name="' . $row["username"] . '" class="chatopener w-25 mt-4 btn btn-outline-light" style="font-family:Fantasy;">' . $row["username"] . '</button>';
-        }
-    } else {
-        echo "User dont found.";
-    }
-} catch (PDOException $e) {
-    echo "Connection Error: " . $e->getMessage();
-}
-?>
+                if ($stmt) {
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        echo '<button name="' . $row["username"] . '" class="chatopener w-25 mt-4 btn btn-outline-light" style="font-family:Fantasy;">' . $row["username"] . '</button>';
+                    }
+                } else {
+                    echo "User not found.";
+                }
+            } catch (PDOException $e) {
+                echo "Connection Error: " . $e->getMessage();
+            }
+            ?>
 
+        </div>
+        <button id="formCloser3" class="w-25 mt-4 btn btn-outline-danger" style="font-family:Fantasy;">close</button>
+        <button id="back" class="w-25 mt-4 btn btn-outline-light" style="font-family:Fantasy;">Go Back</button>
     </div>
-         <button id="formCloser3" class="w-25 mt-4 btn btn-outline-danger" style="font-family:Fantasy;">close</button>
-            <button id="back" class="w-25 mt-4 btn btn-outline-light" style="font-family:Fantasy;">Go Back</button>
-    </div>
- <div class="container" >
-    <div class="row justify-content-center">
-        <div class="col-8 border bg-light rounded-2 position-absolute top-50 start-50 translate-middle" id="hiddenForm4" style="display: none; --bs-bg-opacity: .9; height: 95%;">
-            <div class=" rounded-2 mt-1 " style="height: 28rem; overflow-y: auto;">
-                <p class="h3 text-center mt-3">Global Chat</p>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-8 border bg-light rounded-2 position-absolute top-50 start-50 translate-middle"
+                id="hiddenForm4" style="display: none; --bs-bg-opacity: .9; height: 95%;">
+                <div class=" rounded-2 mt-1 " style="height: 28rem; overflow-y: auto;">
+                    <p class="h3 text-center mt-3">Global Chat</p>
 
-                <?php
-                try {
-                    $query = "SELECT * FROM globalchat ORDER BY time DESC";
-                    $stmt = $dbh->query($query);
+                    <?php
+                    try {
+                        $query = "SELECT * FROM globalchat ORDER BY time DESC";
+                        $stmt = $dbh->query($query);
 
-                    if ($stmt) {
-                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            echo '
+                        if ($stmt) {
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                echo '
                             <div class="w-100 text-center border border-dark mt-3">
                                 <a class="h5">' . $row["username"] . '</a>
                                 <p>' . $row["message"] . '</p>
                                 <p class="text-body-tertiary">' . $row["time"] . '</p>
                             </div>';
+                            }
+                        } else {
+                            echo "Data not found";
                         }
-                    } else {
-                        echo "Data not found";
+                    } catch (PDOException $e) {
+                        echo "Connection Error: " . $e->getMessage();
                     }
-                } catch (PDOException $e) {
-                    echo "Connection Error: " . $e->getMessage();
-                }
-                ?>
+                    ?>
 
-            </div>
-            <div class="mt-3">
-                <form method="post" action="">
-                    <input type="text" class="form-control" name="message" placeholder="Type your message here...">
-                    <br>
-                    <button class="btn btn-dark w-100" type="submit">Send</button>
-                </form>
-                <button id="formCloser4" class="btn btn-outline-danger w-100 mt-3" style="font-family: Fantasy;">Close</button>
-                <button id="back2" class="btn btn-outline-dark w-100 mt-2" style="font-family: Fantasy;">Go Back</button>
+                </div>
+                <div class="mt-3">
+                    <form method="post" action="">
+                        <input type="text" class="form-control" name="message" placeholder="Type your message here...">
+                        <br>
+                        <button class="btn btn-dark w-100" type="submit">Send</button>
+                    </form>
+                    <button id="formCloser4" class="btn btn-outline-danger w-100 mt-3"
+                        style="font-family: Fantasy;">Close</button>
+                    <button id="back2" class="btn btn-outline-dark w-100 mt-2" style="font-family: Fantasy;">Go
+                        Back</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
- <div class="container" >
-    <div class="row justify-content-center">
-        <div class="col-8 border bg-light rounded-2 position-absolute top-50 start-50 translate-middle" id="hiddenForm5" style="display: none; --bs-bg-opacity: .9; height: 95%;">
-            <div class=" rounded-2 mt-1 " style="height: 28rem; overflow-y: auto;">
-                <p class="h3 text-center mt-3">Private Message Box</p>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-8 border bg-light rounded-2 position-absolute top-50 start-50 translate-middle"
+                id="hiddenForm5" style="display: none; --bs-bg-opacity: .9; height: 95%;">
+                <div class=" rounded-2 mt-1 " style="height: 28rem; overflow-y: auto;">
+                    <p class="h3 text-center mt-3">Private Message Box</p>
 
-               <?php
+                    <?php
+                    if (isset($_SESSION['username'])) {
+                        $username = $_SESSION['username'];
 
-if(isset($_SESSION['username'])) {
-    $username = $_SESSION['username'];
+                        try {
+                            $query = "SELECT * FROM chat WHERE recipient = :username ORDER BY time DESC";
+                            $stmt = $dbh->prepare($query);
+                            $stmt->bindParam(':username', $username);
+                            $stmt->execute();
 
-    try {
-        $query = "SELECT * FROM chat WHERE recipient = :username ORDER BY time DESC";
-        $stmt = $dbh->prepare($query);
-        $stmt->bindParam(':username', $username);
-        $stmt->execute();
-
-        if ($stmt) {
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                echo '
+                            if ($stmt) {
+                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    echo '
                 <div class="w-100 text-center border border-dark mt-3">
                     <a class="h5">' . $row["sender"] . '</a>
                     <p>' . $row["message"] . '</p>
                     <p class="text-body-tertiary">' . $row["time"] . '</p>
                 </div>';
-            }
-        } else {
-            echo "Data not found";
-        }
-    } catch (PDOException $e) {
-        echo "Connection Error: " . $e->getMessage();
-    }
-} else {
-    echo "User not in the session";
-}
-?>
+                                }
+                            } else {
+                                echo "Data not found";
+                            }
+                        } catch (PDOException $e) {
+                            echo "Connection Error: " . $e->getMessage();
+                        }
+                    } else {
+                        echo "User not in the session";
+                    }
+                    ?>
 
-                       
 
-            </div>
-            <div class="mt-3">
-                <form method="post" action="">
-                    <input type="text" class="form-control" name="privatemessage" placeholder="Type your message here...">
-                    <br>
-                    <button class="btn btn-dark w-100" type="submit">Send</button>
-                    <input type="hidden" value="" name="recipient">
-                </form>
-                <button id="formCloser5" class="btn btn-outline-danger w-100 mt-3" style="font-family: Fantasy;">Close</button>
-                <button id="back3" class="btn btn-outline-dark w-100 mt-2" style="font-family: Fantasy;">Go Back</button>
+
+                </div>
+                <div class="mt-3">
+                    <form method="post" action="">
+                        <input type="text" class="form-control" name="privatemessage"
+                            placeholder="Type your message here...">
+                        <br>
+                        <button class="btn btn-dark w-100" type="submit">Send</button>
+                        <input type="hidden" value="" name="recipient">
+                    </form>
+                    <button id="formCloser5" class="btn btn-outline-danger w-100 mt-3"
+                        style="font-family: Fantasy;">Close</button>
+                    <button id="back3" class="btn btn-outline-dark w-100 mt-2" style="font-family: Fantasy;">Go
+                        Back</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
 
@@ -790,7 +798,7 @@ if(isset($_SESSION['username'])) {
     document.getElementById('formCloser3').onclick = function () {
         document.getElementById('hiddenForm3').style.display = 'none';
     };
-     document.getElementById('back').onclick = function () {
+    document.getElementById('back').onclick = function () {
         document.getElementById('hiddenForm3').style.display = 'none';
         document.getElementById('hiddenForm2').style.display = 'block';
     };
@@ -803,31 +811,32 @@ if(isset($_SESSION['username'])) {
     document.getElementById('formCloser4').onclick = function () {
         document.getElementById('hiddenForm4').style.display = 'none';
     };
-     document.getElementById('back2').onclick = function () {
+    document.getElementById('back2').onclick = function () {
         document.getElementById('hiddenForm4').style.display = 'none';
         document.getElementById('hiddenForm2').style.display = 'block';
     };
 </script>
 <script>
- document.querySelectorAll('.chatopener').forEach(item => {
-    item.addEventListener('click', event => {
-        document.getElementById('hiddenForm3').style.display = 'none';
-        document.getElementById('hiddenForm5').style.display = 'block';
+    document.querySelectorAll('.chatopener').forEach(item => {
+        item.addEventListener('click', event => {
+            document.getElementById('hiddenForm3').style.display = 'none';
+            document.getElementById('hiddenForm5').style.display = 'block';
 
-        var recipientName = item.textContent;
-        document.querySelector('input[name="recipient"]').value = recipientName;
+            var recipientName = item.textContent;
+            document.querySelector('input[name="recipient"]').value = recipientName;
+        });
     });
-});
 
-document.getElementById('formCloser5').onclick = function () {
-    document.getElementById('hiddenForm5').style.display = 'none';
-};
-document.getElementById('back3').onclick = function () {
-    document.getElementById('hiddenForm5').style.display = 'none';
-    document.getElementById('hiddenForm3').style.display = 'block';
-};
+    document.getElementById('formCloser5').onclick = function () {
+        document.getElementById('hiddenForm5').style.display = 'none';
+    };
+    document.getElementById('back3').onclick = function () {
+        document.getElementById('hiddenForm5').style.display = 'none';
+        document.getElementById('hiddenForm3').style.display = 'block';
+    };
 
 </script>
+
 </html>
 <?php
 include 'connect.php';
@@ -845,7 +854,7 @@ if (isset($_POST['search'])) {
             echo $row['username'] . "<br>";
         }
     } else {
-        echo "User dont found.";
+        echo "User not found.";
     }
 }
 ?>
