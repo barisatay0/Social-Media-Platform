@@ -437,35 +437,43 @@ if (isset($_POST['logout'])) {
         <?php
         include 'connect.php';
 
-        if (isset($_SESSION['username'])) {
-            $username = $_SESSION['username'];
 
-            try {
-                $query = "SELECT id FROM user WHERE username = :username";
-                $stmt = $dbh->prepare($query);
-                $stmt->bindParam(':username', $username);
-                $stmt->execute();
+        try {
+            $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
-                if ($userRow) {
-                    $userID = $userRow['id'];
+            $loggedInUsername = $_SESSION['username'];
+            $followingQuery = "SELECT followedid FROM follows WHERE followerid IN (SELECT id FROM user WHERE username = :loggedInUsername) AND follow = 1";
+            $followingStmt = $dbh->prepare($followingQuery);
+            $followingStmt->bindParam(':loggedInUsername', $loggedInUsername);
+            $followingStmt->execute();
+            $followingIds = $followingStmt->fetchAll(PDO::FETCH_COLUMN);
 
-                    $followedQuery = "SELECT followedid FROM follows WHERE followerid = :userID";
-                    $followedStmt = $dbh->prepare($followedQuery);
-                    $followedStmt->bindParam(':userID', $userID);
-                    $followedStmt->execute();
+            if (empty($followingIds)) {
+                echo '<p class="text-white position-absolute translate-middle start-50 top-50">You dont following anybody you can find somebody with random page</p>';
+            } else {
+                $postQuery = "SELECT * FROM post WHERE posterid IN (" . implode(",", $followingIds) . ") ORDER BY time DESC";
+                $postStmt = $dbh->query($postQuery);
 
-                    while ($followedRow = $followedStmt->fetch(PDO::FETCH_ASSOC)) {
-                        $followedUserID = $followedRow['followedid'];
+                if ($postStmt) {
+                    while ($row = $postStmt->fetch(PDO::FETCH_ASSOC)) {
+                        $userQuery = "SELECT profilephoto FROM user WHERE username = '" . $row["username"] . "'";
+                        $userStmt = $dbh->query($userQuery);
+                        $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
 
-                        $postQuery = "SELECT * FROM post WHERE posterid = :followedUserID ORDER BY time DESC";
-                        $postStmt = $dbh->prepare($postQuery);
-                        $postStmt->bindParam(':followedUserID', $followedUserID);
-                        $postStmt->execute();
+                        $likeCountQuery = "SELECT COUNT(*) AS likeCount FROM likes WHERE postid = :postid AND liked = 1";
+                        $likeCountStmt = $dbh->prepare($likeCountQuery);
+                        $likeCountStmt->bindParam(':postid', $row["postid"]);
+                        $likeCountStmt->execute();
+                        $likeCountRow = $likeCountStmt->fetch(PDO::FETCH_ASSOC);
 
-                        while ($row = $postStmt->fetch(PDO::FETCH_ASSOC)) {
+                        $unlikeCountQuery = "SELECT COUNT(*) AS unlikeCount FROM likes WHERE postid = :postid AND unliked = 1";
+                        $unlikeCountStmt = $dbh->prepare($unlikeCountQuery);
+                        $unlikeCountStmt->bindParam(':postid', $row["postid"]);
+                        $unlikeCountStmt->execute();
+                        $unlikeCountRow = $unlikeCountStmt->fetch(PDO::FETCH_ASSOC);
 
-                            echo '
+                        echo '
             <div class="w-25 post responsivepost">
                 <div class="card post border border-dark text-white responsivecardpost">
                     <img src="data/posts/' . $row["photo"] . '" class="card-img-top responsivepostphoto" alt="...">
@@ -496,16 +504,17 @@ if (isset($_POST['logout'])) {
                 </div>
             </div>
             <br>';
-                        }
                     }
                 } else {
-                    echo "User Not found";
+                    echo "Data not found";
                 }
-            } catch (PDOException $e) {
-                echo "Connection Error: " . $e->getMessage();
             }
+        } catch (PDOException $e) {
+            echo "Connection Error: " . $e->getMessage();
         }
         ?>
+
+
         <br>
     </div>
     <div>
@@ -578,7 +587,7 @@ if (isset($_POST['search'])) {
     $result = mysqli_query($connection, $query);
 
     if (!$result) {
-        die("Sql Error: " . mysqli_error($connection));
+        die("SQL error: " . mysqli_error($connection));
     }
 
     if (mysqli_num_rows($result) > 0) {
@@ -586,7 +595,7 @@ if (isset($_POST['search'])) {
             echo $row['username'] . "<br>";
         }
     } else {
-        echo "User Not found.";
+        echo "User no found.";
     }
 }
 ?>
