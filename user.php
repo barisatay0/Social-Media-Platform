@@ -166,8 +166,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
 
         }
 
-        .scrollable-container::-webkit-scrollbar-thumb {}
-
         .responsivelogo {
             width: 6%;
         }
@@ -200,7 +198,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
             height: 24rem;
         }
 
-        .responsiveposter {}
 
         .responsivepostimage {
             width: 4rem;
@@ -227,7 +224,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
             opacity: 85%;
         }
 
-        // 600px //
         @media only screen and (max-width: 600px) {
             .responsivepagelogos {
                 margin-left: 30%;
@@ -257,12 +253,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
                 width: 1.5rem;
                 height: 1.5rem;
                 font-family: "Lucida Console", "Courier New", monospace;
-            }
-
-            .responsivepostpp {}
-
-            responsivedropdowncontainer {
-                width: ;
             }
 
             .responsivedropdownpp {
@@ -325,11 +315,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
                 font-family: "Lucida Console", "Courier New", monospace;
             }
 
-            .responsivepostpp {}
 
-            responsivedropdowncontainer {
-                width: ;
-            }
 
             .responsivedropdownpp {
                 border-radius: 50%;
@@ -406,8 +392,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
                 font-family: "Lucida Console", "Courier New", monospace;
             }
 
-            .responsivepostpp {}
-
             .responsivedropdownpp {
                 border-radius: 50%;
                 width: 4rem;
@@ -460,7 +444,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
     <a href="" class="mx-3 mt-2"></a>
     <div><a href="https://egoistsky.free.nf/user"
             class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder "
-            style="margin-left:12%;"><img class="border border-black border-3 rounded-circle responsivelogo" style=""
+            style="margin-left:12%;"><img class="border border-black border-3 rounded-circle responsivelogo"
                 src="astronomy.png" alt="logo"></a></div>
     <div class="position-absolute top-0 start-50 translate-middle mt-4" style="width:33%;">
         <form name="searcher" method="post" action="search.php">
@@ -473,37 +457,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
     <div class="top-50 start-0 translate-middle-y mx-1 responsivepages">
         <a href="Explore"><img
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos "
-                style="" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Explore"></a>
         <a href="Random"><img
-                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
                 src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Random Match"></a>
         <a href="following.php"><img
-                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
                 src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Following"></a>
         <a href="world.php"><img
-                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
                 src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="World"></a>
         <a href="information"><img
-                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
                 src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="İnformation"></a>
     </div>
     <div class="position-absolute mt-3 text-center dropdown end-0 responsivedropdowncontainer" style="top:0;right:0;">
         <a href="profile.php" style="text-decoration:none;font-family:'Courier New', Courier, monospace;">
             <img <?php echo 'src="' . $profilePhoto . '"' ?>
-                class=" border border-dark border-opacity-25 border-5 responsivedropdownpp" alt="123" style="" />
+                class=" border border-dark border-opacity-25 border-5 responsivedropdownpp" alt="123" />
             <p class="text-light text-center">
                 <?php echo $username; ?>
             </p>
         </a>
-        <a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
-                style="">Profile</button></a>
+        <a href="profile.php"><button
+                class="btn btn-outline-light mt-2 dropdown-content profilebuttons">Profile</button></a>
         <br>
         <form method="post" action=""><button type="submit" name="logout"
-                class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Logout</button>
+                class="btn btn-outline-light mt-2 dropdown-content profilebuttons">Logout</button>
         </form>
 
     </div>
@@ -543,7 +527,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
                     <div class="card-body border border-dark" style="background-color:black;">
                         <div class="mt-2 mx-2">
                             <a class="text-light h4" style="text-decoration:none;" href="https://egoistsky.free.nf/egoist?username=' . $row["username"] . '">
-                                <img src="' . $userRow["profilephoto"] . '" class="rounded-circle mx-1 responsivepostimage" style="">
+                                <img src="' . $userRow["profilephoto"] . '" class="rounded-circle mx-1 responsivepostimage" >
                                 ' . $row["username"] . '
                             </a>
                         </div>
@@ -581,11 +565,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
         <br>
     </div>
     <div>
-        <input type="image" class="top-100 end-0 translate-middle-y mx-4 imghover responsivephotobutton" style=""
+        <input type="image" class="top-100 end-0 translate-middle-y mx-4 imghover responsivephotobutton"
             src="bubble.png" id="formOpener2">
 
         <input id="formOpener" type="image"
-            class="top-100 end-0 translate-middle-y mx-3 imghover responsivephotobutton2" style="" src="picture.png">
+            class="top-100 end-0 translate-middle-y mx-3 imghover responsivephotobutton2" src="picture.png">
     </div>
     <div class="w-50 border bg-black rounded-5 light border-dark position-absolute top-50 start-50 translate-middle text-center"
         id="hiddenForm" style="display: none;--bs-bg-opacity: .9;height:74%;">
