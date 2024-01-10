@@ -408,10 +408,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
 
             .responsivepostpp {}
 
-            responsivedropdowncontainer {
-                width: ;
-            }
-
             .responsivedropdownpp {
                 border-radius: 50%;
                 width: 4rem;
