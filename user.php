@@ -94,10 +94,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['message'])) {
         $insertStmt->bindParam(':message', $message);
         $insertStmt->execute();
 
+        header("Location: user.php");
+        exit();
+
     } catch (PDOException $e) {
         echo "Message Error: " . $e->getMessage();
     }
 }
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
     $message = $_POST['privatemessage'];
     $sender = $_SESSION['username'];
@@ -110,12 +114,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
         $insertStmt->bindParam(':message', $message);
         $insertStmt->execute();
 
+        header("Location: user.php");
+        exit();
+
     } catch (PDOException $e) {
         echo "Message Error: " . $e->getMessage();
     }
 }
-
-
 ?>
 
 
@@ -166,6 +171,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
 
         }
 
+        .scrollable-container::-webkit-scrollbar-thumb {}
+
         .responsivelogo {
             width: 6%;
         }
@@ -198,6 +205,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
             height: 24rem;
         }
 
+        .responsiveposter {}
 
         .responsivepostimage {
             width: 4rem;
@@ -224,6 +232,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
             opacity: 85%;
         }
 
+        // 600px //
         @media only screen and (max-width: 600px) {
             .responsivepagelogos {
                 margin-left: 30%;
@@ -253,6 +262,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
                 width: 1.5rem;
                 height: 1.5rem;
                 font-family: "Lucida Console", "Courier New", monospace;
+            }
+
+            .responsivepostpp {}
+
+            responsivedropdowncontainer {
+                width: ;
             }
 
             .responsivedropdownpp {
@@ -315,7 +330,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
                 font-family: "Lucida Console", "Courier New", monospace;
             }
 
+            .responsivepostpp {}
 
+            responsivedropdowncontainer {
+                width: ;
+            }
 
             .responsivedropdownpp {
                 border-radius: 50%;
@@ -392,6 +411,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
                 font-family: "Lucida Console", "Courier New", monospace;
             }
 
+            .responsivepostpp {}
+
+            responsivedropdowncontainer {
+                width: ;
+            }
+
             .responsivedropdownpp {
                 border-radius: 50%;
                 width: 4rem;
@@ -444,7 +469,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
     <a href="" class="mx-3 mt-2"></a>
     <div><a href="https://egoistsky.free.nf/user"
             class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder "
-            style="margin-left:12%;"><img class="border border-black border-3 rounded-circle responsivelogo"
+            style="margin-left:12%;"><img class="border border-black border-3 rounded-circle responsivelogo" style=""
                 src="astronomy.png" alt="logo"></a></div>
     <div class="position-absolute top-0 start-50 translate-middle mt-4" style="width:33%;">
         <form name="searcher" method="post" action="search.php">
@@ -457,37 +482,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
     <div class="top-50 start-0 translate-middle-y mx-1 responsivepages">
         <a href="Explore"><img
                 class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos "
-                src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                style="" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Explore"></a>
         <a href="Random"><img
-                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
                 src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Random Match"></a>
         <a href="following.php"><img
-                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
                 src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Following"></a>
         <a href="world.php"><img
-                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
                 src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="World"></a>
         <a href="information"><img
-                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos"
+                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
                 src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="İnformation"></a>
     </div>
     <div class="position-absolute mt-3 text-center dropdown end-0 responsivedropdowncontainer" style="top:0;right:0;">
         <a href="profile.php" style="text-decoration:none;font-family:'Courier New', Courier, monospace;">
             <img <?php echo 'src="' . $profilePhoto . '"' ?>
-                class=" border border-dark border-opacity-25 border-5 responsivedropdownpp" alt="123" />
+                class=" border border-dark border-opacity-25 border-5 responsivedropdownpp" alt="123" style="" />
             <p class="text-light text-center">
                 <?php echo $username; ?>
             </p>
         </a>
-        <a href="profile.php"><button
-                class="btn btn-outline-light mt-2 dropdown-content profilebuttons">Profile</button></a>
+        <a href="profile.php"><button class="btn btn-outline-light mt-2 dropdown-content profilebuttons"
+                style="">Profile</button></a>
         <br>
         <form method="post" action=""><button type="submit" name="logout"
-                class="btn btn-outline-light mt-2 dropdown-content profilebuttons">Logout</button>
+                class="btn btn-outline-light mt-2 dropdown-content profilebuttons" style="">Logout</button>
         </form>
 
     </div>
@@ -527,7 +552,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
                     <div class="card-body border border-dark" style="background-color:black;">
                         <div class="mt-2 mx-2">
                             <a class="text-light h4" style="text-decoration:none;" href="https://egoistsky.free.nf/egoist?username=' . $row["username"] . '">
-                                <img src="' . $userRow["profilephoto"] . '" class="rounded-circle mx-1 responsivepostimage" >
+                                <img src="' . $userRow["profilephoto"] . '" class="rounded-circle mx-1 responsivepostimage" style="">
                                 ' . $row["username"] . '
                             </a>
                         </div>
@@ -565,11 +590,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
         <br>
     </div>
     <div>
-        <input type="image" class="top-100 end-0 translate-middle-y mx-4 imghover responsivephotobutton"
+        <input type="image" class="top-100 end-0 translate-middle-y mx-4 imghover responsivephotobutton" style=""
             src="bubble.png" id="formOpener2">
 
         <input id="formOpener" type="image"
-            class="top-100 end-0 translate-middle-y mx-3 imghover responsivephotobutton2" src="picture.png">
+            class="top-100 end-0 translate-middle-y mx-3 imghover responsivephotobutton2" style="" src="picture.png">
     </div>
     <div class="w-50 border bg-black rounded-5 light border-dark position-absolute top-50 start-50 translate-middle text-center"
         id="hiddenForm" style="display: none;--bs-bg-opacity: .9;height:74%;">
@@ -600,6 +625,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
         id="hiddenForm3" style="display: none;--bs-bg-opacity: .9;height:80%;">
         <input type="text" placeholder="searcher...">
         <div class="" style="height:30rem;overflow-y: auto;">
+            <p class="text-center h3 text-light mt-2">Send Message</p>
             <?php
             try {
                 $query = "SELECT username FROM user";
@@ -620,6 +646,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
         </div>
         <button id="formCloser3" class="w-25 mt-4 btn btn-outline-danger" style="font-family:Fantasy;">close</button>
         <button id="back" class="w-25 mt-4 btn btn-outline-light" style="font-family:Fantasy;">Go Back</button>
+        <button id="messagebox" class="btn btn-outline-success w-25 mt-4" style="font-family: Fantasy;">Message
+            Box</button>
+
     </div>
     <div class="container">
         <div class="row justify-content-center">
@@ -668,9 +697,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-8 border bg-light rounded-2 position-absolute top-50 start-50 translate-middle"
-                id="hiddenForm5" style="display: none; --bs-bg-opacity: .9; height: 95%;">
+                id="hiddenForm5" style="display: none; --bs-bg-opacity: .9; height: 38%;">
+                <div class=" rounded-2 mt-1 " style="height: 2rem;">
+                    <p class="h3 text-center mt-3">Send Message</p>
+                </div>
+                <div class="mt-3">
+                    <form method="post" action="">
+                        <input type="text" class="form-control" name="privatemessage"
+                            placeholder="Type your message here...">
+                        <br>
+                        <button class="btn btn-dark w-100" type="submit">Send</button>
+                        <input type="hidden" value="" name="recipient">
+                    </form>
+                    <button id="formCloser5" class="btn btn-outline-danger w-100 mt-3"
+                        style="font-family: Fantasy;">Close</button>
+                    <button id="back3" class="btn btn-outline-dark w-100 mt-2" style="font-family: Fantasy;">Go
+                        Back</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-8 border bg-light rounded-2 position-absolute top-50 start-50 translate-middle"
+                id="hiddenForm6" style="display: none; --bs-bg-opacity: .9; height: 80%;">
                 <div class=" rounded-2 mt-1 " style="height: 28rem; overflow-y: auto;">
-                    <p class="h3 text-center mt-3">Private Message Box</p>
+                    <p class="h3 text-center mt-3">Your Message Box</p>
 
                     <?php
                     if (isset($_SESSION['username'])) {
@@ -706,17 +759,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
 
                 </div>
                 <div class="mt-3">
-                    <form method="post" action="">
-                        <input type="text" class="form-control" name="privatemessage"
-                            placeholder="Type your message here...">
-                        <br>
-                        <button class="btn btn-dark w-100" type="submit">Send</button>
-                        <input type="hidden" value="" name="recipient">
-                    </form>
-                    <button id="formCloser5" class="btn btn-outline-danger w-100 mt-3"
+                    <button id="formCloser6" class="btn btn-outline-danger w-100 mt-3"
                         style="font-family: Fantasy;">Close</button>
-                    <button id="back3" class="btn btn-outline-dark w-100 mt-2" style="font-family: Fantasy;">Go
+                    <button id="back4" class="btn btn-outline-dark w-100 mt-2" style="font-family: Fantasy;">Go
                         Back</button>
+
                 </div>
             </div>
         </div>
@@ -761,16 +808,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
     document.getElementById('formCloser').onclick = function () {
         document.getElementById('hiddenForm').style.display = 'none';
     };
-</script>
-<script>
+
     document.getElementById('formOpener2').onclick = function () {
         document.getElementById('hiddenForm2').style.display = 'block';
     };
     document.getElementById('formCloser2').onclick = function () {
         document.getElementById('hiddenForm2').style.display = 'none';
     };
-</script>
-<script>
+
     document.getElementById('chat').onclick = function () {
         document.getElementById('hiddenForm2').style.display = 'none';
         document.getElementById('hiddenForm3').style.display = 'block';
@@ -782,8 +827,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
         document.getElementById('hiddenForm3').style.display = 'none';
         document.getElementById('hiddenForm2').style.display = 'block';
     };
-</script>
-<script>
+
     document.getElementById('globalchat').onclick = function () {
         document.getElementById('hiddenForm2').style.display = 'none';
         document.getElementById('hiddenForm4').style.display = 'block';
@@ -795,8 +839,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
         document.getElementById('hiddenForm4').style.display = 'none';
         document.getElementById('hiddenForm2').style.display = 'block';
     };
-</script>
-<script>
+
     document.querySelectorAll('.chatopener').forEach(item => {
         item.addEventListener('click', event => {
             document.getElementById('hiddenForm3').style.display = 'none';
@@ -815,6 +858,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['privatemessage'])) {
         document.getElementById('hiddenForm3').style.display = 'block';
     };
 
+    document.getElementById('messagebox').onclick = function () {
+        document.getElementById('hiddenForm3').style.display = 'none';
+        document.getElementById('hiddenForm6').style.display = 'block';
+    };
+    document.getElementById('formCloser6').onclick = function () {
+        document.getElementById('hiddenForm6').style.display = 'none';
+    };
+    document.getElementById('back4').onclick = function () {
+        document.getElementById('hiddenForm6').style.display = 'none';
+        document.getElementById('hiddenForm3').style.display = 'block';
+    };
 </script>
 
 </html>
