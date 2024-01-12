@@ -21,6 +21,22 @@ if (isset($_SESSION['username'])) {
     <link rel="icon" type="image/x-icon" href="astronom.ico">
     <link rel="stylesheet" href="style.css">
     <style>
+        .responsivepagelogos {
+            width: 25%;
+        }
+
+        .logoa {
+            margin-left: 12%;
+        }
+
+        .logoimg {
+            width: 6%;
+        }
+
+        .signbutton {
+            margin-right: 5rem;
+        }
+
         .dropdown {
             display: inline-block;
         }
@@ -70,8 +86,9 @@ if (isset($_SESSION['username'])) {
             margin-left: 50%;
         }
 
-        .responsivepost {
-            margin-left: 38%;
+        .post {
+            margin-left: 31%;
+            width: 90%;
         }
 
         .responsivedropdowncontainer {
@@ -85,7 +102,7 @@ if (isset($_SESSION['username'])) {
         }
 
         .responsivepostphoto {
-            height: 18rem;
+            height: 24rem;
         }
 
         .responsiveposter {}
@@ -115,76 +132,36 @@ if (isset($_SESSION['username'])) {
             opacity: 85%;
         }
 
-        // 600px //
-        @media only screen and (max-width: 600px) {
-            .responsivepagelogos {
-                margin-left: 30%;
-            }
-
-            .responsivepages {
-                margin-top: -21%;
-                width: 34%;
-
-            }
-
-            .responsivelogo {
-                width: 9%;
-                margin-left: -1.5%;
-            }
-
-            .responsivesearch {
-                width: 125%;
-                margin-left: -12%;
-            }
-
-            .responsivepost {
-                margin-left: 25%;
-            }
-
-            .responsivepostimage {
-                width: 1.5rem;
-                height: 1.5rem;
-                font-family: "Lucida Console", "Courier New", monospace;
-            }
-
-            .responsivepostpp {}
-
-            responsivedropdowncontainer {
-                width: ;
-            }
-
-            .responsivedropdownpp {
-                border-radius: 50%;
-                width: 3.5rem;
-                height: 3.5rem;
-
-            }
-
-            .responsivepostphoto {
-                height: 18rem;
-                width: 100%;
-            }
-
-            .responsivecardpost {
-                width: 200%;
-            }
-
-            .dropdown-content {
-
-                visibility: visible;
-
-
-            }
-
-            .profilebuttons {
-                font-size: 12.5px;
-                width: 48%;
-            }
-        }
-
         @media only screen and (max-width: 420px) {
             .responsivepagelogos {
-                margin-left: 7%;
+                margin-left: 12%;
+                width: 60%;
+            }
+
+            .loginbutton {
+                width: 15%;
+                font-size: 11px;
+                height: 5%;
+            }
+
+            .signbutton {
+                width: 17%;
+                font-size: 11px;
+                margin-right: 4rem;
+                height: 5%;
+            }
+
+            .logoimg {
+                width: 16%;
+            }
+
+            .logoa {
+                margin-left: 3%;
+            }
+
+            .post {
+                width: 295%;
+                margin-left: 19%;
             }
 
             .responsivepages {
@@ -199,89 +176,8 @@ if (isset($_SESSION['username'])) {
             }
 
             .responsivesearch {
-                width: 165%;
-                margin-left: -40%;
-            }
-
-            .responsivepost {
-                margin-left: 20%;
-            }
-
-            .responsivepostimage {
-                width: 1.5rem;
-                height: 1.5rem;
-                font-family: "Lucida Console", "Courier New", monospace;
-            }
-
-            .responsivepostpp {}
-
-            responsivedropdowncontainer {
-                width: ;
-            }
-
-            .responsivedropdownpp {
-                border-radius: 50%;
-                width: 4rem;
-                height: 4rem;
-
-            }
-
-            .responsivepostphoto {
-                height: 18rem;
-                width: 100%;
-            }
-
-            .responsivecardpost {
-                width: 220%;
-            }
-
-            .dropdown-content {
-
-                visibility: visible;
-
-
-            }
-
-            .profilebuttons {
-                font-size: 12.5px;
-                width: 68%;
-                margin-left: -13%;
-            }
-
-            .responsivephotobutton {
-                width: 16%;
-                position: fixed;
-                margin-top: -15%;
-                opacity: 75%;
-            }
-
-            .responsivephotobutton2 {
-                width: 20%;
-                position: fixed;
-                margin-top: -40%;
-                opacity: 85%;
-            }
-        }
-
-        @media only screen and (max-width: 380px) {
-            .responsivepagelogos {
-                margin-left: 6.5%;
-            }
-
-            .responsivepages {
-                margin-top: -34%;
-                width: 45%;
-
-            }
-
-            .responsivelogo {
-                width: 12%;
-                margin-left: -8.5%;
-            }
-
-            .responsivesearch {
-                width: 165%;
-                margin-left: -40%;
+                width: 95%;
+                margin-left: -30%;
             }
 
             .responsivepost {
@@ -349,46 +245,44 @@ if (isset($_SESSION['username'])) {
 <body class="bg-black" ; background-size: cover;">
     <a href="" class="mx-3 mt-2"></a>
     <div><a href="https://egoistsky.free.nf/"
-            class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder"
-            style="margin-left:12%;"><img class="border border-black border-3 rounded-circle" style="width: 6%;"
-                src="astronomy.png" alt="logo"></a></div>
+            class=" link-light link-underline-opacity-0 text-uppercase fst-italic fw-bolder logoa"><img
+                class="border border-black border-3 rounded-circle logoimg" style="" src="astronomy.png" alt="logo"></a>
+    </div>
     <div class="position-absolute top-0 start-50 translate-middle mt-4" style="width:33%;">
         <form name="searcher" method="post" action="notsignsearch.php">
-            <input type="search" id="searchInput" name="search" placeholder="Search..." class="form-control">
+            <input type="search" id="searchInput" name="search" placeholder="Search..."
+                class="form-control responsivesearch">
         </form>
         <div id="searchResults"></div>
     </div>
-    <a href="login"><button type="button" class="btn btn-outline-light  top-0 end-0 translate-middle mt-4"
+    <a href="login"><button type="button" class="btn btn-outline-light  top-0 end-0 translate-middle mt-4 loginbutton"
             style="position: fixed;">Log In</button></a>
-    <a href="signup"><button type="button" class="btn btn-outline-light top-0 end-0 translate-middle mt-4"
-            style="margin-right:5rem;position: fixed;">Sign Up</button></a>
+    <a href="signup"><button type="button" class="btn btn-outline-light top-0 end-0 translate-middle mt-4 signbutton"
+            style="position: fixed;">Sign Up</button></a>
     <div class="top-50 start-0 translate-middle-y mx-1" style="width:24%;margin-top:1%;position: fixed;">
         <a href="Explore"><img
-                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos "
-                style="" src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
+                class=" rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos " style=""
+                src="telescope.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Explore"></a>
         <a href="Random"><img
-                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                class=" rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
                 src="comet.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Random Match"></a>
         <a href="following.php"><img
-                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                class=" rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
                 src="bootes.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="Following"></a>
         <a href="world.php"><img
-                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                class=" rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
                 src="earth.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="World"></a>
         <a href="information"><img
-                class="w-25 rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
+                class=" rounded-circle d-block mb-3 mt-3 border-2 border-dark imghover responsivepagelogos" style=""
                 src="saturn.png" alt="" data-bs-toggle="tooltip" data-bs-placement="right"
                 data-bs-title="İnformation"></a>
     </div>
     <div class="scrollable-container w-100 mt-1" style="overflow-y:auto;height:40rem;">
         <?php
-        $servername = "";
-        $username = "";
-        $password = "";
-        $dbname = "";
+        include 'connect.php';
 
         try {
             $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -404,18 +298,18 @@ if (isset($_SESSION['username'])) {
                     $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
 
                     echo '
-            <div class="w-25 post" style="margin-left:38%;">
+            <div class="w-25 post">
             
                 <div class="card post border border-dark text-white">
-                <div class="mt-2 mx-2">
-                <a class="text-light h3" style="text-decoration:none;" href="https://egoistsky.free.nf/egoist?username=' . $row["username"] . '"><img src="' . $userRow["profilephoto"] . '" class="rounded-circle mx-1" style="width:4rem;height:4rem;">' . $row["username"] . '</a>
-                </div>
+               
                 
-                <br>
-                    <img src="data/posts/' . $row["photo"] . '" class="card-img-top" alt="..." style="height:18rem;">
+            
+                    <img src="data/posts/' . $row["photo"] . '" class="card-img-top" alt="..." style="height:24rem;">
                     <div class="card-body border border-dark" style="background-color:black;">
-                        
-
+ <div class="mt-2 mx-2">
+                <a class="text-light h4" style="text-decoration:none;" href="https://egoistsky.free.nf/egoist?username=' . $row["username"] . '"><img src="' . $userRow["profilephoto"] . '" class="rounded-circle mx-1" style="width:4rem;height:4rem;">' . $row["username"] . '</a>
+                </div>
+                <br>
                         <p class="card-text">' . $row["description"] . '</p>
                         <br>
                         <p class="card-text"><small class="text-white-50">' . $row["time"] . '</small></p>
@@ -427,7 +321,7 @@ if (isset($_SESSION['username'])) {
             <br>';
                 }
             } else {
-                echo "Data Not Found";
+                echo "Data not found";
             }
         } catch (PDOException $e) {
             echo "Connection Error: " . $e->getMessage();
@@ -453,10 +347,12 @@ if (isset($_SESSION['username'])) {
 
     searchInput.addEventListener('input', function () {
         const searchValue = this.value;
+
         if (searchValue === '') {
             searchResults.innerHTML = '';
             return;
         }
+
         fetch(`search.php?search_query=${searchValue}`)
             .then(response => response.text())
             .then(data => {
