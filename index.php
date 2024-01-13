@@ -359,7 +359,7 @@ if (isset($_SESSION['username'])) {
                 searchResults.innerHTML = data;
             })
             .catch(error => {
-                console.error('Search Error:', error);
+                console.error('Searcher Error:', error);
             });
     });
 </script>
