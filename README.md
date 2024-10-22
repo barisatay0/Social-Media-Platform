@@ -1,4 +1,4 @@
-# Welcome to My **Totally Professional** Social Media Site™ 😎
+# Welcome to My **Totally Professional** Social Media Site™ 
 
 ## Brace Yourself for a Journey Through the Wild West of Web Development 🌵
 
