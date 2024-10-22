@@ -6,7 +6,7 @@ This project is a **social media site** where nothing works quite as you'd expec
 
 ### A Glimpse Into the Madness:  
 - **HTML, CSS, Bootstrap, JavaScript, and PHP** all coexisting *on the same page*. Because separating files is for the weak. 💪
-- The **"Like"** and **"Unlike"** buttons are powered by good old integers. No boolean nonsense here. Why stop at liking something once when you can like it 100 times? 🔥
+- The **"Like"** and **"Unlike"** buttons are powered by good old integers. No boolean nonsense here just if/else end still working like a legend. Who need to good database structure? Im not. 🔥
 - **Global chat** feature! 🎉 You can send messages for everyone to see... forever. Once you send it, it's there for life. **No one** (not even you) can delete it. So make sure to really think through those typos! 📝
 - I even added a **chat feature**. It’s great, except for one small detail... *you can’t see the message you just sent*. But hey, it’s the thought that counts, right? 🙃
 - **Post your own content**. Yes, I gave the power to post too! Because this must be a social media platform. 📝
@@ -18,7 +18,7 @@ Here's what the admin panel *claims* to do:
 - **Ban** and **Unban** users at your whim. Give them a time-out or bring them back into the chaos. 🔨
 - **Change user roles**. You want to make everyone an admin? Go for it! (Maybe not the best idea though.) 👑
 - **Delete users** entirely. Be the judge, jury, and executioner of the userbase. 🗑️
-- **View logs**. Ever wanted to see a record of every nonsensical error and weird behavior? Well, now you can. 📜
+- **View logs** Just feel like a hacker on the log screen and think about why we need this. 📜
 - **Delete posts**. Cleaning up the mess users make one post at a time... or just because you feel like it. 🚮
 - **Add explores** to keep everyone informed, though honestly, the real news is figuring out how this project still works. 📰
 
